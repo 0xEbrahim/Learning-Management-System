@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+enum crdb_internal_region {
+  aws_eu_central_1 @map("aws-eu-central-1")
+}
+
+model User {
+  id                              String    @id @default(uuid())
+  googleId                        String?
+  name                            String
+  avatar                          String?
+  email                           String    @unique
+  emailVerificationToken          String?
+  emailVerificationTokenExpiresAt DateTime?
+  emailVerified                   Boolean   @default(false)
+  password                        String
+  passwordChangedAt               DateTime  @default(now())
+  passwordResetToken              String?
+  passwordResetTokenExpiresAt     DateTime?
+  role                            Roles     @default(STUDENT)
+  isActive                        Boolean   @default(true)
+  twoFactorAuth                   Boolean   @default(false)
+  OTP                             String?
+  OTPExpiresAt                    DateTime?
+  createdAt                       DateTime  @default(now())
+  updatedAt                       DateTime  @updatedAt
+
+  @@index([email])
+  @@index([googleId])
+}
+
+
+enum Roles {
+  STUDENT
+  TEACHER
+  ADMIN
+}
