@@ -31,11 +31,30 @@ model User {
   OTPExpiresAt                    DateTime?
   createdAt                       DateTime  @default(now())
   updatedAt                       DateTime  @updatedAt
+  reviews                         Review[]
+  comments                        Comment[]
 
   @@index([email])
   @@index([googleId])
 }
 
+model Review {
+  id      String    @id @default(uuid())
+  userId  String
+  rating  Int
+  review  String
+  author  User      @relation(fields: [userId], references: [id])
+  Replies Comment[]
+}
+
+model Comment {
+  id       String @id @default(uuid())
+  userId   String
+  reviewId String
+  comment  String
+  author   User   @relation(fields: [userId], references: [id])
+  review   Review @relation(fields: [reviewId], references: [id])
+}
 
 enum Roles {
   STUDENT
