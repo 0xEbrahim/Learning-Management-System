@@ -35,7 +35,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
     "winston": "^3.17.0",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0"
   },
   "name": "backend",
   "version": "1.0.0",
