@@ -3,6 +3,7 @@ import { IRegisterBody } from "./Auth.Interface";
 import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
 import APIError from "../../utils/APIError";
+import { hashPassword } from "../../utils/Functions/functions";
 class AuthService {
   async register(Payload: IRegisterBody): Promise<any> {
     const isExist = await prisma.user.findUnique({
@@ -20,11 +21,12 @@ class AuthService {
         folder: "Users",
       });
     }
+    const hashedPassword = await hashPassword(Payload.password)
     const user = await prisma.user.create({
       data: {
         name: Payload.name,
         email: Payload.email,
-        password: Payload.password,
+        password: hashedPassword,
         avatar: avatar?.secure_url,
       },
     });
@@ -33,7 +35,7 @@ class AuthService {
       throw new APIError("Error while creating account, please try again", 500);
     }
   }
-  
+
 }
 
 export default new AuthService();

@@ -1,4 +1,5 @@
 export const generateEmailVerifyTemplate = (code: string, link: string) => {
+    
     return `<!DOCTYPE html>
 <html lang="en">
 <head>

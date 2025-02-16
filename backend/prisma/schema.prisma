@@ -155,7 +155,7 @@ model Order {
 }
 
 model Token {
-  id          String   @id @default(uuid())
+  id    String @id @default(uuid())
   token String
 }
 

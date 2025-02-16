@@ -11,7 +11,7 @@ const logger = winston.createLogger({
   level: "info",
   format: combine(timestamp(), json(), prettyPrint()),
   transports: [
-    new winston.transports.File({ filename:  `${__dirname}/../../logs/erro.log`, level: 'error' }),
+    new winston.transports.File({ filename:  `${__dirname}/../../logs/error.log`, level: 'error' }),
     new winston.transports.File({
       filename: `${__dirname}/../../logs/app.log`,
     }),
