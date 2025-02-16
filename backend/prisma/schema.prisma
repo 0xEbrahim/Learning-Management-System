@@ -124,31 +124,33 @@ model Course {
 }
 
 model Payment {
-  id        String   @id @default(uuid())
-  orderId String @unique
-  order Order @relation(fields: [orderId], references: [id])
-  price Float
-  status PaymentStatus @default(PENDING)
+  id      String        @id @default(uuid())
+  orderId String        @unique
+  order   Order         @relation(fields: [orderId], references: [id])
+  price   Float
+  status  PaymentStatus @default(PENDING)
 }
 
 model Address {
-  id        String   @id @default(uuid())
-  country String
-  city String
+  id         String  @id @default(uuid())
+  country    String
+  city       String
   postalCode String
-  orders Order[]
+  orders     Order[]
 }
+
 model Order {
-  id        String   @id @default(uuid())
-  userId    String
-  courseId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
-  course    Course   @relation(fields: [courseId], references: [id])
-  paymentInfo   Payment?
-  addressId String
-  address Address @relation(fields: [addressId], references: [id])
+  id          String   @id @default(uuid())
+  userId      String
+  courseId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
+  course      Course   @relation(fields: [courseId], references: [id])
+  paymentInfo Payment?
+  addressId   String
+  address     Address  @relation(fields: [addressId], references: [id])
+
   @@unique([userId, courseId])
 }
 
