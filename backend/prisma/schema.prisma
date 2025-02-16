@@ -12,52 +12,154 @@ enum crdb_internal_region {
 }
 
 model User {
-  id                              String    @id @default(uuid())
+  id                              String        @id @default(uuid())
   googleId                        String?
   name                            String
   avatar                          String?
-  email                           String    @unique
+  email                           String        @unique
   emailVerificationToken          String?
   emailVerificationTokenExpiresAt DateTime?
-  emailVerified                   Boolean   @default(false)
+  emailVerified                   Boolean       @default(false)
   password                        String
-  passwordChangedAt               DateTime  @default(now())
+  passwordChangedAt               DateTime      @default(now())
   passwordResetToken              String?
   passwordResetTokenExpiresAt     DateTime?
-  role                            Roles     @default(STUDENT)
-  isActive                        Boolean   @default(true)
-  twoFactorAuth                   Boolean   @default(false)
+  role                            Roles         @default(STUDENT)
+  isActive                        Boolean       @default(true)
+  twoFactorAuth                   Boolean       @default(false)
   OTP                             String?
   OTPExpiresAt                    DateTime?
-  createdAt                       DateTime  @default(now())
-  updatedAt                       DateTime  @updatedAt
+  createdAt                       DateTime      @default(now())
+  updatedAt                       DateTime      @updatedAt
   reviews                         Review[]
+  replies                         ReviewReply[]
   comments                        Comment[]
+  courses                         Order[]
+  publishedCourses                Course[]      @relation("Publish")
 
   @@index([email])
   @@index([googleId])
 }
 
 model Review {
-  id      String    @id @default(uuid())
-  userId  String
-  rating  Int
-  review  String
-  author  User      @relation(fields: [userId], references: [id])
-  Replies Comment[]
+  id        String        @id @default(uuid())
+  userId    String
+  courseId  String
+  rating    Int
+  review    String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  author    User          @relation(fields: [userId], references: [id])
+  course    Course        @relation(fields: [courseId], references: [id])
+  Replies   ReviewReply[]
+}
+
+model ReviewReply {
+  id        String   @id @default(uuid())
+  userId    String
+  reviewId  String
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [userId], references: [id])
+  review    Review   @relation(fields: [reviewId], references: [id])
 }
 
 model Comment {
-  id       String @id @default(uuid())
-  userId   String
-  reviewId String
-  comment  String
-  author   User   @relation(fields: [userId], references: [id])
-  review   Review @relation(fields: [reviewId], references: [id])
+  id              String     @id @default(uuid())
+  userId          String
+  videoId         String
+  comment         String
+  parentCommentId String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  parentComment   Comment?   @relation("Reply", fields: [parentCommentId], references: [id])
+  author          User       @relation(fields: [userId], references: [id])
+  video           CourseData @relation(fields: [videoId], references: [id])
+  replies         Comment[]  @relation("Reply")
+
+  @@index([parentCommentId])
+}
+
+model CourseData {
+  id             String    @id @default(uuid())
+  courseId       String
+  course         Course    @relation(fields: [courseId], references: [id])
+  videoUrl       String
+  videoThumbnail String
+  videoLength    BigInt
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  title          String
+  comments       Comment[]
+}
+
+model Prerequisites {
+  id        String   @id @default(uuid())
+  courseid  String
+  title     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  url       String
+  course    Course   @relation(fields: [courseid], references: [id])
+}
+
+model Course {
+  id             String          @id @default(uuid())
+  publisherId    String
+  publisher      User            @relation("Publish", fields: [publisherId], references: [id])
+  name           String
+  price          Float
+  description    String
+  averageRatings Float
+  thumbnail      String
+  purchased      Int
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  demoUrl        String
+  prerequisites  Prerequisites[]
+  reviews        Review[]
+  courseData     CourseData[]
+  buyers         Order[]
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  orderId String @unique
+  order Order @relation(fields: [orderId], references: [id])
+  price Float
+  status PaymentStatus @default(PENDING)
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  country String
+  city String
+  postalCode String
+  orders Order[]
+}
+model Order {
+  id        String   @id @default(uuid())
+  userId    String
+  courseId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+  paymentInfo   Payment?
+  addressId String
+  address Address @relation(fields: [addressId], references: [id])
+  @@unique([userId, courseId])
 }
 
 enum Roles {
   STUDENT
   TEACHER
   ADMIN
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAIL
 }
