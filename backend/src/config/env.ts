@@ -9,4 +9,8 @@ export default {
   JWT_EXPIRES_IN: parseInt(process.env.JWT_EXPIRES_IN as string),
   REFRESH_SECRET: process.env.REFRESH_SECRET,
   REFRESH_EXPIRES_IN: parseInt(process.env.REFRESH_EXPIRES_IN as string),
+  CLOUD_NAME: process.env.CLOUD_NAME as string,
+  CLOUD_KEY: process.env.CLOUD_KEY as string,
+  CLOUD_SECRET: process.env.CLOUD_SECRET as string,
+  CLOUDINARY_URL: process.env.CLOUDINARY_URL as string,
 };
