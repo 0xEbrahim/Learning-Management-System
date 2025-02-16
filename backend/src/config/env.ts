@@ -13,4 +13,8 @@ export default {
   CLOUD_KEY: process.env.CLOUD_KEY as string,
   CLOUD_SECRET: process.env.CLOUD_SECRET as string,
   CLOUDINARY_URL: process.env.CLOUDINARY_URL as string,
+  SMTP_HOST: process.env.SMTP_HOST,
+  SMTP_PORT: parseInt(process.env.SMTP_PORT as string),
+  SMTP_USER: process.env.SMTP_USER,
+  SMTP_PASS: process.env.SMTP_PASS,
 };
