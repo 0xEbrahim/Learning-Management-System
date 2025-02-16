@@ -154,6 +154,11 @@ model Order {
   @@unique([userId, courseId])
 }
 
+model Token {
+  id    String @id @default(uuid())
+  token String
+}
+
 enum Roles {
   STUDENT
   TEACHER
