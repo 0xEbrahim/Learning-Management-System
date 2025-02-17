@@ -1,6 +1,7 @@
 import nodeMailer, { Transporter } from "nodemailer";
 import config from "./env";
 import logger from "./logger";
+import prisma from "./prisma";
 import { IEmail } from "../Interfaces/types";
 
 const sendEmail = async (options: IEmail) => {
@@ -21,6 +22,13 @@ const sendEmail = async (options: IEmail) => {
   };
   const info = await transporter.sendMail(data);
   logger.info("Email sent successfully, id: " + info.messageId);
+  await prisma.email.create({
+    data: {
+      id: info.messageId,
+      email: options.email,
+      subject: options.subject,
+    },
+  });
 };
 
 export default sendEmail;

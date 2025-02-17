@@ -108,3 +108,210 @@
   level: 'error',
   timestamp: '2025-02-17T19:17:19.333Z'
 }
+{
+  message: '\n' +
+    'Invalid `prisma.email.create()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\config\\email.ts:25:22\n' +
+    '\n' +
+    '  22 };\n' +
+    '  23 const info = await transporter.sendMail(data);\n' +
+    '  24 logger.info("Email sent successfully, id: " + info.messageId);\n' +
+    '→ 25 await prisma.email.create({\n' +
+    '       data: {\n' +
+    '         email: "ebrahimsayed054@gmail.com",\n' +
+    '         subject: "Email verification",\n' +
+    '     +   id: String\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Argument `id` is missing.',
+  level: 'error',
+  timestamp: '2025-02-17T19:49:02.145Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findUnique()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\Auth\\Auth.Service.ts:81:36\n' +
+    '\n' +
+    '  78 }\n' +
+    '  79 \n' +
+    '  80 async sendEmailToken(Payload: any): Promise<any> {\n' +
+    '→ 81   const user = await prisma.user.findUnique({\n' +
+    '         where: {\n' +
+    '           email: undefined,\n' +
+    '       ?   id?: String,\n' +
+    '       ?   AND?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   OR?: UserWhereInput[],\n' +
+    '       ?   NOT?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   googleId?: StringNullableFilter | String | Null,\n' +
+    '       ?   name?: StringFilter | String,\n' +
+    '       ?   avatar?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   emailVerified?: BoolFilter | Boolean,\n' +
+    '       ?   password?: StringFilter | String,\n' +
+    '       ?   passwordChangedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   passwordResetToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   passwordResetTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   role?: EnumRolesFilter | Roles,\n' +
+    '       ?   isActive?: BoolFilter | Boolean,\n' +
+    '       ?   twoFactorAuth?: BoolFilter | Boolean,\n' +
+    '       ?   OTP?: StringNullableFilter | String | Null,\n' +
+    '       ?   OTPExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   createdAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   updatedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   reviews?: ReviewListRelationFilter,\n' +
+    '       ?   replies?: ReviewReplyListRelationFilter,\n' +
+    '       ?   comments?: CommentListRelationFilter,\n' +
+    '       ?   courses?: OrderListRelationFilter,\n' +
+    '       ?   publishedCourses?: CourseListRelationFilter\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-17T19:56:52.581Z'
+}
+{
+  message: 'Error while creating account, email already exists.',
+  level: 'error',
+  timestamp: '2025-02-17T19:57:48.123Z'
+}
+{
+  message: 'Email is already exists, try another email.',
+  level: 'error',
+  timestamp: '2025-02-17T19:57:48.124Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findUnique()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\Auth\\Auth.Service.ts:81:36\n' +
+    '\n' +
+    '  78 }\n' +
+    '  79 \n' +
+    '  80 async sendEmailToken(Payload: any): Promise<any> {\n' +
+    '→ 81   const user = await prisma.user.findUnique({\n' +
+    '         where: {\n' +
+    '           email: undefined,\n' +
+    '       ?   id?: String,\n' +
+    '       ?   AND?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   OR?: UserWhereInput[],\n' +
+    '       ?   NOT?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   googleId?: StringNullableFilter | String | Null,\n' +
+    '       ?   name?: StringFilter | String,\n' +
+    '       ?   avatar?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   emailVerified?: BoolFilter | Boolean,\n' +
+    '       ?   password?: StringFilter | String,\n' +
+    '       ?   passwordChangedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   passwordResetToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   passwordResetTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   role?: EnumRolesFilter | Roles,\n' +
+    '       ?   isActive?: BoolFilter | Boolean,\n' +
+    '       ?   twoFactorAuth?: BoolFilter | Boolean,\n' +
+    '       ?   OTP?: StringNullableFilter | String | Null,\n' +
+    '       ?   OTPExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   createdAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   updatedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   reviews?: ReviewListRelationFilter,\n' +
+    '       ?   replies?: ReviewReplyListRelationFilter,\n' +
+    '       ?   comments?: CommentListRelationFilter,\n' +
+    '       ?   courses?: OrderListRelationFilter,\n' +
+    '       ?   publishedCourses?: CourseListRelationFilter\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-17T20:00:41.893Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:08:37.469Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:09:38.883Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:10:25.411Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:10:29.890Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:10:36.738Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T20:11:14.267Z'
+}
+{
+  message: 'Invalid or expired token',
+  level: 'error',
+  timestamp: '2025-02-17T20:11:14.269Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T20:12:19.773Z'
+}
+{
+  message: 'Invalid or expired token',
+  level: 'error',
+  timestamp: '2025-02-17T20:12:19.774Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findUnique()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\Auth\\Auth.Service.ts:81:36\n' +
+    '\n' +
+    '  78 }\n' +
+    '  79 \n' +
+    '  80 async sendEmailToken(Payload: any): Promise<any> {\n' +
+    '→ 81   const user = await prisma.user.findUnique({\n' +
+    '         where: {\n' +
+    '           email: undefined,\n' +
+    '       ?   id?: String,\n' +
+    '       ?   AND?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   OR?: UserWhereInput[],\n' +
+    '       ?   NOT?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   googleId?: StringNullableFilter | String | Null,\n' +
+    '       ?   name?: StringFilter | String,\n' +
+    '       ?   avatar?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   emailVerified?: BoolFilter | Boolean,\n' +
+    '       ?   password?: StringFilter | String,\n' +
+    '       ?   passwordChangedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   passwordResetToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   passwordResetTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   role?: EnumRolesFilter | Roles,\n' +
+    '       ?   isActive?: BoolFilter | Boolean,\n' +
+    '       ?   twoFactorAuth?: BoolFilter | Boolean,\n' +
+    '       ?   OTP?: StringNullableFilter | String | Null,\n' +
+    '       ?   OTPExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   createdAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   updatedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   reviews?: ReviewListRelationFilter,\n' +
+    '       ?   replies?: ReviewReplyListRelationFilter,\n' +
+    '       ?   comments?: CommentListRelationFilter,\n' +
+    '       ?   courses?: OrderListRelationFilter,\n' +
+    '       ?   publishedCourses?: CourseListRelationFilter\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-17T20:13:02.860Z'
+}

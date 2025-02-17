@@ -2,7 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import asyncHandler from "../../utils/asyncHandler";
 import AuthService from "./Auth.Service";
 import { IRegisterBody } from "./Auth.Interface";
-import logger from "../../config/logger";
+import config from "../../config/env";
+import APIError from "../../utils/APIError";
 
 export const register = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -11,6 +12,11 @@ export const register = asyncHandler(
       data.avatar = req.file.path;
     }
     const result: string = await AuthService.register(data);
+    res.cookie("email", data.email, {
+      maxAge: 24 * 60 * 60 * 1000,
+      secure: config.NODE_ENV === "production",
+      httpOnly: true,
+    });
     res.status(201).json({
       status: "Success",
       message: result,
@@ -19,13 +25,23 @@ export const register = asyncHandler(
 );
 
 export const sendEmailVerificationToken = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {}
+  async (req: Request, res: Response, next: NextFunction) => {
+    const email = req.cookies.email;
+    if (!email)
+      throw new APIError("You are not allowed to use this endpoint", 403);
+    const result = await AuthService.sendEmailToken(email);
+    res.status(200).json({
+      status: "Success",
+      message: result,
+    });
+  }
 );
 
 export const verifyEmailVerificationToken = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { token } = req.params;
     const result = await AuthService.verifyEmail(token);
+    res.clearCookie("email");
     res.status(200).json({
       status: "Success",
       message: result,

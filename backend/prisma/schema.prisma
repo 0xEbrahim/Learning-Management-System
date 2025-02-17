@@ -159,6 +159,12 @@ model Token {
   token String
 }
 
+model Email {
+  id    String @id
+  email String
+  subject String
+}
+
 enum Roles {
   STUDENT
   TEACHER

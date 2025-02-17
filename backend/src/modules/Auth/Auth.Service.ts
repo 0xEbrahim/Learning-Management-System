@@ -47,7 +47,7 @@ class AuthService {
     return "Account created successfully, please check your Gmail account to verify your email";
   }
 
-  async verifyEmail(Payload: string): Promise<any> {
+  async verifyEmail(Payload: string): Promise<string> {
     const hashed = crypto.createHash("sha256").update(Payload).digest("hex");
     const user = await prisma.user.findFirst({
       where: {
@@ -57,7 +57,7 @@ class AuthService {
     });
     if (!user) {
       logger.error("Invalid or expired token.");
-      throw new APIError("Invalid or expired token.", 400);
+      throw new APIError("Invalid or expired token", 400);
     }
     const updatedUser = await prisma.user.update({
       where: {
@@ -75,6 +75,21 @@ class AuthService {
     }
     logger.info("Email verified successfully for user ID: " + user.id);
     return "Email verified, now you can login to your account.";
+  }
+
+  async sendEmailToken(Payload: any): Promise<any> {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: Payload,
+      },
+    });
+    if (!user) {
+      logger.error("Invalid email, cannot find user.");
+      throw new APIError("Invalid email, cannot find user.", 404);
+    }
+    await createEmailVerifyToken(user);
+    logger.info("Email sent successfully, user ID: " + user.id);
+    return "Email sent successfully, please check your Gmail account to verify your email";
   }
 }
 
