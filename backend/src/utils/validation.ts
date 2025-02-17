@@ -10,7 +10,7 @@ export const validate =
       schema.parse({
         body: req.body,
         query: req.query,
-        params: req.params.params,
+        params: req.params,
       });
       next();
     } catch (err) {

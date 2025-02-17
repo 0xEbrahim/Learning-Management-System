@@ -2953,3 +2953,1530 @@
   level: 'info',
   timestamp: '2025-02-16T20:10:31.341Z'
 }
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-16T20:23:35.891Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-16T20:23:55.029Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-16T20:24:32.564Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-16T20:24:38.505Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-16T20:24:59.565Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-16T20:25:16.402Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-16T20:26:04.215Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:07:56.173Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:11:07.809Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:15:33.926Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:16:41.977Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:16:47.687Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:16:55.086Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:17:01.869Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:17:08.546Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:17:16.181Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:17:19.488Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:17:32.846Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:17:53.654Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:18:50.241Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:19:02.897Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:19:11.265Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:19:15.743Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:19:19.450Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:19:22.381Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:19:27.133Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:19:34.807Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:27:39.543Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:27:43.436Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:28:40.168Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:29:34.877Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:30:11.554Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:30:18.821Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:30:28.789Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:30:45.316Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:30:56.605Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:31:10.150Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:31:16.109Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:32:16.331Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:32:56.441Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:35:06.984Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:35:50.931Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:35:57.155Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:36:42.268Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:36:46.560Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:36:53.082Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:36:56.285Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:37:22.433Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:37:46.429Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:37:49.556Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:37:57.882Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:38:09.535Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:38:14.307Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:38:19.920Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:38:25.069Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:38:35.956Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:38:45.103Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:38:50.103Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:38:53.721Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:39:05.338Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:39:14.327Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:39:20.923Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:39:25.544Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:39:40.354Z'
+}
+{
+  message: 'User account created successfully, user ID: 93beb3c4-891e-40b3-8c62-46b8736536ba',
+  level: 'info',
+  timestamp: '2025-02-17T18:39:46.673Z'
+}
+{
+  message: 'Email sent successfully, id: <40b6a395-552f-bf62-84dc-d64c830adbfc@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T18:39:49.146Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:41:01.200Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:41:49.443Z'
+}
+{
+  message: `Validation error: Passwords don't match at "body.Password confirmations"`,
+  level: 'error',
+  timestamp: '2025-02-17T18:41:59.511Z'
+}
+{
+  message: 'User account created successfully, user ID: 53f71ff3-050f-4579-9270-4120acdac07f',
+  level: 'info',
+  timestamp: '2025-02-17T18:42:17.565Z'
+}
+{
+  message: 'Email sent successfully, id: <a2310db5-5efb-ef1c-b4b9-d4abdcaf2a60@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T18:42:19.201Z'
+}
+{
+  message: `Validation error: Passwords don't match at "body.Password confirmations"`,
+  level: 'error',
+  timestamp: '2025-02-17T18:44:29.238Z'
+}
+{
+  message: 'User account created successfully, user ID: aa9ff4f7-bb3b-429a-85af-2b321328dde2',
+  level: 'info',
+  timestamp: '2025-02-17T18:44:40.440Z'
+}
+{
+  message: 'Email sent successfully, id: <1a692739-8594-c553-603c-cb4b36469877@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T18:44:43.439Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:47:25.925Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:47:59.694Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:48:05.261Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:48:26.316Z'
+}
+{
+  message: 'User account created successfully, user ID: fce3a917-8ce8-4a38-a3bd-dc8c185a7bd4',
+  level: 'info',
+  timestamp: '2025-02-17T18:48:53.308Z'
+}
+{
+  message: 'Email sent successfully, id: <6ebe4318-eddd-c6a3-3147-e080af87ab29@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T18:48:54.971Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:49:16.893Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:49:23.965Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:49:29.226Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:49:44.160Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:50:10.309Z'
+}
+{
+  message: 'User account created successfully, user ID: b3160f44-3404-4e67-ad18-61d5ce76cb85',
+  level: 'info',
+  timestamp: '2025-02-17T18:50:28.743Z'
+}
+{
+  message: 'Email sent successfully, id: <6cebfc28-0787-b60b-2f81-468bf08ee6b7@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T18:50:30.340Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:50:49.948Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:50:53.442Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:51:43.825Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:51:47.431Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:51:50.505Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:51:55.950Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:55:13.470Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:55:16.674Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:55:25.661Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:58:34.848Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:58:53.452Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T18:59:52.521Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:00:20.962Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:00:43.523Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:00:58.284Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:01:08.743Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:01:18.208Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:01:49.780Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:01:57.870Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:02:19.366Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:03:06.268Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:03:58.193Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:04:04.919Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:04:11.656Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:04:27.205Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:04:31.400Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:04:57.644Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:06:10.078Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:06:56.349Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:07:00.312Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:07:08.716Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:07:12.585Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:07:28.653Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:07:49.153Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:08:04.806Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:08:10.641Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:08:15.607Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:08:28.583Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:08:33.335Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:08:46.155Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:09:11.996Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:09:24.740Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:09:29.325Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:09:46.014Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:09:56.277Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:10:36.093Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:10:39.785Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:10:40.652Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:11:14.337Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:11:17.571Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:11:19.366Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:11:26.881Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:11:34.753Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:11:36.374Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:12:02.151Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:12:14.519Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:12:18.234Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:12:59.480Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:13:00.707Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:13:14.081Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:13:26.910Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:13:34.569Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:13:50.278Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-17T19:14:20.595Z'
+}
+{
+  message: 'User account created successfully, user ID: 8893ed88-0452-47ab-8f18-2fba56e6f83f',
+  level: 'info',
+  timestamp: '2025-02-17T19:14:20.981Z'
+}
+{
+  message: 'Email sent successfully, id: <d9142d60-3dbf-5586-6e5d-2fe7a9219eb5@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T19:14:24.007Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:14:31.711Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:14:54.514Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:15:06.392Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:15:11.289Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:15:11.290Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:15:36.971Z'
+}
+{
+  message: 'Error while creating account, email already exists.',
+  level: 'error',
+  timestamp: '2025-02-17T19:15:57.344Z'
+}
+{
+  message: 'Email is already exists, try another email.',
+  level: 'error',
+  timestamp: '2025-02-17T19:15:57.346Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:16:05.282Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:16:05.283Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:16:34.893Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:16:38.960Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:16:51.515Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:17:01.907Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:17:11.585Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:17:19.331Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:17:19.333Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:17:56.478Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-17T19:18:14.920Z'
+}
+{
+  message: 'User account created successfully, user ID: 6f0873f9-e971-4087-9050-60731e6ab416',
+  level: 'info',
+  timestamp: '2025-02-17T19:18:15.316Z'
+}
+{
+  message: 'Email sent successfully, id: <17ea4af5-78d5-b9c0-9db9-ea16e7ceeb90@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T19:18:47.220Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:19:16.279Z'
+}
+{
+  message: 'Email verified successfully for user ID: 6f0873f9-e971-4087-9050-60731e6ab416',
+  level: 'info',
+  timestamp: '2025-02-17T19:19:21.339Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:19:48.441Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:19:53.773Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-17T19:20:11.986Z'
+}
+{
+  message: 'Email sent successfully, id: <8e707039-e9df-d11d-40fc-6b1348764a05@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T19:20:13.971Z'
+}
+{
+  message: 'User account created successfully, user ID: 8d144a0f-7d6e-4f86-8aa7-5d30fb59d75d',
+  level: 'info',
+  timestamp: '2025-02-17T19:20:13.972Z'
+}
+{
+  message: 'Email verified successfully for user ID: 8d144a0f-7d6e-4f86-8aa7-5d30fb59d75d',
+  level: 'info',
+  timestamp: '2025-02-17T19:20:31.691Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:25:32.202Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:25:41.050Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:25:44.866Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:27:34.895Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:27:39.428Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:28:51.054Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:29:03.322Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:29:52.962Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:29:55.671Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:39:11.966Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:39:17.987Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:40:04.769Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:41:03.944Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:41:12.073Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:41:35.385Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:42:54.470Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:43:06.398Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:43:21.312Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:44:46.876Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:44:57.876Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:45:05.761Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:45:17.728Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:45:24.547Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:45:30.297Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:45:39.542Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:46:09.124Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:46:18.584Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:46:52.714Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:48:41.581Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-17T19:48:59.971Z'
+}
+{
+  message: 'Email sent successfully, id: <1e4f66e7-aa37-f050-b6f0-2a468a6e2c1b@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T19:49:02.070Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.email.create()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\config\\email.ts:25:22\n' +
+    '\n' +
+    '  22 };\n' +
+    '  23 const info = await transporter.sendMail(data);\n' +
+    '  24 logger.info("Email sent successfully, id: " + info.messageId);\n' +
+    '→ 25 await prisma.email.create({\n' +
+    '       data: {\n' +
+    '         email: "ebrahimsayed054@gmail.com",\n' +
+    '         subject: "Email verification",\n' +
+    '     +   id: String\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Argument `id` is missing.',
+  level: 'error',
+  timestamp: '2025-02-17T19:49:02.145Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:50:57.082Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-17T19:51:19.817Z'
+}
+{
+  message: 'Email sent successfully, id: <32d0b33e-ff29-9b46-2324-15fbcb6d8234@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T19:51:21.863Z'
+}
+{
+  message: 'User account created successfully, user ID: 489f68ac-7025-40d7-8e1c-989584803c2b',
+  level: 'info',
+  timestamp: '2025-02-17T19:51:22.009Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:52:22.763Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:52:59.098Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:53:16.138Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-17T19:53:42.343Z'
+}
+{
+  message: 'Email sent successfully, id: <4219dbca-af8e-64ba-7d19-183efdb86441@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T19:53:44.976Z'
+}
+{
+  message: 'User account created successfully, user ID: 43bc26a6-b7a9-4099-bad5-763544baae5f',
+  level: 'info',
+  timestamp: '2025-02-17T19:53:45.123Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:54:21.103Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:54:49.169Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:56:00.194Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:56:07.359Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:56:10.210Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:56:13.521Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:56:18.615Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:56:26.649Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:56:35.466Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findUnique()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\Auth\\Auth.Service.ts:81:36\n' +
+    '\n' +
+    '  78 }\n' +
+    '  79 \n' +
+    '  80 async sendEmailToken(Payload: any): Promise<any> {\n' +
+    '→ 81   const user = await prisma.user.findUnique({\n' +
+    '         where: {\n' +
+    '           email: undefined,\n' +
+    '       ?   id?: String,\n' +
+    '       ?   AND?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   OR?: UserWhereInput[],\n' +
+    '       ?   NOT?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   googleId?: StringNullableFilter | String | Null,\n' +
+    '       ?   name?: StringFilter | String,\n' +
+    '       ?   avatar?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   emailVerified?: BoolFilter | Boolean,\n' +
+    '       ?   password?: StringFilter | String,\n' +
+    '       ?   passwordChangedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   passwordResetToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   passwordResetTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   role?: EnumRolesFilter | Roles,\n' +
+    '       ?   isActive?: BoolFilter | Boolean,\n' +
+    '       ?   twoFactorAuth?: BoolFilter | Boolean,\n' +
+    '       ?   OTP?: StringNullableFilter | String | Null,\n' +
+    '       ?   OTPExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   createdAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   updatedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   reviews?: ReviewListRelationFilter,\n' +
+    '       ?   replies?: ReviewReplyListRelationFilter,\n' +
+    '       ?   comments?: CommentListRelationFilter,\n' +
+    '       ?   courses?: OrderListRelationFilter,\n' +
+    '       ?   publishedCourses?: CourseListRelationFilter\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-17T19:56:52.581Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:57:16.175Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:57:25.754Z'
+}
+{
+  message: 'Error while creating account, email already exists.',
+  level: 'error',
+  timestamp: '2025-02-17T19:57:48.123Z'
+}
+{
+  message: 'Email is already exists, try another email.',
+  level: 'error',
+  timestamp: '2025-02-17T19:57:48.124Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:59:50.762Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T19:59:58.135Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-17T20:00:15.123Z'
+}
+{
+  message: 'Email sent successfully, id: <72e55b11-bf07-1b33-da14-5effdfa3a5d8@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T20:00:17.772Z'
+}
+{
+  message: 'User account created successfully, user ID: 331257d6-fcd3-4e55-9392-2fa29512c43a',
+  level: 'info',
+  timestamp: '2025-02-17T20:00:17.921Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findUnique()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\Auth\\Auth.Service.ts:81:36\n' +
+    '\n' +
+    '  78 }\n' +
+    '  79 \n' +
+    '  80 async sendEmailToken(Payload: any): Promise<any> {\n' +
+    '→ 81   const user = await prisma.user.findUnique({\n' +
+    '         where: {\n' +
+    '           email: undefined,\n' +
+    '       ?   id?: String,\n' +
+    '       ?   AND?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   OR?: UserWhereInput[],\n' +
+    '       ?   NOT?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   googleId?: StringNullableFilter | String | Null,\n' +
+    '       ?   name?: StringFilter | String,\n' +
+    '       ?   avatar?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   emailVerified?: BoolFilter | Boolean,\n' +
+    '       ?   password?: StringFilter | String,\n' +
+    '       ?   passwordChangedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   passwordResetToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   passwordResetTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   role?: EnumRolesFilter | Roles,\n' +
+    '       ?   isActive?: BoolFilter | Boolean,\n' +
+    '       ?   twoFactorAuth?: BoolFilter | Boolean,\n' +
+    '       ?   OTP?: StringNullableFilter | String | Null,\n' +
+    '       ?   OTPExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   createdAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   updatedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   reviews?: ReviewListRelationFilter,\n' +
+    '       ?   replies?: ReviewReplyListRelationFilter,\n' +
+    '       ?   comments?: CommentListRelationFilter,\n' +
+    '       ?   courses?: OrderListRelationFilter,\n' +
+    '       ?   publishedCourses?: CourseListRelationFilter\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-17T20:00:41.893Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:02:46.996Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:02:50.102Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:03:08.908Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:04:02.247Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:04:32.172Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:04:37.444Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:04:53.402Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:05:10.260Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:05:20.109Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-17T20:05:55.803Z'
+}
+{
+  message: 'Email sent successfully, id: <4552282c-4055-37b1-fca4-325b5bbaa666@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T20:06:28.126Z'
+}
+{
+  message: 'User account created successfully, user ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-17T20:06:28.344Z'
+}
+{
+  message: 'Email sent successfully, id: <906aa7eb-1cba-192d-2637-bc0e09a91e1d@localhost>',
+  level: 'info',
+  timestamp: '2025-02-17T20:07:43.424Z'
+}
+{
+  message: 'Email sent successfully, user ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-17T20:07:43.502Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:08:19.484Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:08:37.469Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:09:28.419Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:09:32.374Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:09:38.883Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:10:25.411Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:10:29.890Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T20:10:36.738Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:11:10.750Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T20:11:14.267Z'
+}
+{
+  message: 'Invalid or expired token',
+  level: 'error',
+  timestamp: '2025-02-17T20:11:14.269Z'
+}
+{
+  message: 'Email verified successfully for user ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-17T20:11:22.953Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:11:41.994Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:12:01.775Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:12:07.693Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:12:17.198Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T20:12:19.773Z'
+}
+{
+  message: 'Invalid or expired token',
+  level: 'error',
+  timestamp: '2025-02-17T20:12:19.774Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:12:30.348Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findUnique()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\Auth\\Auth.Service.ts:81:36\n' +
+    '\n' +
+    '  78 }\n' +
+    '  79 \n' +
+    '  80 async sendEmailToken(Payload: any): Promise<any> {\n' +
+    '→ 81   const user = await prisma.user.findUnique({\n' +
+    '         where: {\n' +
+    '           email: undefined,\n' +
+    '       ?   id?: String,\n' +
+    '       ?   AND?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   OR?: UserWhereInput[],\n' +
+    '       ?   NOT?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   googleId?: StringNullableFilter | String | Null,\n' +
+    '       ?   name?: StringFilter | String,\n' +
+    '       ?   avatar?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   emailVerified?: BoolFilter | Boolean,\n' +
+    '       ?   password?: StringFilter | String,\n' +
+    '       ?   passwordChangedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   passwordResetToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   passwordResetTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   role?: EnumRolesFilter | Roles,\n' +
+    '       ?   isActive?: BoolFilter | Boolean,\n' +
+    '       ?   twoFactorAuth?: BoolFilter | Boolean,\n' +
+    '       ?   OTP?: StringNullableFilter | String | Null,\n' +
+    '       ?   OTPExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   createdAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   updatedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   reviews?: ReviewListRelationFilter,\n' +
+    '       ?   replies?: ReviewReplyListRelationFilter,\n' +
+    '       ?   comments?: CommentListRelationFilter,\n' +
+    '       ?   courses?: OrderListRelationFilter,\n' +
+    '       ?   publishedCourses?: CourseListRelationFilter\n' +
+    '         }\n' +
+    '       })\n' +
+    '\n' +
+    'Argument `where` of type UserWhereUniqueInput needs at least one of `id` or `email` arguments. Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-17T20:13:02.860Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:13:35.358Z'
+}

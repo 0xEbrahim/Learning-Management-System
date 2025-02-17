@@ -18,3 +18,9 @@ export const registerValidation = z.object({
       path: ["Password confirmations"],
     }),
 });
+
+export const emailVerificationValidation = z.object({
+  params: z.object({
+    token: z.string(),
+  }),
+});
