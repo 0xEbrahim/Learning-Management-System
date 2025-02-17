@@ -1,9 +1,17 @@
-import express from 'express'
-import { validate } from '../../utils/validation'
-import { registerValidation } from './Auth-Validation'
-import { register } from './Auth.Controller'
-const router = express.Router()
+import express from "express";
+import { validate } from "../../utils/validation";
+import { emailVerificationValidation, registerValidation } from "./Auth-Validation";
+import { register, verifyEmailVerificationToken } from "./Auth.Controller";
+import uplaoder from "../../config/multer";
+const router = express.Router();
 
-router.post("/", validate(registerValidation), register)
+router.post(
+  "/",
+  uplaoder.single("image"),
+  validate(registerValidation),
+  register
+);
 
-export const authRouter = router
+router.get("/verify-Email/:token", verifyEmailVerificationToken)
+
+export const authRouter = router;

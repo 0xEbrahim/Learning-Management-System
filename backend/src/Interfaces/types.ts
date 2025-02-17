@@ -8,7 +8,13 @@ export interface IReponse {
   token?: string;
 }
 
-export interface IToken extends JwtPayload{
+export interface IEmail {
+  email: string;
+  subject: string;
+  template: string;
+}
+
+export interface IToken extends JwtPayload {
   id: string;
   loggedIn?: boolean;
   iat: number;

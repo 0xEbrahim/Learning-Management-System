@@ -7,6 +7,7 @@ import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import config from "./config/env";
 import { authRouter } from "./modules/Auth/Auth.Routes";
+import { globalErrorHandler } from "./middlewares/globalError";
 dotenv.config();
 const app = express();
 const limiter = rateLimit({
@@ -25,5 +26,5 @@ app.use(cookieParser());
 app.use(helmet());
 
 app.use("/api/v1/auth", authRouter);
-
+app.use(globalErrorHandler);
 export default app;

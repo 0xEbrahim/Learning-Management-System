@@ -1,6 +1,5 @@
-export const generateEmailVerifyTemplate = (code: string, link: string) => {
-    
-    return `<!DOCTYPE html>
+export const generateEmailVerifyTemplate = (link: string) => {
+  return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -64,10 +63,10 @@ export const generateEmailVerifyTemplate = (code: string, link: string) => {
     <div class="email-container">
         <h2>Email Verification</h2>
         <p>Thank you for signing up. Please use the verification token below to verify your email address:</p>
-        <div class="verification-token">${code}</div>
         <p>If you did not request this email, please ignore it.</p>
         <div class="verification-link">
             <a href=${link} data-method="PATCH">Verify Your Email</a>
+            <p>NOTE: This code only valid for 10 mins.</p>
         </div>
         <div class="footer">
             &copy; 2025 Your Company. All rights reserved.
@@ -75,5 +74,5 @@ export const generateEmailVerifyTemplate = (code: string, link: string) => {
     </div>
 </body>
 </html>
-`
-}
+`;
+};

@@ -1,0 +1,110 @@
+{
+  message: `Validation error: Passwords don't match at "body.Password confirmations"`,
+  level: 'error',
+  timestamp: '2025-02-17T18:41:59.511Z'
+}
+{
+  message: `Validation error: Passwords don't match at "body.Password confirmations"`,
+  level: 'error',
+  timestamp: '2025-02-17T18:44:29.238Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:09:56.277Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:10:36.093Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:10:39.785Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:10:40.652Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:11:17.571Z'
+}
+{
+  message: 'Validation error: Required at "params"',
+  level: 'error',
+  timestamp: '2025-02-17T19:11:19.366Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:11:36.374Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:12:18.234Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:12:59.480Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:13:00.707Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:13:34.569Z'
+}
+{
+  message: 'Digest method not supported',
+  level: 'error',
+  timestamp: '2025-02-17T19:14:31.711Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:15:11.289Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:15:11.290Z'
+}
+{
+  message: 'Error while creating account, email already exists.',
+  level: 'error',
+  timestamp: '2025-02-17T19:15:57.344Z'
+}
+{
+  message: 'Email is already exists, try another email.',
+  level: 'error',
+  timestamp: '2025-02-17T19:15:57.346Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:16:05.282Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:16:05.283Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:17:19.331Z'
+}
+{
+  message: 'Invalid or expired token.',
+  level: 'error',
+  timestamp: '2025-02-17T19:17:19.333Z'
+}

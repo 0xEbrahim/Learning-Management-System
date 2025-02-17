@@ -1,8 +1,9 @@
 import nodeMailer, { Transporter } from "nodemailer";
 import config from "./env";
 import logger from "./logger";
+import { IEmail } from "../Interfaces/types";
 
-const sendEmail = async (options: any) => {
+const sendEmail = async (options: IEmail) => {
   const transporter: Transporter = nodeMailer.createTransport({
     host: config.SMTP_HOST,
     port: Number(config.SMTP_PORT),

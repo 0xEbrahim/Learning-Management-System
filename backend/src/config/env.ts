@@ -1,6 +1,8 @@
 export default {
   NODE_ENV: process.env.NODE_ENV,
   PORT: parseInt(process.env.PORT as string) as Number,
+  DEV_URL: process.env.DEV_URL as string,
+  PROD_URL: process.env.PROD_URL as string,
   DB_PASS: process.env.DB_PASS,
   DATABASE_URL: process.env.DATABASE_URL,
   LOGS_TOKEN: process.env.LOGS_TOKEN as string,
