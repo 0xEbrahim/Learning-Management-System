@@ -3,9 +3,10 @@ import { JwtPayload } from "jsonwebtoken";
 export interface IReponse {
   status: string;
   statusCode: number;
-  message: string;
+  message?: string;
   data?: object;
   token?: string;
+  refreshToken?: string;
 }
 
 export interface IEmail {

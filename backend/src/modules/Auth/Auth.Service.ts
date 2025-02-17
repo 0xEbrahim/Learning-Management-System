@@ -1,14 +1,17 @@
 import fs from "fs";
 import crypto from "crypto";
 import prisma from "../../config/prisma";
-import { IRegisterBody } from "./Auth.Interface";
+import { ILoginBody, IRegisterBody } from "./Auth.Interface";
 import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
 import APIError from "../../utils/APIError";
 import {
+  comparePassword,
   createEmailVerifyToken,
   hashPassword,
 } from "../../utils/Functions/functions";
+import { IReponse } from "../../Interfaces/types";
+import { generateRefreshToken, generateToken } from "../../utils/JWT/token";
 
 class AuthService {
   async register(Payload: IRegisterBody): Promise<string> {
@@ -45,6 +48,31 @@ class AuthService {
     await createEmailVerifyToken(user);
     logger.info("User account created successfully, user ID: " + user.id);
     return "Account created successfully, please check your Gmail account to verify your email";
+  }
+
+  async login(Payload: ILoginBody): Promise<IReponse> {
+    const { email, password } = Payload;
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+    if (!user || !(await comparePassword(password, user.password))) {
+      logger.error("Wrong email or password.");
+      throw new APIError("Incorrect email or password.", 401);
+    }
+    const token = generateToken(user.id, true);
+    const refreshToken = generateRefreshToken(user.id);
+    const response: IReponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        user,
+      },
+      token,
+      refreshToken,
+    };
+    return response;
   }
 
   async verifyEmail(Payload: string): Promise<string> {

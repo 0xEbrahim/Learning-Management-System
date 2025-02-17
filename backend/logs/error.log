@@ -315,3 +315,8 @@
   level: 'error',
   timestamp: '2025-02-17T20:13:02.860Z'
 }
+{
+  message: 'You are not allowed to use this endpoint',
+  level: 'error',
+  timestamp: '2025-02-17T20:19:54.242Z'
+}

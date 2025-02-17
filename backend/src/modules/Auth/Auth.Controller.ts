@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "../../utils/asyncHandler";
 import AuthService from "./Auth.Service";
-import { IRegisterBody } from "./Auth.Interface";
+import { ILoginBody, IRegisterBody } from "./Auth.Interface";
 import config from "../../config/env";
 import APIError from "../../utils/APIError";
+import sendResponse from "../../utils/sendResponse";
+import { IReponse } from "../../Interfaces/types";
 
 export const register = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -21,6 +23,13 @@ export const register = asyncHandler(
       status: "Success",
       message: result,
     });
+  }
+);
+
+export const login = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const result: IReponse = await AuthService.login(req.body as ILoginBody);
+    sendResponse(result, res);
   }
 );
 

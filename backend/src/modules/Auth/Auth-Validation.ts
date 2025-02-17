@@ -19,6 +19,13 @@ export const registerValidation = z.object({
     }),
 });
 
+export const loginValidation = z.object({
+  body: z.object({
+    email: z.string().email({ message: "Enter a valid email" }),
+    password: z.string(),
+  }),
+});
+
 export const emailVerificationValidation = z.object({
   params: z.object({
     token: z.string(),
