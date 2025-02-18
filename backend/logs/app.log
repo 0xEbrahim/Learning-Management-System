@@ -5780,3 +5780,13 @@
   level: 'info',
   timestamp: '2025-02-18T16:32:34.224Z'
 }
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T16:32:39.495Z'
+}
+{
+  message: 'User login to the website, ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-18T16:33:13.301Z'
+}
