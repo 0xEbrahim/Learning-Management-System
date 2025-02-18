@@ -150,6 +150,11 @@ class AuthService {
     logger.info("Email sent successfully, user ID: " + user.id);
     return "Email sent successfully, please check your Gmail account to verify your email";
   }
+
+  async handleCallBack(Payload: any) {
+    const token = generateToken(Payload as string, true);
+    return token
+  }
 }
 
 export default new AuthService();

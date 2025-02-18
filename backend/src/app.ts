@@ -37,6 +37,9 @@ app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users/me", (req, res, next) => {
+  res.send("HI");
+});
 app.get("/", (req, res, next) => {
   res.send("KKK");
 });

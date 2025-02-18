@@ -3,7 +3,6 @@ import google from "passport-google-oauth20";
 import prisma from "./prisma";
 import config from "./env";
 import APIError from "../utils/APIError";
-import { IUser } from "../modules/User/User.interface";
 
 const strategy = new google.Strategy(
   {

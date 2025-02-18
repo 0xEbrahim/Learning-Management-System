@@ -72,3 +72,18 @@ export const verifyEmailVerificationToken = asyncHandler(
     });
   }
 );
+
+export const handleCallBack = asyncHandler(
+  async (req: any, res: Response, next: NextFunction) => {
+    const ret = await AuthService.handleCallBack(req.user.id);
+    res.cookie("token", ret, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+    });
+    const link =
+      config.NODE_ENV === "development"
+        ? `${config.DEV_URL}/users/me`
+        : `${config.PROD_URL}/users/me`;
+    res.redirect(link);
+  }
+);
