@@ -19,4 +19,9 @@ export default {
   SMTP_PORT: parseInt(process.env.SMTP_PORT as string),
   SMTP_USER: process.env.SMTP_USER,
   SMTP_PASS: process.env.SMTP_PASS,
+  SESSION_SECRET: process.env.SESSION_SECRET as string,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
+  GOOGLE_DEV_CALLBACK: process.env.GOOGLE_DEV_CALLBACK as string,
+  GOOGLE_PROD_CALLBACK: process.env.GOOGLE_PROD_CALLBACK as string,
 };
