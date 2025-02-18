@@ -6,6 +6,7 @@ import {
   loginValidation,
   registerValidation,
 } from "./Auth-Validation";
+import config from "../../config/env";
 import {
   handleCallBack,
   login,
@@ -33,7 +34,13 @@ router.get(
 router.get("/refresh", refresh);
 router.get(
   "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
+  passport.authenticate(
+    "google",
+    { scope: ["profile", "email"] },
+    (req, res, next) => {
+      console.log(config.GOOGLE_PROD_CALLBACK);
+    }
+  )
 );
 
 router.get(
