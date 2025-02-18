@@ -46,7 +46,12 @@ router.get(
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/api/v1/auth/login" }),
+  passport.authenticate("google", {
+    failureRedirect:
+      config.NODE_ENV === "development"
+        ? `${config.DEV_URL}/auth/login`
+        : `${config.PROD_URL}/auth/login`,
+  }),
   handleCallBack
 );
 router.patch("/send-email", sendEmailVerificationToken);
