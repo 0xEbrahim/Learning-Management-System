@@ -39,6 +39,7 @@ router.get(
     { scope: ["profile", "email"] },
     (req, res, next) => {
       console.log(config.GOOGLE_PROD_CALLBACK);
+      next();
     }
   )
 );
