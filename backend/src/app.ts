@@ -10,7 +10,8 @@ import passport from "./config/passport";
 import config from "./config/env";
 import { authRouter } from "./modules/Auth/Auth.Routes";
 import { globalErrorHandler } from "./middlewares/globalError";
-dotenv.config();
+if (config.NODE_ENV === "development") dotenv.config();
+else dotenv.config({ path: [".env.prod"] });
 const app = express();
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
