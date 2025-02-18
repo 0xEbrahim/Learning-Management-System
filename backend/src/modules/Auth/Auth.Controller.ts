@@ -40,6 +40,14 @@ export const login = asyncHandler(
   }
 );
 
+export const refresh = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.cookies.token;
+    const result: IReponse = await AuthService.refresh(token);
+    sendResponse(result, res);
+  }
+);
+
 export const sendEmailVerificationToken = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const email = req.cookies.email;

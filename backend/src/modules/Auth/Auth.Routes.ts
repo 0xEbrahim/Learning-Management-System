@@ -7,6 +7,7 @@ import {
 } from "./Auth-Validation";
 import {
   login,
+  refresh,
   register,
   sendEmailVerificationToken,
   verifyEmailVerificationToken,
@@ -26,5 +27,6 @@ router.get(
   validate(emailVerificationValidation),
   verifyEmailVerificationToken
 );
+router.get("/refresh", refresh);
 router.patch("/send-email", sendEmailVerificationToken);
 export const authRouter = router;

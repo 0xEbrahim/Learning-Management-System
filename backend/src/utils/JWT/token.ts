@@ -19,7 +19,7 @@ export const generateRefreshToken = (id: string): string => {
   return token;
 };
 
-const verifyToken = (token: string): IToken => {
+export const verifyToken = (token: string): IToken => {
   const decoded: IToken = jwt.verify(
     token,
     config.JWT_SECRET as string
@@ -27,7 +27,7 @@ const verifyToken = (token: string): IToken => {
   return decoded;
 };
 
-const verifyRefreshToken = (token: string): IToken => {
+export const verifyRefreshToken = (token: string): IToken => {
   const decoded: IToken = jwt.verify(
     token,
     config.REFRESH_SECRET as string

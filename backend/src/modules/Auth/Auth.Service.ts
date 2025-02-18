@@ -12,7 +12,11 @@ import {
   hashPassword,
 } from "../../utils/Functions/functions";
 import { IReponse } from "../../Interfaces/types";
-import { generateRefreshToken, generateToken } from "../../utils/JWT/token";
+import {
+  generateRefreshToken,
+  generateToken,
+  verifyRefreshToken,
+} from "../../utils/JWT/token";
 import { IUser } from "../User/User.interface";
 
 class AuthService {
@@ -83,6 +87,30 @@ class AuthService {
     response.token = token;
     response.refreshToken = refreshToken;
     logger.info("User login to the website, ID: " + user.id);
+    return response;
+  }
+
+  async refresh(Payload: any) : Promise<IReponse> {
+    if (!Payload) {
+      logger.error("User's sesssion expired.");
+      throw new APIError("Expired session, please login again", 498);
+    }
+    const decoded = verifyRefreshToken(Payload);
+    const user = await prisma.user.findUnique({
+      where: {
+        id: decoded.id,
+      },
+    });
+    if (!user) {
+      logger.error("Invalid or expired token");
+      throw new APIError("Invalid or expired token", 498);
+    }
+    const accessToken = generateToken(user.id, true);
+    const response: IReponse = {
+      status: "Success",
+      statusCode: 200,
+      token: accessToken,
+    };
     return response;
   }
 
