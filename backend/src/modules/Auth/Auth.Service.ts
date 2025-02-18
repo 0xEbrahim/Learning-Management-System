@@ -6,12 +6,14 @@ import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
 import APIError from "../../utils/APIError";
 import {
+  cleanUsersData,
   comparePassword,
   createEmailVerifyToken,
   hashPassword,
 } from "../../utils/Functions/functions";
 import { IReponse } from "../../Interfaces/types";
 import { generateRefreshToken, generateToken } from "../../utils/JWT/token";
+import { IUser } from "../User/User.interface";
 
 class AuthService {
   async register(Payload: IRegisterBody): Promise<string> {
@@ -52,26 +54,35 @@ class AuthService {
 
   async login(Payload: ILoginBody): Promise<IReponse> {
     const { email, password } = Payload;
-    const user = await prisma.user.findUnique({
+    const response: IReponse = {
+      status: "Success",
+      statusCode: 200,
+    };
+    const user: IUser | null = await prisma.user.findUnique({
       where: {
         email: email,
       },
     });
-    if (!user || !(await comparePassword(password, user.password))) {
+    if (!user || !(await comparePassword(password, user.password as string))) {
       logger.error("Wrong email or password.");
       throw new APIError("Incorrect email or password.", 401);
     }
+    if (!user.emailVerified) {
+      logger.info("User's email is not verified. ID: " + user.id);
+      response.message =
+        "Your email is not verified, please check your email to verifiy it.";
+      response.status = "Error";
+      response.statusCode = 403;
+      await createEmailVerifyToken(user);
+      return response;
+    }
     const token = generateToken(user.id, true);
     const refreshToken = generateRefreshToken(user.id);
-    const response: IReponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        user,
-      },
-      token,
-      refreshToken,
-    };
+    cleanUsersData(user);
+    response.data = { user };
+    response.token = token;
+    response.refreshToken = refreshToken;
+    logger.info("User login to the website, ID: " + user.id);
     return response;
   }
 

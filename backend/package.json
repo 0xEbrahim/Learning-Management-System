@@ -20,6 +20,7 @@
     "@types/nodemon": "^1.19.6",
     "@types/passport": "^1.0.17",
     "@types/passport-google-oauth": "^1.0.45",
+    "@types/redis": "^4.0.10",
     "@types/winston": "^2.4.4",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",

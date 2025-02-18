@@ -29,6 +29,13 @@ export const register = asyncHandler(
 export const login = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const result: IReponse = await AuthService.login(req.body as ILoginBody);
+    if (result.statusCode === 403) {
+      res.cookie("email", req.body.email, {
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: config.NODE_ENV === "production",
+        httpOnly: true,
+      });
+    }
     sendResponse(result, res);
   }
 );
