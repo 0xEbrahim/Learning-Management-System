@@ -53,7 +53,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "start":"node ./dist/server.js",
+    "build":"tsc"
   },
   "keywords": [],
   "author": "",
