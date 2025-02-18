@@ -7,6 +7,7 @@ import {
   registerValidation,
 } from "./Auth-Validation";
 import {
+  handleCallBack,
   login,
   refresh,
   register,
@@ -14,6 +15,7 @@ import {
   verifyEmailVerificationToken,
 } from "./Auth.Controller";
 import uplaoder from "../../config/multer";
+import { generateToken } from "../../utils/JWT/token";
 const router = express.Router();
 
 router.post(
@@ -29,14 +31,15 @@ router.get(
   verifyEmailVerificationToken
 );
 router.get("/refresh", refresh);
-router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  function (req, res) {
-    res.redirect("/");
-  }
+  passport.authenticate("google", { failureRedirect: "/api/v1/auth/login" }),
+  handleCallBack
 );
 router.patch("/send-email", sendEmailVerificationToken);
 export const authRouter = router;
