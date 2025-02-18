@@ -13,7 +13,7 @@ enum crdb_internal_region {
 
 model User {
   id                              String        @id @default(uuid())
-  googleId                        String?
+  googleId                        String?       @unique
   name                            String
   avatar                          String?
   email                           String        @unique

@@ -1,5 +1,6 @@
 import express from "express";
 import { validate } from "../../utils/validation";
+import passport from "../../config/passport";
 import {
   emailVerificationValidation,
   loginValidation,
@@ -28,5 +29,14 @@ router.get(
   verifyEmailVerificationToken
 );
 router.get("/refresh", refresh);
+router.get("/google", passport.authenticate("google", { scope: ["profile"] }));
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  function (req, res) {
+    res.redirect("/");
+  }
+);
 router.patch("/send-email", sendEmailVerificationToken);
 export const authRouter = router;
