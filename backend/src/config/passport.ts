@@ -34,6 +34,7 @@ const strategy = new google.Strategy(
               name: profile._json.name as string,
               email: profile._json.email as string,
               googleId: profile._json.sub,
+              avatar: profile._json.picture,
               emailVerified: true,
               password: (
                 Math.random() * 10000000000 +

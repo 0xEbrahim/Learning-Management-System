@@ -340,3 +340,18 @@
   level: 'error',
   timestamp: '2025-02-18T11:39:19.371Z'
 }
+{
+  message: 'Route: /api/v1/auth/ggg not found',
+  level: 'error',
+  timestamp: '2025-02-18T18:18:52.678Z'
+}
+{
+  message: 'Email is already exists, try another email.',
+  level: 'error',
+  timestamp: '2025-02-18T18:19:09.823Z'
+}
+{
+  message: 'Email is already exists, try another email.',
+  level: 'error',
+  timestamp: '2025-02-18T18:19:32.430Z'
+}

@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 import passport from "./config/passport";
 import config from "./config/env";
 import { authRouter } from "./modules/Auth/Auth.Routes";
-import { globalErrorHandler } from "./middlewares/globalError";
+import { globalErrorHandler, notFound } from "./middlewares/globalError";
 
 dotenv.config();
 
@@ -42,8 +42,6 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users/me", (req, res, next) => {
   res.send("HI");
 });
-app.get("/", (req, res, next) => {
-  res.send("KKK");
-});
+app.all("*", notFound);
 app.use(globalErrorHandler);
 export default app;
