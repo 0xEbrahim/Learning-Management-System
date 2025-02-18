@@ -27,7 +27,6 @@ class AuthService {
       },
     });
     if (isExist) {
-      logger.error("Error while creating account, email already exists.");
       throw new APIError("Email is already exists, try another email.", 409);
     }
     let avatar;
@@ -48,7 +47,6 @@ class AuthService {
       },
     });
     if (!user) {
-      logger.error("Error while creating a new user");
       throw new APIError("Error while creating account, please try again", 500);
     }
     await createEmailVerifyToken(user);
@@ -68,7 +66,6 @@ class AuthService {
       },
     });
     if (!user || !(await comparePassword(password, user.password as string))) {
-      logger.error("Wrong email or password.");
       throw new APIError("Incorrect email or password.", 401);
     }
     if (!user.emailVerified) {
@@ -90,9 +87,8 @@ class AuthService {
     return response;
   }
 
-  async refresh(Payload: any) : Promise<IReponse> {
+  async refresh(Payload: any): Promise<IReponse> {
     if (!Payload) {
-      logger.error("User's sesssion expired.");
       throw new APIError("Expired session, please login again", 498);
     }
     const decoded = verifyRefreshToken(Payload);
@@ -102,7 +98,6 @@ class AuthService {
       },
     });
     if (!user) {
-      logger.error("Invalid or expired token");
       throw new APIError("Invalid or expired token", 498);
     }
     const accessToken = generateToken(user.id, true);
@@ -123,7 +118,6 @@ class AuthService {
       },
     });
     if (!user) {
-      logger.error("Invalid or expired token.");
       throw new APIError("Invalid or expired token", 400);
     }
     const updatedUser = await prisma.user.update({
@@ -137,7 +131,6 @@ class AuthService {
       },
     });
     if (!updatedUser) {
-      logger.error("Error while verifiying user's email");
       throw new APIError("Error while verifiying user's email", 500);
     }
     logger.info("Email verified successfully for user ID: " + user.id);
@@ -151,7 +144,6 @@ class AuthService {
       },
     });
     if (!user) {
-      logger.error("Invalid email, cannot find user.");
       throw new APIError("Invalid email, cannot find user.", 404);
     }
     await createEmailVerifyToken(user);
