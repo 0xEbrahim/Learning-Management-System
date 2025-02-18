@@ -4480,3 +4480,528 @@
   level: 'info',
   timestamp: '2025-02-17T20:13:35.358Z'
 }
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:13:58.059Z'
+}
+{
+  message: 'You are not allowed to use this endpoint',
+  level: 'error',
+  timestamp: '2025-02-17T20:19:54.242Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:20:52.348Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:20:55.704Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:21:15.391Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:21:30.133Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:21:37.547Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:21:44.095Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:21:53.983Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:22:08.189Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:22:11.788Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:22:20.269Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:22:31.786Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:22:45.630Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:23:03.778Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:23:19.885Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:23:49.791Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:23:57.682Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:24:16.902Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:24:22.334Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:24:36.120Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:24:53.144Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:25:13.961Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:25:25.253Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:25:35.278Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:29:37.656Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:30:12.492Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:30:21.878Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-17T20:33:11.356Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:22:59.622Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:23:08.901Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:23:24.674Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:23:48.588Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:24:03.351Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:24:14.864Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:24:35.156Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:25:56.118Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:26:28.403Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:27:34.728Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:27:48.254Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:27:58.509Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:28:40.649Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:28:55.247Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:29:20.111Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:29:43.562Z'
+}
+{
+  message: 'User login to the website, ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-18T10:34:40.260Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:35:56.707Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T10:36:27.866Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:08:52.812Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:09:03.956Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:09:14.624Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:09:54.681Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:11:02.674Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:11:38.928Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:11:46.477Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:12:14.064Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:16:33.006Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:16:50.845Z'
+}
+{
+  message: 'User login to the website, ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-18T11:16:59.154Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:17:44.623Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:19:17.992Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:19:59.270Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:20:15.194Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:20:36.365Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:22:39.978Z'
+}
+{
+  message: 'User login to the website, ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-18T11:22:45.246Z'
+}
+{
+  message: 'User login to the website, ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-18T11:23:42.891Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:25:52.213Z'
+}
+{
+  message: 'User login to the website, ID: 7a453bab-2201-4a5b-8925-b2c95ad01f7e',
+  level: 'info',
+  timestamp: '2025-02-18T11:26:11.477Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:27:53.431Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:28:41.219Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:29:48.206Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:29:56.588Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:30:02.831Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:30:12.729Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:31:33.555Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:31:37.816Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:32:20.199Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:32:28.528Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:33:20.645Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:33:40.514Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:33:55.711Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:34:16.856Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:34:42.031Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:34:49.809Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:34:54.907Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:35:00.208Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:35:18.953Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:35:29.019Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:35:57.822Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:36:05.075Z'
+}
+{
+  message: "User's sesssion expired.",
+  level: 'error',
+  timestamp: '2025-02-18T11:37:55.036Z'
+}
+{
+  message: 'Expired session, please login again',
+  level: 'error',
+  timestamp: '2025-02-18T11:37:55.038Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:39:11.198Z'
+}
+{
+  message: "User's sesssion expired.",
+  level: 'error',
+  timestamp: '2025-02-18T11:39:19.370Z'
+}
+{
+  message: 'Expired session, please login again',
+  level: 'error',
+  timestamp: '2025-02-18T11:39:19.371Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:39:47.423Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:39:50.848Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:39:58.347Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:40:02.039Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:40:12.956Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:40:16.782Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:40:45.816Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:40:53.419Z'
+}
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-18T11:42:03.886Z'
+}

@@ -5,3 +5,8 @@ export interface IRegisterBody {
   confirmPassword: string;
   avatar?: string;
 }
+
+export interface ILoginBody {
+  email: string
+  password: string
+}

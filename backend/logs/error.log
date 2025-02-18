@@ -315,3 +315,28 @@
   level: 'error',
   timestamp: '2025-02-17T20:13:02.860Z'
 }
+{
+  message: 'You are not allowed to use this endpoint',
+  level: 'error',
+  timestamp: '2025-02-17T20:19:54.242Z'
+}
+{
+  message: "User's sesssion expired.",
+  level: 'error',
+  timestamp: '2025-02-18T11:37:55.036Z'
+}
+{
+  message: 'Expired session, please login again',
+  level: 'error',
+  timestamp: '2025-02-18T11:37:55.038Z'
+}
+{
+  message: "User's sesssion expired.",
+  level: 'error',
+  timestamp: '2025-02-18T11:39:19.370Z'
+}
+{
+  message: 'Expired session, please login again',
+  level: 'error',
+  timestamp: '2025-02-18T11:39:19.371Z'
+}

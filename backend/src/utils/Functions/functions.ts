@@ -5,6 +5,7 @@ import { IEmail } from "../../Interfaces/types";
 import { generateEmailVerifyTemplate } from "../../views/emailVerifyTemplate";
 import config from "../../config/env";
 import sendEmail from "../../config/email";
+import { IUser } from "../../modules/User/User.interface";
 export const hashPassword = async (password: string) => {
   const hashed = await bcrypt.hash(password, 12);
   return hashed;
@@ -37,4 +38,15 @@ export const createEmailVerifyToken = async (user: any) => {
     template: generateEmailVerifyTemplate(link),
   };
   await sendEmail(data);
+};
+
+export const cleanUsersData = (user: IUser) => {
+  delete user.password;
+  delete user.OTP;
+  delete user.OTPExpiresAt;
+  delete user.emailVerificationToken;
+  delete user.emailVerificationTokenExpiresAt;
+  delete user.passwordResetToken;
+  delete user.passwordResetTokenExpiresAt;
+  delete user.passwordChangedAt;
 };
