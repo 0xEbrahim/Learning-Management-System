@@ -7,6 +7,11 @@ export interface IRegisterBody {
 }
 
 export interface ILoginBody {
-  email: string
-  password: string
+  email: string;
+  password: string;
+}
+
+export interface ICallBackReturn {
+  token: string;
+  refreshToken: string;
 }

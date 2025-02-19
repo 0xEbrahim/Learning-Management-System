@@ -1,7 +1,7 @@
 import fs from "fs";
 import crypto from "crypto";
 import prisma from "../../config/prisma";
-import { ILoginBody, IRegisterBody } from "./Auth.Interface";
+import { ICallBackReturn, ILoginBody, IRegisterBody } from "./Auth.Interface";
 import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
 import APIError from "../../utils/APIError";
@@ -9,9 +9,10 @@ import {
   cleanUsersData,
   comparePassword,
   createEmailVerifyToken,
+  createResetPasswordToken,
   hashPassword,
 } from "../../utils/Functions/functions";
-import { IReponse } from "../../Interfaces/types";
+import { IResponse } from "../../Interfaces/types";
 import {
   generateRefreshToken,
   generateToken,
@@ -54,9 +55,9 @@ class AuthService {
     return "Account created successfully, please check your Gmail account to verify your email";
   }
 
-  async login(Payload: ILoginBody): Promise<IReponse> {
+  async login(Payload: ILoginBody): Promise<IResponse> {
     const { email, password } = Payload;
-    const response: IReponse = {
+    const response: IResponse = {
       status: "Success",
       statusCode: 200,
     };
@@ -87,7 +88,7 @@ class AuthService {
     return response;
   }
 
-  async refresh(Payload: any): Promise<IReponse> {
+  async refresh(Payload: any): Promise<IResponse> {
     if (!Payload) {
       throw new APIError("Expired session, please login again", 498);
     }
@@ -101,7 +102,7 @@ class AuthService {
       throw new APIError("Invalid or expired token", 498);
     }
     const accessToken = generateToken(user.id, true);
-    const response: IReponse = {
+    const response: IResponse = {
       status: "Success",
       statusCode: 200,
       token: accessToken,
@@ -137,7 +138,7 @@ class AuthService {
     return "Email verified, now you can login to your account.";
   }
 
-  async sendEmailToken(Payload: any): Promise<any> {
+  async sendEmailToken(Payload: any): Promise<string> {
     const user = await prisma.user.findUnique({
       where: {
         email: Payload,
@@ -147,14 +148,45 @@ class AuthService {
       throw new APIError("Invalid email, cannot find user.", 404);
     }
     await createEmailVerifyToken(user);
-    logger.info("Email sent successfully, user ID: " + user.id);
     return "Email sent successfully, please check your Gmail account to verify your email";
   }
 
-  async handleCallBack(Payload: any) {
+  async handleCallBack(Payload: any): Promise<ICallBackReturn> {
+    const RefreshToken = generateRefreshToken(Payload as string);
     const token = generateToken(Payload as string, true);
-    return token
+    const ret: ICallBackReturn = {
+      token,
+      refreshToken: RefreshToken,
+    };
+    return ret;
   }
+
+  async forgotPassword(Payload: string) {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: Payload,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "Please check your email for reset password link",
+    };
+    if (!user) {
+      logger.error("User used " + Payload + " to get reset password link");
+      return response;
+    }
+    await createResetPasswordToken(user as IUser);
+    return response;
+  }
+  /**
+   * 
+   * TODO: 
+   *  reset password
+   *  verify reset password token
+   */
+  async resetPassword(Payload: any) {}
+  async verifyResetPasswordToken(Payload: any) {}
 }
 
 export default new AuthService();

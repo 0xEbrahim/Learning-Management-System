@@ -340,3 +340,89 @@
   level: 'error',
   timestamp: '2025-02-18T11:39:19.371Z'
 }
+{
+  message: 'Route: /api/v1/auth/ggg not found',
+  level: 'error',
+  timestamp: '2025-02-18T18:18:52.678Z'
+}
+{
+  message: 'Email is already exists, try another email.',
+  level: 'error',
+  timestamp: '2025-02-18T18:19:09.823Z'
+}
+{
+  message: 'Email is already exists, try another email.',
+  level: 'error',
+  timestamp: '2025-02-18T18:19:32.430Z'
+}
+{
+  message: 'Incorrect email or password.',
+  level: 'error',
+  timestamp: '2025-02-18T18:45:21.837Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findUnique()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\Auth\\Auth.Service.ts:160:36\n' +
+    '\n' +
+    '  157 }\n' +
+    '  158 \n' +
+    '  159 async forgotPassword(Payload: string) {\n' +
+    '→ 160   const user = await prisma.user.findUnique({\n' +
+    '          where: {\n' +
+    '            email: {\n' +
+    '              email: "ebrahimsayed054@gmail.com"\n' +
+    '            }\n' +
+    '            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n' +
+    '          }\n' +
+    '        })\n' +
+    '\n' +
+    'Argument `email`: Invalid value provided. Expected String, provided Object.',
+  level: 'error',
+  timestamp: '2025-02-18T18:45:35.487Z'
+}
+{
+  message: 'Route: /api/v1/auth/reset-password/9d24b9121b74212536fb579e3b6ba901df54b7bd21c9a292c18e29e71245581a not found',
+  level: 'error',
+  timestamp: '2025-02-18T18:56:57.883Z'
+}
+{
+  message: 'Route: /api/v1/auth/reset-password/9d24b9121b74212536fb579e3b6ba901df54b7bd21c9a292c18e29e71245581a not found',
+  level: 'error',
+  timestamp: '2025-02-18T18:57:19.487Z'
+}
+{
+  message: 'Route: /api/v1/api-docs not found',
+  level: 'error',
+  timestamp: '2025-02-18T21:51:46.813Z'
+}
+{
+  message: 'Route: /favicon.ico not found',
+  level: 'error',
+  timestamp: '2025-02-19T12:00:17.739Z'
+}
+{
+  message: 'jwt malformed',
+  level: 'error',
+  timestamp: '2025-02-19T16:11:57.429Z'
+}
+{
+  message: 'Bad Request',
+  level: 'error',
+  timestamp: '2025-02-19T16:21:14.127Z'
+}
+{
+  message: 'jwt expired',
+  level: 'error',
+  timestamp: '2025-02-19T18:39:57.266Z'
+}
+{
+  message: 'jwt expired',
+  level: 'error',
+  timestamp: '2025-02-19T18:40:08.001Z'
+}
+{
+  message: 'Please login to access this route',
+  level: 'error',
+  timestamp: '2025-02-19T18:41:59.155Z'
+}

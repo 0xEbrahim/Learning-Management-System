@@ -5,7 +5,8 @@ import { ILoginBody, IRegisterBody } from "./Auth.Interface";
 import config from "../../config/env";
 import APIError from "../../utils/APIError";
 import sendResponse from "../../utils/sendResponse";
-import { IReponse } from "../../Interfaces/types";
+import { IResponse } from "../../Interfaces/types";
+import { cleanUsersData } from "../../utils/Functions/functions";
 
 export const register = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -28,7 +29,7 @@ export const register = asyncHandler(
 
 export const login = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const result: IReponse = await AuthService.login(req.body as ILoginBody);
+    const result: IResponse = await AuthService.login(req.body as ILoginBody);
     if (result.statusCode === 403) {
       res.cookie("email", req.body.email, {
         maxAge: 24 * 60 * 60 * 1000,
@@ -43,7 +44,7 @@ export const login = asyncHandler(
 export const refresh = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
-    const result: IReponse = await AuthService.refresh(token);
+    const result: IResponse = await AuthService.refresh(token);
     sendResponse(result, res);
   }
 );
@@ -75,15 +76,36 @@ export const verifyEmailVerificationToken = asyncHandler(
 
 export const handleCallBack = asyncHandler(
   async (req: any, res: Response, next: NextFunction) => {
-    const ret = await AuthService.handleCallBack(req.user.id);
-    res.cookie("token", ret, {
+    const { token, refreshToken } = await AuthService.handleCallBack(
+      req.user.id
+    );
+    res.cookie("token", refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
-    const link =
-      config.NODE_ENV === "development"
-        ? `${config.DEV_URL}/users/me`
-        : `${config.PROD_URL}/users/me`;
-    res.redirect(link);
+    cleanUsersData(req.user);
+    res.status(200).json({
+      status: "Success",
+      data: {
+        user: req.user,
+      },
+      token,
+    });
   }
+);
+
+export const forgotPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    const result = await AuthService.forgotPassword(email);
+    sendResponse(result, res);
+  }
+);
+
+export const resetPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {}
+);
+
+export const verifyResetPasswordToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {}
 );
