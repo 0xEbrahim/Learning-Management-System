@@ -3,20 +3,25 @@ import { validate } from "../../utils/validation";
 import passport from "../../config/passport";
 import {
   emailVerificationValidation,
+  forgotPasswordValidation,
   loginValidation,
   registerValidation,
+  resetPasswordTokenValidation,
+  resetPasswordValidation,
 } from "./Auth-Validation";
 import config from "../../config/env";
 import {
+  forgotPassword,
   handleCallBack,
   login,
   refresh,
   register,
+  resetPassword,
   sendEmailVerificationToken,
   verifyEmailVerificationToken,
+  verifyResetPasswordToken,
 } from "./Auth.Controller";
 import uplaoder from "../../config/multer";
-import { generateToken } from "../../utils/JWT/token";
 const router = express.Router();
 
 router.post(
@@ -26,6 +31,13 @@ router.post(
   register
 );
 router.post("/login", validate(loginValidation), login);
+router.post(
+  "/reset-password/:token",
+  validate(resetPasswordTokenValidation),
+  verifyResetPasswordToken,
+  validate(resetPasswordValidation),
+  resetPassword
+);
 router.get(
   "/verify-Email/:token",
   validate(emailVerificationValidation),
@@ -38,12 +50,10 @@ router.get(
     "google",
     { scope: ["profile", "email"] },
     (req, res, next) => {
-      console.log(config.GOOGLE_PROD_CALLBACK);
       next();
     }
   )
 );
-
 router.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -53,6 +63,11 @@ router.get(
         : `${config.PROD_URL}/auth/login`,
   }),
   handleCallBack
+);
+router.patch(
+  "/forgot-password",
+  validate(forgotPasswordValidation),
+  forgotPassword
 );
 router.patch("/send-email", sendEmailVerificationToken);
 export const authRouter = router;

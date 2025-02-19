@@ -31,3 +31,29 @@ export const emailVerificationValidation = z.object({
     token: z.string(),
   }),
 });
+
+export const forgotPasswordValidation = z.object({
+  body: z.object({
+    email: z.string().email({ message: "Enter a valid email" }),
+  }),
+});
+
+export const resetPasswordValidation = z.object({
+  body: z
+    .object({
+      password: z.string().min(6, "password should be more than 6 characters"),
+      confirmPassword: z
+        .string()
+        .min(6, "password should be more than 6 characters"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ["Password confirmations"],
+    }),
+});
+
+export const resetPasswordTokenValidation = z.object({
+  params: z.object({
+    token: z.string(),
+  }),
+});

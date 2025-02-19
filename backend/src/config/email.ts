@@ -21,7 +21,12 @@ const sendEmail = async (options: IEmail) => {
     html: options.template,
   };
   const info = await transporter.sendMail(data);
-  logger.info("Email sent successfully, id: " + info.messageId);
+  logger.info(
+    "Email sent successfully, id: " +
+      info.messageId +
+      ", Email: " +
+      options.email
+  );
   await prisma.email.create({
     data: {
       id: info.messageId,

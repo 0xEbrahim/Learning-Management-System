@@ -6,6 +6,7 @@ import config from "../../config/env";
 import APIError from "../../utils/APIError";
 import sendResponse from "../../utils/sendResponse";
 import { IReponse } from "../../Interfaces/types";
+import { cleanUsersData } from "../../utils/Functions/functions";
 
 export const register = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -75,15 +76,36 @@ export const verifyEmailVerificationToken = asyncHandler(
 
 export const handleCallBack = asyncHandler(
   async (req: any, res: Response, next: NextFunction) => {
-    const ret = await AuthService.handleCallBack(req.user.id);
-    res.cookie("token", ret, {
+    const { token, refreshToken } = await AuthService.handleCallBack(
+      req.user.id
+    );
+    res.cookie("token", refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
     });
-    const link =
-      config.NODE_ENV === "development"
-        ? `${config.DEV_URL}/users/me`
-        : `${config.PROD_URL}/users/me`;
-    res.redirect(link);
+    cleanUsersData(req.user);
+    res.status(200).json({
+      status: "Success",
+      data: {
+        user: req.user,
+      },
+      token,
+    });
   }
+);
+
+export const forgotPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    const result = await AuthService.forgotPassword(email);
+    sendResponse(result, res);
+  }
+);
+
+export const resetPassword = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {}
+);
+
+export const verifyResetPasswordToken = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {}
 );

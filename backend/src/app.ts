@@ -5,6 +5,9 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import YAML from "yamljs";
+import path from "path";
+import SwaggerUI from "swagger-ui-express";
 import dotenv from "dotenv";
 import passport from "./config/passport";
 import config from "./config/env";
@@ -12,8 +15,9 @@ import { authRouter } from "./modules/Auth/Auth.Routes";
 import { globalErrorHandler, notFound } from "./middlewares/globalError";
 
 dotenv.config();
-
 const app = express();
+const swaggerDoc = YAML.load(path.join(__dirname, "./swagger/swagger.yaml"));
+app.use("/api/v1/api-docs", SwaggerUI.serve, SwaggerUI.setup(swaggerDoc));
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   limit: 500,

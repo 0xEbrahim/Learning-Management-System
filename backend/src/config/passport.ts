@@ -3,6 +3,7 @@ import google from "passport-google-oauth20";
 import prisma from "./prisma";
 import config from "./env";
 import APIError from "../utils/APIError";
+import { hashPassword } from "../utils/Functions/functions";
 
 const strategy = new google.Strategy(
   {
@@ -29,6 +30,9 @@ const strategy = new google.Strategy(
           },
         });
         if (!user) {
+          const pass = await hashPassword(
+            (Math.random() * 10000000000 + "-" + "aaggs").toString()
+          );
           user = await prisma.user.create({
             data: {
               name: profile._json.name as string,
@@ -36,11 +40,7 @@ const strategy = new google.Strategy(
               googleId: profile._json.sub,
               avatar: profile._json.picture,
               emailVerified: true,
-              password: (
-                Math.random() * 10000000000 +
-                "-" +
-                "aaggs"
-              ).toString(),
+              password: pass,
             },
           });
         } else {
