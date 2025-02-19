@@ -5835,3 +5835,8 @@
   level: 'info',
   timestamp: '2025-02-18T16:57:39.502Z'
 }
+{
+  message: 'Server started running on PORT 3000',
+  level: 'info',
+  timestamp: '2025-02-19T18:57:58.968Z'
+}
