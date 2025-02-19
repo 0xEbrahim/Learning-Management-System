@@ -35,7 +35,7 @@ export const createEmailVerifyToken = async (user: IUser) => {
   else link = `${config.PROD_URL}/auth/verify-Email/${code}`;
   const data: IEmail = {
     email: user.email,
-    subject: "Password Reset",
+    subject: "Email Verify",
     template: generateEmailVerifyTemplate(link),
   };
   await sendEmail(data);
@@ -60,7 +60,7 @@ export const createResetPasswordToken = async (user: IUser) => {
   else link = `${config.PROD_URL}/auth/reset-password/${code}`;
   const data: IEmail = {
     email: user.email,
-    subject: "Email verification",
+    subject: "Password Reset",
     template: generatePasswordResetTemplate(link),
   };
   await sendEmail(data);

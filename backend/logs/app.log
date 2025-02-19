@@ -6216,3 +6216,33 @@
   level: 'error',
   timestamp: '2025-02-19T12:00:17.739Z'
 }
+{
+  message: 'jwt malformed',
+  level: 'error',
+  timestamp: '2025-02-19T16:11:57.429Z'
+}
+{
+  message: 'Avatar uploaded to the cloud.',
+  level: 'info',
+  timestamp: '2025-02-19T16:14:09.765Z'
+}
+{
+  message: 'Email sent successfully, id: <8c0f5d07-7dfc-bc7e-50c2-9461ce4bba67@localhost>, Email: yyouutubbe554432@gmail.com',
+  level: 'info',
+  timestamp: '2025-02-19T16:14:12.086Z'
+}
+{
+  message: 'User account created successfully, user ID: e33bee7b-c7e3-4c93-a493-cdb29f64dac2',
+  level: 'info',
+  timestamp: '2025-02-19T16:14:12.234Z'
+}
+{
+  message: 'Email verified successfully for user ID: e33bee7b-c7e3-4c93-a493-cdb29f64dac2',
+  level: 'info',
+  timestamp: '2025-02-19T16:14:18.566Z'
+}
+{
+  message: 'User login to the website, ID: e33bee7b-c7e3-4c93-a493-cdb29f64dac2',
+  level: 'info',
+  timestamp: '2025-02-19T16:14:27.548Z'
+}

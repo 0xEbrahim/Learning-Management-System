@@ -401,3 +401,8 @@
   level: 'error',
   timestamp: '2025-02-19T12:00:17.739Z'
 }
+{
+  message: 'jwt malformed',
+  level: 'error',
+  timestamp: '2025-02-19T16:11:57.429Z'
+}
