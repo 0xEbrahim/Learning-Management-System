@@ -360,7 +360,7 @@ components:
           description: Whether the user's email is verified
         role:
           type: string
-          enum: [USER, ADMIN]
+          enum: [USER, ADMIN, TEACHER]
           description: User's role
         isActive:
           type: boolean
