@@ -7,6 +7,7 @@ import cors from "cors";
 import rateLimit from "express-rate-limit";
 import YAML from "yamljs";
 import path from "path";
+import ExpressMongoSanitize from "express-mongo-sanitize";
 import SwaggerUI from "swagger-ui-express";
 import dotenv from "dotenv";
 import passport from "./config/passport";
@@ -26,6 +27,7 @@ const limiter = rateLimit({
   legacyHeaders: false,
   message: "Too many requests, please try again later.",
 });
+app.use(ExpressMongoSanitize());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);

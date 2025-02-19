@@ -406,3 +406,23 @@
   level: 'error',
   timestamp: '2025-02-19T16:11:57.429Z'
 }
+{
+  message: 'Bad Request',
+  level: 'error',
+  timestamp: '2025-02-19T16:21:14.127Z'
+}
+{
+  message: 'jwt expired',
+  level: 'error',
+  timestamp: '2025-02-19T18:39:57.266Z'
+}
+{
+  message: 'jwt expired',
+  level: 'error',
+  timestamp: '2025-02-19T18:40:08.001Z'
+}
+{
+  message: 'Please login to access this route',
+  level: 'error',
+  timestamp: '2025-02-19T18:41:59.155Z'
+}
