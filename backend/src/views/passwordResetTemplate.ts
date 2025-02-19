@@ -69,7 +69,7 @@ export const generatePasswordResetTemplate = (link: string) => {
         <div class="content">
             <p>Hello,</p>
             <p>You recently requested to reset your password. Click the button below to proceed:</p>
-            <form action=${link} method="POST">
+            <form action=${link} method="GET">
                 <input type="hidden" name="email" value="{{email}}">
                 <button type="submit" class="reset-button">Reset Password</button>
             </form>

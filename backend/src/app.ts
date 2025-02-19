@@ -13,6 +13,7 @@ import passport from "./config/passport";
 import config from "./config/env";
 import { authRouter } from "./modules/Auth/Auth.Routes";
 import { globalErrorHandler, notFound } from "./middlewares/globalError";
+import { userRouter } from "./modules/User/User.routes";
 
 dotenv.config();
 const app = express();
@@ -43,9 +44,7 @@ app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use("/api/v1/auth", authRouter);
-app.use("/api/v1/users/me", (req, res, next) => {
-  res.send("HI");
-});
+app.use("/api/v1/users", userRouter);
 app.all("*", notFound);
 app.use(globalErrorHandler);
 export default app;

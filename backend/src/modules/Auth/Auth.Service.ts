@@ -12,7 +12,7 @@ import {
   createResetPasswordToken,
   hashPassword,
 } from "../../utils/Functions/functions";
-import { IReponse } from "../../Interfaces/types";
+import { IResponse } from "../../Interfaces/types";
 import {
   generateRefreshToken,
   generateToken,
@@ -55,9 +55,9 @@ class AuthService {
     return "Account created successfully, please check your Gmail account to verify your email";
   }
 
-  async login(Payload: ILoginBody): Promise<IReponse> {
+  async login(Payload: ILoginBody): Promise<IResponse> {
     const { email, password } = Payload;
-    const response: IReponse = {
+    const response: IResponse = {
       status: "Success",
       statusCode: 200,
     };
@@ -88,7 +88,7 @@ class AuthService {
     return response;
   }
 
-  async refresh(Payload: any): Promise<IReponse> {
+  async refresh(Payload: any): Promise<IResponse> {
     if (!Payload) {
       throw new APIError("Expired session, please login again", 498);
     }
@@ -102,7 +102,7 @@ class AuthService {
       throw new APIError("Invalid or expired token", 498);
     }
     const accessToken = generateToken(user.id, true);
-    const response: IReponse = {
+    const response: IResponse = {
       status: "Success",
       statusCode: 200,
       token: accessToken,
@@ -167,7 +167,7 @@ class AuthService {
         email: Payload,
       },
     });
-    const response: IReponse = {
+    const response: IResponse = {
       status: "Success",
       statusCode: 200,
       message: "Please check your email for reset password link",
@@ -179,6 +179,12 @@ class AuthService {
     await createResetPasswordToken(user as IUser);
     return response;
   }
+  /**
+   * 
+   * TODO: 
+   *  reset password
+   *  verify reset password token
+   */
   async resetPassword(Payload: any) {}
   async verifyResetPasswordToken(Payload: any) {}
 }

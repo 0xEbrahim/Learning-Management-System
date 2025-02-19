@@ -1,6 +1,8 @@
+import { Request } from "express";
 import { JwtPayload } from "jsonwebtoken";
+import { IUser } from "../modules/User/User.interface";
 
-export interface IReponse {
+export interface IResponse {
   status: string;
   statusCode: number;
   message?: string;
@@ -9,6 +11,9 @@ export interface IReponse {
   refreshToken?: string;
 }
 
+export interface IRequest extends Request {
+  User?: IUser;
+}
 export interface IEmail {
   email: string;
   subject: string;

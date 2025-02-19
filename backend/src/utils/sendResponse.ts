@@ -1,8 +1,8 @@
 import { Response } from "express";
 import config from "../config/env";
-import { IReponse } from "../Interfaces/types";
+import { IResponse } from "../Interfaces/types";
 
-export default (data: IReponse, res: Response) => {
+export default (data: IResponse, res: Response) => {
   if (data.refreshToken) {
     res.cookie("token", data.refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,

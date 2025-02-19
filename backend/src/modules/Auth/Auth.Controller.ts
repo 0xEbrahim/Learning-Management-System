@@ -5,7 +5,7 @@ import { ILoginBody, IRegisterBody } from "./Auth.Interface";
 import config from "../../config/env";
 import APIError from "../../utils/APIError";
 import sendResponse from "../../utils/sendResponse";
-import { IReponse } from "../../Interfaces/types";
+import { IResponse } from "../../Interfaces/types";
 import { cleanUsersData } from "../../utils/Functions/functions";
 
 export const register = asyncHandler(
@@ -29,7 +29,7 @@ export const register = asyncHandler(
 
 export const login = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const result: IReponse = await AuthService.login(req.body as ILoginBody);
+    const result: IResponse = await AuthService.login(req.body as ILoginBody);
     if (result.statusCode === 403) {
       res.cookie("email", req.body.email, {
         maxAge: 24 * 60 * 60 * 1000,
@@ -44,7 +44,7 @@ export const login = asyncHandler(
 export const refresh = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
-    const result: IReponse = await AuthService.refresh(token);
+    const result: IResponse = await AuthService.refresh(token);
     sendResponse(result, res);
   }
 );
