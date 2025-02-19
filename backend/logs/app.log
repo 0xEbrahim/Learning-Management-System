@@ -5838,6 +5838,9 @@
 {
   message: 'Server started running on PORT 3000',
   level: 'info',
+<<<<<<< HEAD
+  timestamp: '2025-02-19T18:57:58.968Z'
+=======
   timestamp: '2025-02-18T16:59:09.083Z'
 }
 {
@@ -6265,4 +6268,5 @@
   message: 'Please login to access this route',
   level: 'error',
   timestamp: '2025-02-19T18:41:59.155Z'
+>>>>>>> main
 }
