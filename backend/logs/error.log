@@ -426,3 +426,347 @@
   level: 'error',
   timestamp: '2025-02-19T18:41:59.155Z'
 }
+{
+  message: 'jwt expired',
+  level: 'error',
+  timestamp: '2025-02-19T19:44:01.423Z'
+}
+{
+  message: 'Validation error: Required at "params.id"',
+  level: 'error',
+  timestamp: '2025-02-19T19:44:08.241Z'
+}
+{
+  message: 'Validation error: Required at "params.id"',
+  level: 'error',
+  timestamp: '2025-02-19T19:44:25.422Z'
+}
+{
+  message: '\n' +
+    'Invalid `any).findMany()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\utils\\APIFeatures.ts:81:45\n' +
+    '\n' +
+    '  78 }\n' +
+    '  79 \n' +
+    '  80 async execute(): Promise<T[]> {\n' +
+    '→ 81   return (this.prisma[this.model] as any).findMany({\n' +
+    '         where: {\n' +
+    '           limt: "1",\n' +
+    '           ~~~~\n' +
+    '       ?   AND?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   OR?: UserWhereInput[],\n' +
+    '       ?   NOT?: UserWhereInput | UserWhereInput[],\n' +
+    '       ?   id?: StringFilter | String,\n' +
+    '       ?   googleId?: StringNullableFilter | String | Null,\n' +
+    '       ?   name?: StringFilter | String,\n' +
+    '       ?   avatar?: StringNullableFilter | String | Null,\n' +
+    '       ?   email?: StringFilter | String,\n' +
+    '       ?   emailVerificationToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   emailVerificationTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   emailVerified?: BoolFilter | Boolean,\n' +
+    '       ?   password?: StringFilter | String,\n' +
+    '       ?   passwordChangedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   passwordResetToken?: StringNullableFilter | String | Null,\n' +
+    '       ?   passwordResetTokenExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   role?: EnumRolesFilter | Roles,\n' +
+    '       ?   isActive?: BoolFilter | Boolean,\n' +
+    '       ?   twoFactorAuth?: BoolFilter | Boolean,\n' +
+    '       ?   OTP?: StringNullableFilter | String | Null,\n' +
+    '       ?   OTPExpiresAt?: DateTimeNullableFilter | DateTime | Null,\n' +
+    '       ?   createdAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   updatedAt?: DateTimeFilter | DateTime,\n' +
+    '       ?   reviews?: ReviewListRelationFilter,\n' +
+    '       ?   replies?: ReviewReplyListRelationFilter,\n' +
+    '       ?   comments?: CommentListRelationFilter,\n' +
+    '       ?   courses?: OrderListRelationFilter,\n' +
+    '       ?   publishedCourses?: CourseListRelationFilter\n' +
+    '         },\n' +
+    '         select: {\n' +
+    '           name: true,\n' +
+    '           avatar: true\n' +
+    '         },\n' +
+    '         orderBy: [\n' +
+    '           {\n' +
+    '             name: "desc"\n' +
+    '           }\n' +
+    '         ],\n' +
+    '         skip: 0,\n' +
+    '         take: 100\n' +
+    '       })\n' +
+    '\n' +
+    'Unknown argument `limt`. Did you mean `id`? Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-19T19:51:33.493Z'
+}
+{
+  message: 'jwt expired',
+  level: 'error',
+  timestamp: '2025-02-19T20:25:43.150Z'
+}
+{
+  message: 'Please login to access this route',
+  level: 'error',
+  timestamp: '2025-02-19T21:14:38.417Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findUnique()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\Auth\\Auth.Service.ts:96:36\n' +
+    '\n' +
+    '  93   throw new APIError("Expired session, please login again", 498);\n' +
+    '  94 }\n' +
+    '  95 const decoded = verifyRefreshToken(Payload);\n' +
+    '→ 96 const user = await prisma.user.findUnique(\n' +
+    "Can't reach database server at `lms-postgresql-8164.j77.aws-eu-central-1.cockroachlabs.cloud:26257`\n" +
+    '\n' +
+    'Please make sure your database server is running at `lms-postgresql-8164.j77.aws-eu-central-1.cockroachlabs.cloud:26257`.',
+  level: 'error',
+  timestamp: '2025-02-19T21:14:51.164Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findMany()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\User\\User.service.ts:73:46\n' +
+    '\n' +
+    '  70 if (JSON.stringify(orderBy) !== "{}") {\n' +
+    '  71   options.orderBy = orderBy;\n' +
+    '  72 }\n' +
+    '→ 73 const users: IUser[] = await prisma.user.findMany({\n' +
+    '       where: {\n' +
+    '         name: {\n' +
+    '           contains: undefined,\n' +
+    '           mode: "insensitive"\n' +
+    '         }\n' +
+    '       },\n' +
+    '       skip: 0,\n' +
+    '       take: 100,\n' +
+    '       orderBy: {\n' +
+    '         key: "asc",\n' +
+    '         ~~~\n' +
+    '     ?   id?: SortOrder,\n' +
+    '     ?   googleId?: SortOrder | SortOrderInput,\n' +
+    '     ?   name?: SortOrder,\n' +
+    '     ?   avatar?: SortOrder | SortOrderInput,\n' +
+    '     ?   email?: SortOrder,\n' +
+    '     ?   emailVerificationToken?: SortOrder | SortOrderInput,\n' +
+    '     ?   emailVerificationTokenExpiresAt?: SortOrder | SortOrderInput,\n' +
+    '     ?   emailVerified?: SortOrder,\n' +
+    '     ?   password?: SortOrder,\n' +
+    '     ?   passwordChangedAt?: SortOrder,\n' +
+    '     ?   passwordResetToken?: SortOrder | SortOrderInput,\n' +
+    '     ?   passwordResetTokenExpiresAt?: SortOrder | SortOrderInput,\n' +
+    '     ?   role?: SortOrder,\n' +
+    '     ?   isActive?: SortOrder,\n' +
+    '     ?   twoFactorAuth?: SortOrder,\n' +
+    '     ?   OTP?: SortOrder | SortOrderInput,\n' +
+    '     ?   OTPExpiresAt?: SortOrder | SortOrderInput,\n' +
+    '     ?   createdAt?: SortOrder,\n' +
+    '     ?   updatedAt?: SortOrder,\n' +
+    '     ?   reviews?: ReviewOrderByRelationAggregateInput,\n' +
+    '     ?   replies?: ReviewReplyOrderByRelationAggregateInput,\n' +
+    '     ?   comments?: CommentOrderByRelationAggregateInput,\n' +
+    '     ?   courses?: OrderOrderByRelationAggregateInput,\n' +
+    '     ?   publishedCourses?: CourseOrderByRelationAggregateInput\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Unknown argument `key`. Did you mean `id`? Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-19T21:17:30.567Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findMany()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\User\\User.service.ts:73:46\n' +
+    '\n' +
+    '  70 if (JSON.stringify(orderBy) !== "{}") {\n' +
+    '  71   options.orderBy = orderBy;\n' +
+    '  72 }\n' +
+    '→ 73 const users: IUser[] = await prisma.user.findMany({\n' +
+    '       where: {\n' +
+    '         name: {\n' +
+    '           contains: undefined,\n' +
+    '           mode: "insensitive"\n' +
+    '         }\n' +
+    '       },\n' +
+    '       skip: 0,\n' +
+    '       take: 100,\n' +
+    '       orderBy: {\n' +
+    '         key: "asc",\n' +
+    '         ~~~\n' +
+    '     ?   id?: SortOrder,\n' +
+    '     ?   googleId?: SortOrder | SortOrderInput,\n' +
+    '     ?   name?: SortOrder,\n' +
+    '     ?   avatar?: SortOrder | SortOrderInput,\n' +
+    '     ?   email?: SortOrder,\n' +
+    '     ?   emailVerificationToken?: SortOrder | SortOrderInput,\n' +
+    '     ?   emailVerificationTokenExpiresAt?: SortOrder | SortOrderInput,\n' +
+    '     ?   emailVerified?: SortOrder,\n' +
+    '     ?   password?: SortOrder,\n' +
+    '     ?   passwordChangedAt?: SortOrder,\n' +
+    '     ?   passwordResetToken?: SortOrder | SortOrderInput,\n' +
+    '     ?   passwordResetTokenExpiresAt?: SortOrder | SortOrderInput,\n' +
+    '     ?   role?: SortOrder,\n' +
+    '     ?   isActive?: SortOrder,\n' +
+    '     ?   twoFactorAuth?: SortOrder,\n' +
+    '     ?   OTP?: SortOrder | SortOrderInput,\n' +
+    '     ?   OTPExpiresAt?: SortOrder | SortOrderInput,\n' +
+    '     ?   createdAt?: SortOrder,\n' +
+    '     ?   updatedAt?: SortOrder,\n' +
+    '     ?   reviews?: ReviewOrderByRelationAggregateInput,\n' +
+    '     ?   replies?: ReviewReplyOrderByRelationAggregateInput,\n' +
+    '     ?   comments?: CommentOrderByRelationAggregateInput,\n' +
+    '     ?   courses?: OrderOrderByRelationAggregateInput,\n' +
+    '     ?   publishedCourses?: CourseOrderByRelationAggregateInput\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Unknown argument `key`. Did you mean `id`? Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-19T21:17:33.903Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findMany()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\User\\User.service.ts:73:46\n' +
+    '\n' +
+    '  70 if (JSON.stringify(orderBy) !== "{}") {\n' +
+    '  71   options.orderBy = orderBy;\n' +
+    '  72 }\n' +
+    '→ 73 const users: IUser[] = await prisma.user.findMany({\n' +
+    '       where: {\n' +
+    '         name: {\n' +
+    '           contains: undefined,\n' +
+    '           mode: "insensitive"\n' +
+    '         }\n' +
+    '       },\n' +
+    '       skip: 0,\n' +
+    '       take: "1",\n' +
+    '             ~~~\n' +
+    '       orderBy: {\n' +
+    '         createdAt: "asc"\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Argument `take`: Invalid value provided. Expected Int, provided String.',
+  level: 'error',
+  timestamp: '2025-02-19T21:18:53.584Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findMany()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\User\\User.service.ts:73:46\n' +
+    '\n' +
+    '  70 if (JSON.stringify(orderBy) !== "{}") {\n' +
+    '  71   options.orderBy = orderBy;\n' +
+    '  72 }\n' +
+    '→ 73 const users: IUser[] = await prisma.user.findMany({\n' +
+    '       where: {\n' +
+    '         name: {\n' +
+    '           contains: undefined,\n' +
+    '           mode: "insensitive"\n' +
+    '         }\n' +
+    '       },\n' +
+    '       skip: 0,\n' +
+    '       take: "1",\n' +
+    '             ~~~\n' +
+    '       orderBy: {\n' +
+    '         createdAt: "asc"\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Argument `take`: Invalid value provided. Expected Int, provided String.',
+  level: 'error',
+  timestamp: '2025-02-19T21:18:56.558Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findMany()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\User\\User.service.ts:74:46\n' +
+    '\n' +
+    '  71 if (JSON.stringify(orderBy) !== "{}") {\n' +
+    '  72   options.orderBy = orderBy;\n' +
+    '  73 }\n' +
+    '→ 74 const users: IUser[] = await prisma.user.findMany({\n' +
+    '       where: {\n' +
+    '         name: {\n' +
+    '           contains: undefined,\n' +
+    '           mode: "insensitive"\n' +
+    '         }\n' +
+    '       },\n' +
+    '       skip: 0,\n' +
+    '       take: "1",\n' +
+    '             ~~~\n' +
+    '       orderBy: {\n' +
+    '         createdAt: "asc"\n' +
+    '       }\n' +
+    '     })\n' +
+    '\n' +
+    'Argument `take`: Invalid value provided. Expected Int, provided String.',
+  level: 'error',
+  timestamp: '2025-02-19T21:19:27.919Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findMany()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\User\\User.service.ts:74:46\n' +
+    '\n' +
+    '  71 if (JSON.stringify(orderBy) !== "{}") {\n' +
+    '  72   options.orderBy = orderBy;\n' +
+    '  73 }\n' +
+    '→ 74 const users: IUser[] = await prisma.user.findMany({\n' +
+    '       where: {\n' +
+    '         name: {\n' +
+    '           contains: undefined,\n' +
+    '           mode: "insensitive"\n' +
+    '         }\n' +
+    '       },\n' +
+    '       skip: 0,\n' +
+    '       take: 1,\n' +
+    '       fields: {\n' +
+    '       ~~~~~~\n' +
+    '         name: true\n' +
+    '       },\n' +
+    '       orderBy: {\n' +
+    '         createdAt: "asc"\n' +
+    '       },\n' +
+    '     ? cursor?: UserWhereUniqueInput,\n' +
+    '     ? distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]\n' +
+    '     })\n' +
+    '\n' +
+    'Unknown argument `fields`. Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-19T21:20:13.973Z'
+}
+{
+  message: '\n' +
+    'Invalid `prisma.user.findMany()` invocation in\n' +
+    'D:\\Personal\\Node\\LMS\\backend\\src\\modules\\User\\User.service.ts:74:46\n' +
+    '\n' +
+    '  71 if (JSON.stringify(orderBy) !== "{}") {\n' +
+    '  72   options.orderBy = orderBy;\n' +
+    '  73 }\n' +
+    '→ 74 const users: IUser[] = await prisma.user.findMany({\n' +
+    '       where: {\n' +
+    '         name: {\n' +
+    '           contains: undefined,\n' +
+    '           mode: "insensitive"\n' +
+    '         }\n' +
+    '       },\n' +
+    '       skip: 0,\n' +
+    '       take: 1,\n' +
+    '       fields: {\n' +
+    '       ~~~~~~\n' +
+    '         name: true\n' +
+    '       },\n' +
+    '       orderBy: {\n' +
+    '         createdAt: "asc"\n' +
+    '       },\n' +
+    '     ? cursor?: UserWhereUniqueInput,\n' +
+    '     ? distinct?: UserScalarFieldEnum | UserScalarFieldEnum[]\n' +
+    '     })\n' +
+    '\n' +
+    'Unknown argument `fields`. Available options are marked with ?.',
+  level: 'error',
+  timestamp: '2025-02-19T21:20:16.316Z'
+}

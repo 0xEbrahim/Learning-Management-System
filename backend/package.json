@@ -3,7 +3,7 @@
     "@logtail/node": "^0.5.2",
     "@logtail/types": "^0.5.2",
     "@logtail/winston": "^0.5.2",
-    "@prisma/client": "^6.3.1",
+    "@prisma/client": "^6.4.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
@@ -48,7 +48,6 @@
     "passport": "^0.7.0",
     "passport-google-oauth": "^2.0.0",
     "passport-google-oauth20": "^2.0.0",
-    "prisma": "^6.3.1",
     "redis": "^4.7.0",
     "swagger-ui-express": "^5.0.1",
     "ts-node": "^10.9.2",
@@ -69,5 +68,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "prisma": "^6.4.0"
+  }
 }
