@@ -1,3 +1,4 @@
+import cron from "node-cron";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { cleanUsersData } from "../../utils/Functions/functions";
@@ -10,6 +11,7 @@ import config from "../../config/env";
 import ApiFeatures from "../../utils/APIFeatures";
 import prisma from "../../config/prisma";
 import cloudinary from "../../config/cloudinary";
+import logger from "../../config/logger";
 
 class UserService {
   async getUserById(Payload: string): Promise<IResponse> {
@@ -152,6 +154,41 @@ class UserService {
     };
     return response;
   }
+
+  async deactivateAccount(Payload: string): Promise<IResponse> {
+    const id = Payload;
+    await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        isActive: false,
+        deleteAt: new Date(Date.now() + 60 * 1000),
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message:
+        "Account deactivated successfully and will be deleted permanently after 30 days",
+    };
+    return response;
+  }
 }
+
+cron.schedule("0 0 * * *", async () => {
+  try {
+    await prisma.user.deleteMany({
+      where: {
+        deleteAt: {
+          lt: new Date(Date.now()),
+        },
+      },
+    });
+    logger.info("Deleting users cron job worked");
+  } catch (err: any) {
+    throw new APIError(err.message, 400);
+  }
+});
 
 export default new UserService();

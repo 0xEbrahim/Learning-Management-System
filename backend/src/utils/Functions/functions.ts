@@ -7,6 +7,7 @@ import config from "../../config/env";
 import sendEmail from "../../config/email";
 import { IUser } from "../../modules/User/User.interface";
 import { generatePasswordResetTemplate } from "../../views/passwordResetTemplate";
+import { generateAccountReactiveTemplate } from "../../views/accountReactive";
 export const hashPassword = async (password: string) => {
   const hashed = await bcrypt.hash(password, 10);
   return hashed;
@@ -34,6 +35,23 @@ export const createEmailVerifyToken = async (user: IUser) => {
     email: user.email,
     subject: "Email Verify",
     template: generateEmailVerifyTemplate(link),
+  };
+  await sendEmail(data);
+};
+
+export const createReactiveEmail = async (user: IUser) => {
+  user = await prisma.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      isActive: true,
+    },
+  });
+  const data: IEmail = {
+    email: user.email,
+    subject: "Account activation",
+    template: generateAccountReactiveTemplate(user.name),
   };
   await sendEmail(data);
 };
@@ -71,6 +89,7 @@ export const cleanUsersData = (user: any, ...props: any) => {
     "passwordResetTokenExpiresAt",
     "passwordChangedAt",
     "emailVerified",
+    "deleteAt",
     ...props,
   ];
   deleted.forEach((el) => delete user[el]);

@@ -26,4 +26,8 @@ export default {
   GOOGLE_PROD_CALLBACK: process.env.GOOGLE_PROD_CALLBACK as string,
   FRONT_END_BASE: process.env.FRONT_END_BASE as string,
   DEFAULT_PROF_PIC: process.env.DEFAULT_PROF_PIC,
+  BASE_URL:
+    process.env.NODE_ENV === "development"
+      ? process.env.DEV_URL
+      : process.env.PROD_URL,
 };

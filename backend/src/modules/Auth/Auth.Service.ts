@@ -10,6 +10,7 @@ import {
   cleanUsersData,
   comparePassword,
   createEmailVerifyToken,
+  createReactiveEmail,
   createResetPasswordToken,
   hashPassword,
 } from "../../utils/Functions/functions";
@@ -80,6 +81,10 @@ class AuthService {
       response.statusCode = 403;
       await createEmailVerifyToken(user);
       return response;
+    }
+    if (!user.isActive) {
+      await createReactiveEmail(user);
+      user.isActive = true;
     }
     const token = generateToken(user.id, true);
     const refreshToken = generateRefreshToken(user.id);
