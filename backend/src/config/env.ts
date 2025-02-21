@@ -25,4 +25,5 @@ export default {
   GOOGLE_DEV_CALLBACK: process.env.GOOGLE_DEV_CALLBACK as string,
   GOOGLE_PROD_CALLBACK: process.env.GOOGLE_PROD_CALLBACK as string,
   FRONT_END_BASE: process.env.FRONT_END_BASE as string,
+  DEFAULT_PROF_PIC: process.env.DEFAULT_PROF_PIC,
 };

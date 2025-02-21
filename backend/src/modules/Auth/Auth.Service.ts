@@ -5,6 +5,7 @@ import { ICallBackReturn, ILoginBody, IRegisterBody } from "./Auth.Interface";
 import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
 import APIError from "../../utils/APIError";
+import config from "../../config/env";
 import {
   cleanUsersData,
   comparePassword,
@@ -35,16 +36,18 @@ class AuthService {
       avatar = await cloudinary.uploader.upload(Payload.avatar, {
         folder: "Users",
       });
+      avatar = avatar.secure_url;
       logger.info("Avatar uploaded to the cloud.");
       fs.unlinkSync(Payload.avatar);
     }
+    if (!avatar) avatar = config.DEFAULT_PROF_PIC;
     const hashedPassword = await hashPassword(Payload.password);
     const user = await prisma.user.create({
       data: {
         name: Payload.name,
         email: Payload.email,
         password: hashedPassword,
-        avatar: avatar?.secure_url,
+        avatar: avatar,
       },
     });
     if (!user) {
@@ -85,6 +88,20 @@ class AuthService {
     response.token = token;
     response.refreshToken = refreshToken;
     logger.info("User login to the website, ID: " + user.id);
+    return response;
+  }
+
+  async logout(Payload: string): Promise<IResponse> {
+    await prisma.token.create({
+      data: {
+        token: Payload,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "You have been logged out successfully.",
+    };
     return response;
   }
 
@@ -180,8 +197,8 @@ class AuthService {
     return response;
   }
   /**
-   * 
-   * TODO: 
+   *
+   * TODO:
    *  reset password
    *  verify reset password token
    */

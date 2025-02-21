@@ -10,6 +10,8 @@ export default (data: IResponse, res: Response) => {
       httpOnly: true,
     });
   }
+  if (data.message === "You have been logged out successfully.")
+    res.clearCookie("token");
   res.status(data.statusCode).json({
     status: data.status,
     message: data.message,

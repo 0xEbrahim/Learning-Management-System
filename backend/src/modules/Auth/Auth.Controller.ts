@@ -44,6 +44,9 @@ export const login = asyncHandler(
 export const refresh = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
+    if (!token) {
+      throw new APIError("Expired session, please login again", 498);
+    }
     const result: IResponse = await AuthService.refresh(token);
     sendResponse(result, res);
   }
@@ -98,6 +101,14 @@ export const forgotPassword = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email } = req.body;
     const result = await AuthService.forgotPassword(email);
+    sendResponse(result, res);
+  }
+);
+
+export const logout = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    const result: IResponse = await AuthService.logout(token as string);
     sendResponse(result, res);
   }
 );

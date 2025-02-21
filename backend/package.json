@@ -3,7 +3,6 @@
     "@logtail/node": "^0.5.2",
     "@logtail/types": "^0.5.2",
     "@logtail/winston": "^0.5.2",
-    "@prisma/client": "^6.4.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
@@ -70,6 +69,7 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "prisma": "^6.4.0"
+    "@prisma/client": "^6.4.1",
+    "prisma": "^6.4.1"
   }
 }

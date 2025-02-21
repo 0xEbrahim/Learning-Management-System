@@ -8,12 +8,13 @@ import {
   registerValidation,
   resetPasswordTokenValidation,
   resetPasswordValidation,
-} from "./Auth-Validation";
+} from "./Auth.Validation";
 import config from "../../config/env";
 import {
   forgotPassword,
   handleCallBack,
   login,
+  logout,
   refresh,
   register,
   resetPassword,
@@ -22,6 +23,7 @@ import {
   verifyResetPasswordToken,
 } from "./Auth.Controller";
 import uplaoder from "../../config/multer";
+import isAuthenticated from "../../middlewares/isAuthenticated";
 const router = express.Router();
 
 router.post(
@@ -31,6 +33,7 @@ router.post(
   register
 );
 router.post("/login", validate(loginValidation), login);
+router.post("/logout", isAuthenticated, logout);
 router.post(
   "/reset-password/:token",
   validate(resetPasswordTokenValidation),

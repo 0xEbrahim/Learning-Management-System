@@ -21,3 +21,14 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IUpdateUserBody {
+  id?: string;
+  name?: string;
+}
+
+export interface IUpdateProfilePicBody {
+  id?: string;
+  avatar?: string;
+  remove?: true;
+}
