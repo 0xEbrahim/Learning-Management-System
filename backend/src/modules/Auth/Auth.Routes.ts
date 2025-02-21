@@ -6,7 +6,6 @@ import {
   forgotPasswordValidation,
   loginValidation,
   registerValidation,
-  resetPasswordTokenValidation,
   resetPasswordValidation,
 } from "./Auth.Validation";
 import config from "../../config/env";
@@ -20,7 +19,7 @@ import {
   resetPassword,
   sendEmailVerificationToken,
   verifyEmailVerificationToken,
-  verifyResetPasswordToken,
+
 } from "./Auth.Controller";
 import uplaoder from "../../config/multer";
 import isAuthenticated from "../../middlewares/isAuthenticated";
@@ -35,9 +34,7 @@ router.post(
 router.post("/login", validate(loginValidation), login);
 router.post("/logout", isAuthenticated, logout);
 router.post(
-  "/reset-password/:token",
-  validate(resetPasswordTokenValidation),
-  verifyResetPasswordToken,
+  "/reset-password",
   validate(resetPasswordValidation),
   resetPassword
 );

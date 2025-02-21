@@ -3,7 +3,6 @@ import isAuthenticated from "../../middlewares/isAuthenticated";
 import {
   deactivateAccount,
   getUser,
-  getUserById,
   getUsers,
   search,
   updateProfilePic,

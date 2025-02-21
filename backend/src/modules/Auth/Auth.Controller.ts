@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "../../utils/asyncHandler";
 import AuthService from "./Auth.Service";
-import { ILoginBody, IRegisterBody } from "./Auth.Interface";
+import {
+  ILoginBody,
+  IRegisterBody,
+  IResetPasswordBody,
+} from "./Auth.Interface";
 import config from "../../config/env";
 import APIError from "../../utils/APIError";
 import sendResponse from "../../utils/sendResponse";
@@ -45,7 +49,7 @@ export const refresh = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
     if (!token) {
-      throw new APIError("Expired session, please login again", 498);
+      throw new APIError("Expired session, please login again", 403);
     }
     const result: IResponse = await AuthService.refresh(token);
     sendResponse(result, res);
@@ -114,9 +118,13 @@ export const logout = asyncHandler(
 );
 
 export const resetPassword = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {}
-);
-
-export const verifyResetPasswordToken = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {}
+  async (req: Request, res: Response, next: NextFunction) => {
+    const data: IResetPasswordBody = {
+      token: req.body.token,
+      password: req.body.password,
+      confirmPassword: req.body.confirmPassword,
+    };
+    const result: IResponse = await AuthService.resetPassword(data);
+    sendResponse(result, res);
+  }
 );

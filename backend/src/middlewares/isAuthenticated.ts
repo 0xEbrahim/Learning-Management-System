@@ -21,13 +21,13 @@ export default asyncHandler(
       },
     });
     if (blackListed)
-      return next(new APIError("Invalid token, please login first", 498));
+      return next(new APIError("Invalid token, please login first", 403));
     const decoded: IToken = verifyToken(token);
-    if (!decoded) return next(new APIError("Invalid or expired token", 498));
+    if (!decoded) return next(new APIError("Invalid or expired token", 403));
     const user: IUser | null = await prisma.user.findUnique({
       where: { id: decoded.id },
     });
-    if (!user) return next(new APIError("Invalid or expired token", 498));
+    if (!user) return next(new APIError("Invalid or expired token", 403));
     req.User = user;
     next();
   }

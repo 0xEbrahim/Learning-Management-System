@@ -15,6 +15,7 @@ import config from "./config/env";
 import { authRouter } from "./modules/Auth/Auth.Routes";
 import { globalErrorHandler, notFound } from "./middlewares/globalError";
 import { userRouter } from "./modules/User/User.routes";
+import { courseRouter } from "./modules/Course/Course.routes";
 
 dotenv.config();
 const app = express();
@@ -47,6 +48,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/courses", courseRouter);
 app.all("*", notFound);
 app.use(globalErrorHandler);
 export default app;

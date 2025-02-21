@@ -1,7 +1,12 @@
 import fs from "fs";
 import crypto from "crypto";
 import prisma from "../../config/prisma";
-import { ICallBackReturn, ILoginBody, IRegisterBody } from "./Auth.Interface";
+import {
+  ICallBackReturn,
+  ILoginBody,
+  IRegisterBody,
+  IResetPasswordBody,
+} from "./Auth.Interface";
 import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
 import APIError from "../../utils/APIError";
@@ -112,7 +117,7 @@ class AuthService {
 
   async refresh(Payload: any): Promise<IResponse> {
     if (!Payload) {
-      throw new APIError("Expired session, please login again", 498);
+      throw new APIError("Expired session, please login again", 403);
     }
     const decoded = verifyRefreshToken(Payload);
     const user = await prisma.user.findUnique({
@@ -121,7 +126,7 @@ class AuthService {
       },
     });
     if (!user) {
-      throw new APIError("Invalid or expired token", 498);
+      throw new APIError("Invalid or expired token", 403);
     }
     const accessToken = generateToken(user.id, true);
     const response: IResponse = {
@@ -141,7 +146,7 @@ class AuthService {
       },
     });
     if (!user) {
-      throw new APIError("Invalid or expired token", 400);
+      throw new APIError("Invalid or expired token", 403);
     }
     const updatedUser = await prisma.user.update({
       where: {
@@ -201,14 +206,39 @@ class AuthService {
     await createResetPasswordToken(user as IUser);
     return response;
   }
-  /**
-   *
-   * TODO:
-   *  reset password
-   *  verify reset password token
-   */
-  async resetPassword(Payload: any) {}
-  async verifyResetPasswordToken(Payload: any) {}
+
+  async resetPassword(Payload: IResetPasswordBody): Promise<IResponse> {
+    const { token, password, confirmPassword } = Payload;
+    const encoded = crypto.createHash("sha256").update(token).digest("hex");
+    let user = await prisma.user.findFirst({
+      where: {
+        passwordResetToken: encoded,
+        passwordResetTokenExpiresAt: {
+          gt: new Date(Date.now()),
+        },
+      },
+    });
+    if (!user) throw new APIError("Invalid or expired token", 403);
+    const hashed = await hashPassword(password);
+    user = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        password: password,
+        passwordResetToken: null,
+        passwordResetTokenExpiresAt: null,
+        passwordChangedAt: new Date(Date.now()),
+      },
+    });
+    cleanUsersData(user);
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "Password reset successfully, try login with the new password",
+    };
+    return response;
+  }
 }
 
 export default new AuthService();
