@@ -13,6 +13,14 @@ export const getUserById = asyncHandler(
   }
 );
 
+export const getUserProfile = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const id = req.User?.id as string;
+    const result: IResponse = await UserService.getUserById(id);
+    sendResponse(result, res);
+  }
+);
+
 export const getUsers = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
     const result: IResponse = await UserService.getUsers(req.query);

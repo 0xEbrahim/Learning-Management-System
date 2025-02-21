@@ -156,7 +156,9 @@ model Order {
 
 model Token {
   id    String @id @default(uuid())
-  token String
+  token String @unique
+
+  @@index([token])
 }
 
 model Email {
