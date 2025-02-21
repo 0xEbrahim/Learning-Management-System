@@ -1,8 +1,8 @@
 import express from "express";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import {
+  getUser,
   getUserById,
-  getUserProfile,
   getUsers,
   search,
   updateUser,
@@ -13,14 +13,8 @@ import isAuthorized from "../../middlewares/isAuthorized";
 const router = express.Router();
 
 router.get("/", isAuthenticated, getUsers);
-router.get("/me", isAuthenticated, getUserProfile);
+router.get("/:id", isAuthenticated, validate(getUserByIdValidation), getUser);
 router.get("/search", isAuthenticated, search);
-router.get(
-  "/:id",
-  isAuthenticated,
-  validate(getUserByIdValidation),
-  getUserById
-);
 router.patch(
   "/:id",
   isAuthenticated,

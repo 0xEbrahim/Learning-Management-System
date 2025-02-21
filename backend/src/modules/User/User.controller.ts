@@ -21,6 +21,16 @@ export const getUserProfile = asyncHandler(
   }
 );
 
+export const getUser = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    if (req.params.id === req.User?.id) {
+      getUserProfile(req, res, next);
+    } else {
+      getUserById(req, res, next);
+    }
+  }
+);
+
 export const getUsers = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
     const result: IResponse = await UserService.getUsers(req.query);
@@ -34,6 +44,10 @@ export const search = asyncHandler(
     const result: IResponse = await UserService.search(query);
     sendResponse(result, res);
   }
+);
+
+export const updateProfilePic = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {}
 );
 
 export const updateUser = asyncHandler(
