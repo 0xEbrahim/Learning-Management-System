@@ -31,6 +31,7 @@ model User {
   OTPExpiresAt                    DateTime?
   createdAt                       DateTime      @default(now())
   updatedAt                       DateTime      @updatedAt
+  deleteAt                        DateTime?     
   reviews                         Review[]
   replies                         ReviewReply[]
   comments                        Comment[]

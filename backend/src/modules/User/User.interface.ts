@@ -16,6 +16,7 @@ export interface IUser {
   role: Roles;
   isActive: boolean;
   twoFactorAuth: boolean;
+  deleteAt?: Date | null;
   OTP?: string | null;
   OTPExpiresAt?: Date | null;
   createdAt: Date;

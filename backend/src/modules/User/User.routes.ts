@@ -1,6 +1,7 @@
 import express from "express";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import {
+  deactivateAccount,
   getUser,
   getUserById,
   getUsers,
@@ -24,6 +25,8 @@ router.patch(
   validate(updateUserValidation),
   updateUser
 );
+router.patch("/:id/deactivate", isAuthenticated, deactivateAccount);
+
 router.patch(
   "/:id/update/pic",
   isAuthenticated,

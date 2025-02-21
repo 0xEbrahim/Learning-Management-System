@@ -72,3 +72,12 @@ export const updateUser = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+export const deactivateAccount = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const id = req.User?.id as string;
+    const result: IResponse = await UserService.deactivateAccount(id);
+    sendResponse(result, res);
+  }
+);
+
