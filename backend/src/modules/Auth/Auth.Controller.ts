@@ -105,6 +105,13 @@ export const forgotPassword = asyncHandler(
   }
 );
 
+export const logout = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const token = req.headers.authorization?.split(" ")[1];
+    const result: IResponse = await AuthService.logout(token as string);
+    sendResponse(result, res);
+  }
+);
 
 export const resetPassword = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {}

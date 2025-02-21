@@ -20,6 +20,11 @@ export const ValidationErrorDB = (error: any): APIError => {
   return new APIError(message, 400);
 };
 
+export const TokenExpiredError = (error: any): APIError => {
+  const message: string = "Invalid or expired token, please login again.";
+  return new APIError(message, 498);
+};
+
 export const globalErrorHandler = (
   err: any,
   req: Request,
@@ -28,6 +33,7 @@ export const globalErrorHandler = (
 ) => {
   logger.error(err.message);
   if (err.name === "PrismaClientValidationError") err = ValidationErrorDB(err);
+  if (err.name === "TokenExpiredError") err = TokenExpiredError(err);
   const response = {
     status: err.status,
     message: err.message,

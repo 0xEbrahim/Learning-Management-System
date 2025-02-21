@@ -88,6 +88,20 @@ class AuthService {
     return response;
   }
 
+  async logout(Payload: string): Promise<IResponse> {
+    await prisma.token.create({
+      data: {
+        token: Payload,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "You have been logged out successfully.",
+    };
+    return response;
+  }
+
   async refresh(Payload: any): Promise<IResponse> {
     if (!Payload) {
       throw new APIError("Expired session, please login again", 498);
@@ -180,8 +194,8 @@ class AuthService {
     return response;
   }
   /**
-   * 
-   * TODO: 
+   *
+   * TODO:
    *  reset password
    *  verify reset password token
    */
