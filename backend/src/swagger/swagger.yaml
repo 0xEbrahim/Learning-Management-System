@@ -9,6 +9,8 @@ servers:
 tags:
   - name: Auth
     description: Authentication and authorization endpoints
+  - name: User
+    description: Endpoints for managing user profiles and related operations
 paths:
   /auth/register:
     post:
@@ -415,7 +417,386 @@ paths:
                   message:
                     type: string
                     example: You are not allowed to use this endpoint
+  /user:
+    get:
+      tags:
+        - User
+      summary: Get all users
+      description: Retrieve a list of all users with optional filtering, sorting, and pagination
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+          description: Number of items per page
+        - in: query
+          name: sort
+          schema:
+            type: string
+            example: "-createdAt"
+          description: Sorting criteria (prefix with `-` for descending order)
+        - in: query
+          name: fields
+          schema:
+            type: string
+            example: "name,email"
+          description: Comma-separated list of fields to include in the response
+        - in: query
+          name: q
+          schema:
+            type: string
+            example: "John"
+          description: Search query to filter users by name
+      responses:
+        "200":
+          description: List of users retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
 
+  /user/search:
+    get:
+      tags:
+        - User
+      summary: Search users
+      description: Search users by name or other criteria
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+            example: "John"
+          description: Search query to filter users by name
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+          description: Number of items per page
+        - in: query
+          name: sort
+          schema:
+            type: string
+            example: "-createdAt"
+          description: Sorting criteria (prefix with `-` for descending order)
+        - in: query
+          name: fields
+          schema:
+            type: string
+            example: "name,email"
+          description: Comma-separated list of fields to include in the response
+      responses:
+        "200":
+          description: Users matching the search criteria
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      users:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
+
+  /user/{id}:
+    get:
+      tags:
+        - User
+      summary: Get user by ID
+      description: Retrieve a user's profile by their ID
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: User ID
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/User"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Invalid user id
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
+
+  /user/{id}/update:
+    patch:
+      tags:
+        - User
+      summary: Update user profile
+      description: Update a user's profile (name)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: User ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserBody"
+      responses:
+        "200":
+          description: User profile updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Name should be 6 characters at minimum
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
+
+  /user/{id}/deactivate:
+    patch:
+      tags:
+        - User
+      summary: Deactivate user account
+      description: Deactivate a user's account (marks it for deletion after 30 days)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: User ID
+      responses:
+        "200":
+          description: Account deactivated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: Account deactivated successfully and will be deleted permanently after 30 days
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
+
+  /user/{id}/update/pic:
+    patch:
+      tags:
+        - User
+      summary: Update user profile picture
+      description: Update or remove a user's profile picture
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: User ID
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: New profile picture
+                remove:
+                  type: boolean
+                  description: Set to true to remove the profile picture
+      responses:
+        "200":
+          description: Profile picture updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: Profile picture updated successfully.
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid input data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Failed, please provide profile picture
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
 components:
   schemas:
     RegisterBody:
@@ -489,6 +870,25 @@ components:
         isActive:
           type: boolean
           example: true
+        role:
+          type: string
+          example: USER
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-01-01T00:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-01-01T00:00:00Z"
+
+    UpdateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Doe
+          description: New name for the user
 
   securitySchemes:
     BearerAuth:
