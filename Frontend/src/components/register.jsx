@@ -41,7 +41,7 @@ function Register(){
       }
     }).then((res)=>{
       setResponse(res.data.message)
-      console.log(res.data.message)
+      // console.log(res.data.message)
     }).catch((err)=>{
       setError(err.response.data.message.slice(0,60));
     });
@@ -193,7 +193,7 @@ function Register(){
               className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:ring-3 focus:outline-hidden"
               onClick={()=>{
                 sendRegisterDate();
-                console.log(userName,userEmail,password,confirmPassword);
+                // console.log(userName,userEmail,password,confirmPassword);
               }}
             >
               Create an account
