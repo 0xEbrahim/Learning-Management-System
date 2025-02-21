@@ -170,7 +170,7 @@ paths:
                   token:
                     type: string
                     description: New JWT access token
-        "498":
+        "403":
           description: Invalid or expired refresh token
           content:
             application/json:

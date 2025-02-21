@@ -6,7 +6,7 @@ import sendResponse from "../../utils/sendResponse";
 import {
   IUpdateProfilePicBody,
   IUpdateUserBody,
-  IUser,
+  
 } from "./User.interface";
 
 export const getUserById = asyncHandler(

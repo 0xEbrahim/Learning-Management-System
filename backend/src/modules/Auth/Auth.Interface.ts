@@ -15,3 +15,9 @@ export interface ICallBackReturn {
   token: string;
   refreshToken: string;
 }
+
+export interface IResetPasswordBody {
+  token: string;
+  password: string;
+  confirmPassword: string;
+}

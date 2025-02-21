@@ -15,7 +15,7 @@ model User {
   id                              String        @id @default(uuid())
   googleId                        String?       @unique
   name                            String
-  avatar                          String?       
+  avatar                          String?
   email                           String        @unique
   emailVerificationToken          String?
   emailVerificationTokenExpiresAt DateTime?
@@ -31,7 +31,7 @@ model User {
   OTPExpiresAt                    DateTime?
   createdAt                       DateTime      @default(now())
   updatedAt                       DateTime      @updatedAt
-  deleteAt                        DateTime?     
+  deleteAt                        DateTime?
   reviews                         Review[]
   replies                         ReviewReply[]
   comments                        Comment[]
@@ -67,22 +67,22 @@ model ReviewReply {
 }
 
 model Comment {
-  id              String     @id @default(uuid())
+  id              String    @id @default(uuid())
   userId          String
   videoId         String
   comment         String
   parentCommentId String?
-  createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
-  parentComment   Comment?   @relation("Reply", fields: [parentCommentId], references: [id])
-  author          User       @relation(fields: [userId], references: [id])
-  video           CourseData @relation(fields: [videoId], references: [id])
-  replies         Comment[]  @relation("Reply")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  parentComment   Comment?  @relation("Reply", fields: [parentCommentId], references: [id])
+  author          User      @relation(fields: [userId], references: [id])
+  video           Video     @relation(fields: [videoId], references: [id])
+  replies         Comment[] @relation("Reply")
 
   @@index([parentCommentId])
 }
 
-model CourseData {
+model Video {
   id             String    @id @default(uuid())
   courseId       String
   course         Course    @relation(fields: [courseId], references: [id])
@@ -97,12 +97,18 @@ model CourseData {
 
 model Prerequisites {
   id        String   @id @default(uuid())
-  courseid  String
+  courseId  String
   title     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   url       String
-  course    Course   @relation(fields: [courseid], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id])
+}
+
+model Demo {
+  id       String  @id @default(uuid())
+  courseId String  @unique
+  course   Course? @relation(fields: [courseId], references: [id])
 }
 
 model Course {
@@ -117,10 +123,10 @@ model Course {
   purchased      Int
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
-  demoUrl        String
+  demo           Demo?
   prerequisites  Prerequisites[]
   reviews        Review[]
-  courseData     CourseData[]
+  courseData     Video[]
   buyers         Order[]
 }
 
@@ -163,8 +169,8 @@ model Token {
 }
 
 model Email {
-  id    String @id
-  email String
+  id      String @id
+  email   String
   subject String
 }
 

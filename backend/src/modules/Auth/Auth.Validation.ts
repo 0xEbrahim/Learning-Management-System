@@ -41,6 +41,7 @@ export const forgotPasswordValidation = z.object({
 export const resetPasswordValidation = z.object({
   body: z
     .object({
+      token: z.string(),
       password: z.string().min(6, "password should be more than 6 characters"),
       confirmPassword: z
         .string()
@@ -50,10 +51,4 @@ export const resetPasswordValidation = z.object({
       message: "Passwords don't match",
       path: ["Password confirmations"],
     }),
-});
-
-export const resetPasswordTokenValidation = z.object({
-  params: z.object({
-    token: z.string(),
-  }),
 });

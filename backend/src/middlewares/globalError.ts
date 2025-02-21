@@ -22,7 +22,7 @@ export const ValidationErrorDB = (error: any): APIError => {
 
 export const TokenExpiredError = (error: any): APIError => {
   const message: string = "Invalid or expired token, please login again.";
-  return new APIError(message, 498);
+  return new APIError(message, 403);
 };
 
 export const globalErrorHandler = (
