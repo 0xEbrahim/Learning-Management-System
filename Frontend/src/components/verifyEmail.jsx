@@ -4,6 +4,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const VerifyEmail = () => {
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const [status, setStatus] = useState('Verifying');
   const [searchParams] = useSearchParams();
   const navigate=useNavigate();
@@ -16,7 +18,7 @@ const VerifyEmail = () => {
       }
 
       try {
-        const response = await axios.get(`'https://learning-management-system-262s.onrender.com/api/v1/verify-Email`, { token });
+        const response = await axios.get(`${apiUrl}/auth/Verify-Email`, { token });
         setStatus("Email verified, now you can login to your account.");
       } catch (error) {
         setStatus(error.response.data.message || 'Verification failed. Try again.');
@@ -29,7 +31,7 @@ const VerifyEmail = () => {
   return (
     <div>
       <h2>{status}</h2>
-      {status === 'Email verified successfully! You can now log in.' && (
+      {status === "Email verified, now you can login to your account." && (
         navigate("/login")
       )}
     </div>
