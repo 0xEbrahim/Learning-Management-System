@@ -60,13 +60,18 @@ export const createResetPasswordToken = async (user: IUser) => {
   await sendEmail(data);
 };
 
-export const cleanUsersData = (user: IUser) => {
-  delete user.password;
-  delete user.OTP;
-  delete user.OTPExpiresAt;
-  delete user.emailVerificationToken;
-  delete user.emailVerificationTokenExpiresAt;
-  delete user.passwordResetToken;
-  delete user.passwordResetTokenExpiresAt;
-  delete user.passwordChangedAt;
+export const cleanUsersData = (user: any, ...props: any) => {
+  const deleted = [
+    "password",
+    "OTP",
+    "OTPExpiresAt",
+    "emailVerificationToken",
+    "emailVerificationTokenExpiresAt",
+    "passwordResetToken",
+    "passwordResetTokenExpiresAt",
+    "passwordChangedAt",
+    "emailVerified",
+    ...props,
+  ];
+  deleted.forEach((el) => delete user[el]);
 };

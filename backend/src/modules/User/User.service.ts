@@ -80,7 +80,7 @@ class UserService {
       },
       ...options,
     });
-    for (let i = 0; i < users.length; i++) cleanUsersData(users[i]);
+    for (let i = 0; i < users.length; i++) cleanUsersData(users[i], "email");
     response.data = { users };
     return response;
   }

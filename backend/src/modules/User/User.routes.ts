@@ -13,8 +13,8 @@ import isAuthorized from "../../middlewares/isAuthorized";
 const router = express.Router();
 
 router.get("/", isAuthenticated, getUsers);
-router.get("/:id", isAuthenticated, validate(getUserByIdValidation), getUser);
 router.get("/search", isAuthenticated, search);
+router.get("/:id", isAuthenticated, validate(getUserByIdValidation), getUser);
 router.patch(
   "/:id",
   isAuthenticated,

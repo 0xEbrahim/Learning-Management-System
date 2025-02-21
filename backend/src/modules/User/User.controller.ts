@@ -47,7 +47,9 @@ export const search = asyncHandler(
 );
 
 export const updateProfilePic = asyncHandler(
-  async (req: IRequest, res: Response, next: NextFunction) => {}
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    
+  }
 );
 
 export const updateUser = asyncHandler(
