@@ -69,7 +69,7 @@ export const createResetPasswordToken = async (user: IUser) => {
       passwordResetTokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000),
     },
   });
-  let link = `${config.FRONT_END_BASE}/reset-password/${code}`;
+  let link = `${config.FRONT_END_BASE}/resetPassword/${code}`;
   const data: IEmail = {
     email: user.email,
     subject: "Password Reset",
