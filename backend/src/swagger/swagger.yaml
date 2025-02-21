@@ -1,9 +1,11 @@
-swagger: "2.0"
+openapi: 3.0.0
 info:
   title: Auth API
   description: API for user authentication and authorization
   version: 1.0.0
-basePath: /api/v1
+servers:
+  - url: /api/v1
+    description: Base API URL
 tags:
   - name: Auth
     description: Authentication and authorization endpoints
@@ -14,68 +16,68 @@ paths:
         - Auth
       summary: Register a new user
       description: Register a new user with the provided details
-      consumes:
-        - multipart/form-data
-      parameters:
-        - in: formData
-          name: name
-          type: string
-          required: true
-          description: User's full name
-        - in: formData
-          name: email
-          type: string
-          required: true
-          description: User's email address
-        - in: formData
-          name: password
-          type: string
-          required: true
-          description: User's password
-        - in: formData
-          name: confirmPassword
-          type: string
-          required: true
-          description: Confirm password
-        - in: formData
-          name: image
-          type: file
-          required: false
-          description: User's avatar image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: John Doe
+                email:
+                  type: string
+                  example: john.doe@example.com
+                password:
+                  type: string
+                  example: password123
+                confirmPassword:
+                  type: string
+                  example: password123
+                image:
+                  type: string
+                  format: binary
+                  description: User's avatar image
       responses:
-        "201":
+        '201':
           description: User registered successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              message:
-                type: string
-                example: Account created successfully, please check your Gmail account to verify your email
-        "409":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: Account created successfully, please check your Gmail account to verify your email
+        '409':
           description: Email already exists
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Email is already exists, try another email.
-        "500":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Email is already exists, try another email.
+        '500':
           description: Internal server error
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Error while creating account, please try again
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Error while creating account, please try again
 
   /auth/login:
     post:
@@ -83,54 +85,60 @@ paths:
         - Auth
       summary: Login a user
       description: Login a user with the provided credentials
-      parameters:
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: "#/definitions/LoginBody"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginBody'
       responses:
-        "200":
+        '200':
           description: User logged in successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              data:
+          content:
+            application/json:
+              schema:
                 type: object
                 properties:
-                  user:
-                    $ref: "#/definitions/User"
-              token:
-                type: string
-                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-              refreshToken:
-                type: string
-                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        "401":
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+                  refreshToken:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '401':
           description: Incorrect email or password
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Incorrect email or password.
-        "403":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Incorrect email or password.
+        '403':
           description: Email not verified
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Your email is not verified, please check your email to verify it.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Your email is not verified, please check your email to verify it.
 
   /auth/logout:
     post:
@@ -139,30 +147,34 @@ paths:
       summary: Logout a user
       description: Logout a user by invalidating the token
       security:
-        - Bearer: []
+        - BearerAuth: []
       responses:
-        "200":
+        '200':
           description: User logged out successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              message:
-                type: string
-                example: You have been logged out successfully.
-        "403":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: You have been logged out successfully.
+        '403':
           description: Invalid or expired token
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Expired session, please login again
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Expired session, please login again
 
   /auth/refresh:
     get:
@@ -171,28 +183,32 @@ paths:
       summary: Refresh access token
       description: Refresh the access token using the refresh token
       responses:
-        "200":
+        '200':
           description: Token refreshed successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              token:
-                type: string
-                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        "403":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '403':
           description: Expired session or invalid token
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Expired session, please login again
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Expired session, please login again
 
   /auth/verify-Email/{token}:
     get:
@@ -204,42 +220,49 @@ paths:
         - in: path
           name: token
           required: true
-          type: string
+          schema:
+            type: string
           description: Email verification token
       responses:
-        "200":
+        '200':
           description: Email verified successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              message:
-                type: string
-                example: Email verified, now you can login to your account.
-        "403":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: Email verified, now you can login to your account.
+        '403':
           description: Invalid or expired token
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Invalid or expired token
-        "500":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Invalid or expired token
+        '500':
           description: Internal server error
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Error while verifying user's email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Error while verifying user's email
 
   /auth/google:
     get:
@@ -248,7 +271,7 @@ paths:
       summary: Google OAuth
       description: Authenticate using Google OAuth
       responses:
-        "302":
+        '302':
           description: Redirect to Google OAuth page
 
   /auth/google/callback:
@@ -258,23 +281,25 @@ paths:
       summary: Google OAuth callback
       description: Callback URL for Google OAuth
       responses:
-        "200":
+        '200':
           description: User authenticated successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              data:
+          content:
+            application/json:
+              schema:
                 type: object
                 properties:
-                  user:
-                    $ref: "#/definitions/User"
-              token:
-                type: string
-                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        "302":
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        '302':
           description: Redirect to login page on failure
 
   /auth/forgot-password:
@@ -283,35 +308,39 @@ paths:
         - Auth
       summary: Forgot password
       description: Request a password reset link
-      parameters:
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: "#/definitions/ForgotPasswordBody"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordBody'
       responses:
-        "200":
+        '200':
           description: Password reset link sent successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              message:
-                type: string
-                example: Please check your email for reset password link
-        "404":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: Please check your email for reset password link
+        '404':
           description: User not found
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Invalid email, cannot find user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Invalid email, cannot find user.
 
   /auth/reset-password:
     post:
@@ -319,35 +348,39 @@ paths:
         - Auth
       summary: Reset password
       description: Reset the user's password using the reset token
-      parameters:
-        - in: body
-          name: body
-          required: true
-          schema:
-            $ref: "#/definitions/ResetPasswordBody"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordBody'
       responses:
-        "200":
+        '200':
           description: Password reset successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              message:
-                type: string
-                example: Password reset successfully, try login with the new password
-        "403":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: Password reset successfully, try login with the new password
+        '403':
           description: Invalid or expired token
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: Invalid or expired token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Invalid or expired token
 
   /auth/send-email:
     patch:
@@ -356,104 +389,109 @@ paths:
       summary: Send email verification token
       description: Send an email verification token to the user's email
       responses:
-        "200":
+        '200':
           description: Email sent successfully
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Success
-              message:
-                type: string
-                example: Email sent successfully, please check your Gmail account to verify your email
-        "403":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: Email sent successfully, please check your Gmail account to verify your email
+        '403':
           description: User not allowed to use this endpoint
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: Error
-              message:
-                type: string
-                example: You are not allowed to use this endpoint
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: You are not allowed to use this endpoint
 
-definitions:
-  RegisterBody:
-    type: object
-    properties:
-      name:
-        type: string
-        example: John Doe
-      email:
-        type: string
-        example: john.doe@example.com
-      password:
-        type: string
-        example: password123
-      confirmPassword:
-        type: string
-        example: password123
-      avatar:
-        type: string
-        format: binary
-        example: "path/to/avatar.jpg"
+components:
+  schemas:
+    RegisterBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          example: john.doe@example.com
+        password:
+          type: string
+          example: password123
+        confirmPassword:
+          type: string
+          example: password123
+        avatar:
+          type: string
+          format: binary
+          example: "path/to/avatar.jpg"
 
-  LoginBody:
-    type: object
-    properties:
-      email:
-        type: string
-        example: john.doe@example.com
-      password:
-        type: string
-        example: password123
+    LoginBody:
+      type: object
+      properties:
+        email:
+          type: string
+          example: john.doe@example.com
+        password:
+          type: string
+          example: password123
 
-  ForgotPasswordBody:
-    type: object
-    properties:
-      email:
-        type: string
-        example: john.doe@example.com
+    ForgotPasswordBody:
+      type: object
+      properties:
+        email:
+          type: string
+          example: john.doe@example.com
 
-  ResetPasswordBody:
-    type: object
-    properties:
-      token:
-        type: string
-        example: "reset-token"
-      password:
-        type: string
-        example: newpassword123
-      confirmPassword:
-        type: string
-        example: newpassword123
+    ResetPasswordBody:
+      type: object
+      properties:
+        token:
+          type: string
+          example: "reset-token"
+        password:
+          type: string
+          example: newpassword123
+        confirmPassword:
+          type: string
+          example: newpassword123
 
-  User:
-    type: object
-    properties:
-      id:
-        type: string
-        example: "12345"
-      name:
-        type: string
-        example: John Doe
-      email:
-        type: string
-        example: john.doe@example.com
-      avatar:
-        type: string
-        example: "https://example.com/avatar.jpg"
-      emailVerified:
-        type: boolean
-        example: true
-      isActive:
-        type: boolean
-        example: true
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "12345"
+        name:
+          type: string
+          example: John Doe
+        email:
+          type: string
+          example: john.doe@example.com
+        avatar:
+          type: string
+          example: "https://example.com/avatar.jpg"
+        emailVerified:
+          type: boolean
+          example: true
+        isActive:
+          type: boolean
+          example: true
 
-securityDefinitions:
-  Bearer:
-    type: apiKey
-    name: Authorization
-    in: header
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
