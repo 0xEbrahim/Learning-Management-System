@@ -1,9 +1,15 @@
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { cleanUsersData } from "../../utils/Functions/functions";
-import { IUpdateUserBody, IUser } from "./User.interface";
+import {
+  IUpdateProfilePicBody,
+  IUpdateUserBody,
+  IUser,
+} from "./User.interface";
+import config from "../../config/env";
 import ApiFeatures from "../../utils/APIFeatures";
 import prisma from "../../config/prisma";
+import cloudinary from "../../config/cloudinary";
 
 class UserService {
   async getUserById(Payload: string): Promise<IResponse> {
@@ -98,6 +104,48 @@ class UserService {
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
+      data: {
+        user,
+      },
+    };
+    return response;
+  }
+
+  async updateProfilePic(Payload: IUpdateProfilePicBody): Promise<IResponse> {
+    const { avatar, id, remove } = Payload;
+    let user;
+    if (remove) {
+      user = await prisma.user.update({
+        where: {
+          id: id,
+        },
+        data: {
+          avatar: config.DEFAULT_PROF_PIC,
+        },
+      });
+    } else {
+      let uploaded;
+      if (avatar) {
+        uploaded = await cloudinary.uploader.upload(avatar, {
+          folder: "Users",
+        });
+      } else {
+        throw new APIError("Failed, please provide profile picture", 400);
+      }
+      user = await prisma.user.update({
+        where: {
+          id: id,
+        },
+        data: {
+          avatar: uploaded.secure_url,
+        },
+      });
+    }
+    cleanUsersData(user);
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "Profile picture updated successfully.",
       data: {
         user,
       },

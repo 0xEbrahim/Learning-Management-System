@@ -26,3 +26,9 @@ export interface IUpdateUserBody {
   id?: string;
   name?: string;
 }
+
+export interface IUpdateProfilePicBody {
+  id?: string;
+  avatar?: string;
+  remove?: true;
+}

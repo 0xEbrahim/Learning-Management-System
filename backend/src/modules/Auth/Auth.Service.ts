@@ -5,6 +5,7 @@ import { ICallBackReturn, ILoginBody, IRegisterBody } from "./Auth.Interface";
 import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
 import APIError from "../../utils/APIError";
+import config from "../../config/env";
 import {
   cleanUsersData,
   comparePassword,
@@ -35,16 +36,18 @@ class AuthService {
       avatar = await cloudinary.uploader.upload(Payload.avatar, {
         folder: "Users",
       });
+      avatar = avatar.secure_url;
       logger.info("Avatar uploaded to the cloud.");
       fs.unlinkSync(Payload.avatar);
     }
+    if (!avatar) avatar = config.DEFAULT_PROF_PIC;
     const hashedPassword = await hashPassword(Payload.password);
     const user = await prisma.user.create({
       data: {
         name: Payload.name,
         email: Payload.email,
         password: hashedPassword,
-        avatar: avatar?.secure_url,
+        avatar: avatar,
       },
     });
     if (!user) {

@@ -15,7 +15,7 @@ model User {
   id                              String        @id @default(uuid())
   googleId                        String?       @unique
   name                            String
-  avatar                          String?
+  avatar                          String?       
   email                           String        @unique
   emailVerificationToken          String?
   emailVerificationTokenExpiresAt DateTime?

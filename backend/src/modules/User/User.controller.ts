@@ -3,7 +3,11 @@ import asyncHandler from "../../utils/asyncHandler";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import UserService from "./User.service";
 import sendResponse from "../../utils/sendResponse";
-import { IUpdateUserBody, IUser } from "./User.interface";
+import {
+  IUpdateProfilePicBody,
+  IUpdateUserBody,
+  IUser,
+} from "./User.interface";
 
 export const getUserById = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
@@ -48,13 +52,22 @@ export const search = asyncHandler(
 
 export const updateProfilePic = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    
+    const data: IUpdateProfilePicBody = {
+      id: req.User?.id,
+      avatar: req.file?.path,
+      remove: req.body.remove,
+    };
+    const result: IResponse = await UserService.updateProfilePic(data);
+    sendResponse(result, res);
   }
 );
 
 export const updateUser = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    const data: IUpdateUserBody = { id: req.User?.id, name: req.body.name };
+    const data: IUpdateUserBody = {
+      id: req.User?.id,
+      name: req.body.name,
+    };
     const result: IResponse = await UserService.updateUser(data);
     sendResponse(result, res);
   }
