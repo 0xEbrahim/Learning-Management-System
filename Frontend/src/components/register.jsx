@@ -11,7 +11,7 @@ function Register(){
   let [confirmPassword,setConfirmPassword]=useState("");
   let [error,setError]=useState("");
   let [response,setResponse]=useState("");
-  let[disabled,setDisabled]=useState(false);
+  // let[disabled,setDisabled]=useState(false);
   // let buttonRef=useRef();
 
 
@@ -155,8 +155,8 @@ function Register(){
 
           <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
             <button
-              className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:ring-3 focus:outline-hidden"
-              disabled={disabled}
+              className="inline-block shrink-0 rounded-md border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden"
+              // disabled={disabled}
               onClick={()=>{
                 sendRegisterDate();
                 // console.log(userName,userEmail,password,confirmPassword);
@@ -172,7 +172,7 @@ function Register(){
           </div>
           {/* conditional redering */}
           {error && <p className='text-red-500 col-span-6'>{error}</p>}
-          {response && <p className='text-blue-500 col-span-6'>{response}</p>}
+          {response && <p className='text-indigo-500 col-span-6'>{response}</p>}
         </form>
       </div>
     </main>
