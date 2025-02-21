@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Auth API
-  description: API for user authentication and authorization
+  title: LMS API
+  description: Docs for LMS API
   version: 1.0.0
 servers:
   - url: /api/v1
@@ -39,7 +39,7 @@ paths:
                   format: binary
                   description: User's avatar image
       responses:
-        '201':
+        "201":
           description: User registered successfully
           content:
             application/json:
@@ -52,7 +52,7 @@ paths:
                   message:
                     type: string
                     example: Account created successfully, please check your Gmail account to verify your email
-        '409':
+        "409":
           description: Email already exists
           content:
             application/json:
@@ -65,7 +65,7 @@ paths:
                   message:
                     type: string
                     example: Email is already exists, try another email.
-        '500':
+        "500":
           description: Internal server error
           content:
             application/json:
@@ -90,9 +90,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LoginBody'
+              $ref: "#/components/schemas/LoginBody"
       responses:
-        '200':
+        "200":
           description: User logged in successfully
           content:
             application/json:
@@ -106,14 +106,14 @@ paths:
                     type: object
                     properties:
                       user:
-                        $ref: '#/components/schemas/User'
+                        $ref: "#/components/schemas/User"
                   token:
                     type: string
                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                   refreshToken:
                     type: string
                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        '401':
+        "401":
           description: Incorrect email or password
           content:
             application/json:
@@ -126,7 +126,7 @@ paths:
                   message:
                     type: string
                     example: Incorrect email or password.
-        '403':
+        "403":
           description: Email not verified
           content:
             application/json:
@@ -149,7 +149,7 @@ paths:
       security:
         - BearerAuth: []
       responses:
-        '200':
+        "200":
           description: User logged out successfully
           content:
             application/json:
@@ -162,7 +162,7 @@ paths:
                   message:
                     type: string
                     example: You have been logged out successfully.
-        '403':
+        "403":
           description: Invalid or expired token
           content:
             application/json:
@@ -183,7 +183,7 @@ paths:
       summary: Refresh access token
       description: Refresh the access token using the refresh token
       responses:
-        '200':
+        "200":
           description: Token refreshed successfully
           content:
             application/json:
@@ -196,7 +196,7 @@ paths:
                   token:
                     type: string
                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        '403':
+        "403":
           description: Expired session or invalid token
           content:
             application/json:
@@ -224,7 +224,7 @@ paths:
             type: string
           description: Email verification token
       responses:
-        '200':
+        "200":
           description: Email verified successfully
           content:
             application/json:
@@ -237,7 +237,7 @@ paths:
                   message:
                     type: string
                     example: Email verified, now you can login to your account.
-        '403':
+        "403":
           description: Invalid or expired token
           content:
             application/json:
@@ -250,7 +250,7 @@ paths:
                   message:
                     type: string
                     example: Invalid or expired token
-        '500':
+        "500":
           description: Internal server error
           content:
             application/json:
@@ -271,7 +271,7 @@ paths:
       summary: Google OAuth
       description: Authenticate using Google OAuth
       responses:
-        '302':
+        "302":
           description: Redirect to Google OAuth page
 
   /auth/google/callback:
@@ -281,7 +281,7 @@ paths:
       summary: Google OAuth callback
       description: Callback URL for Google OAuth
       responses:
-        '200':
+        "200":
           description: User authenticated successfully
           content:
             application/json:
@@ -295,11 +295,11 @@ paths:
                     type: object
                     properties:
                       user:
-                        $ref: '#/components/schemas/User'
+                        $ref: "#/components/schemas/User"
                   token:
                     type: string
                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-        '302':
+        "302":
           description: Redirect to login page on failure
 
   /auth/forgot-password:
@@ -313,9 +313,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ForgotPasswordBody'
+              $ref: "#/components/schemas/ForgotPasswordBody"
       responses:
-        '200':
+        "200":
           description: Password reset link sent successfully
           content:
             application/json:
@@ -328,7 +328,7 @@ paths:
                   message:
                     type: string
                     example: Please check your email for reset password link
-        '404':
+        "404":
           description: User not found
           content:
             application/json:
@@ -353,9 +353,9 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResetPasswordBody'
+              $ref: "#/components/schemas/ResetPasswordBody"
       responses:
-        '200':
+        "200":
           description: Password reset successfully
           content:
             application/json:
@@ -368,7 +368,7 @@ paths:
                   message:
                     type: string
                     example: Password reset successfully, try login with the new password
-        '403':
+        "403":
           description: Invalid or expired token
           content:
             application/json:
@@ -389,7 +389,7 @@ paths:
       summary: Send email verification token
       description: Send an email verification token to the user's email
       responses:
-        '200':
+        "200":
           description: Email sent successfully
           content:
             application/json:
@@ -402,7 +402,7 @@ paths:
                   message:
                     type: string
                     example: Email sent successfully, please check your Gmail account to verify your email
-        '403':
+        "403":
           description: User not allowed to use this endpoint
           content:
             application/json:
