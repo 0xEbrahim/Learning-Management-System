@@ -1,7 +1,7 @@
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { cleanUsersData } from "../../utils/Functions/functions";
-import { IUser } from "./User.interface";
+import { IUpdateUserBody, IUser } from "./User.interface";
 import ApiFeatures from "../../utils/APIFeatures";
 import prisma from "../../config/prisma";
 
@@ -82,6 +82,26 @@ class UserService {
     });
     for (let i = 0; i < users.length; i++) cleanUsersData(users[i]);
     response.data = { users };
+    return response;
+  }
+  async updateUser(Payload: IUpdateUserBody): Promise<IResponse> {
+    const user = await prisma.user.update({
+      where: {
+        id: Payload.id,
+      },
+      data: {
+        name: Payload.name,
+      },
+    });
+    if (!user) throw new APIError("Error while updating user", 500);
+    cleanUsersData(user);
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        user,
+      },
+    };
     return response;
   }
 }

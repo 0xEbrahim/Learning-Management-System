@@ -5,9 +5,11 @@ import {
   getUserProfile,
   getUsers,
   search,
+  updateUser,
 } from "./User.controller";
 import { validate } from "../../utils/validation";
-import { getUserByIdValidation } from "./User.validation";
+import { getUserByIdValidation, updateUserValidation } from "./User.validation";
+import isAuthorized from "../../middlewares/isAuthorized";
 const router = express.Router();
 
 router.get("/", isAuthenticated, getUsers);
@@ -18,5 +20,12 @@ router.get(
   isAuthenticated,
   validate(getUserByIdValidation),
   getUserById
+);
+router.patch(
+  "/:id",
+  isAuthenticated,
+  isAuthorized("ADMIN"),
+  validate(updateUserValidation),
+  updateUser
 );
 export const userRouter = router;

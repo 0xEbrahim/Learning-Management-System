@@ -8,7 +8,7 @@ import {
   registerValidation,
   resetPasswordTokenValidation,
   resetPasswordValidation,
-} from "./Auth-Validation";
+} from "./Auth.Validation";
 import config from "../../config/env";
 import {
   forgotPassword,

@@ -21,3 +21,8 @@ export interface IUser {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IUpdateUserBody {
+  id?: string;
+  name?: string;
+}
