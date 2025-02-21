@@ -101,7 +101,7 @@ function Login(){
   
             <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
               <button
-                className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:ring-3 focus:outline-hidden"
+                className="inline-block shrink-0 rounded-md border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden"
                 onClick={()=>{sendLoginData()}}
               >
                 Continue
@@ -114,7 +114,7 @@ function Login(){
             </div>
           {/* conditional redering */}
           {error && <p className='text-red-500 col-span-6'>{error}</p>}
-          {error==="Incorrect email or password." &&<p className='col-span-6 inline-block'><Link to="/" className='text-blue-600'>Forgot password?</Link></p>}
+          {error==="Incorrect email or password." &&<p className='col-span-6 inline-block'><Link to="/forgotPassword" className='text-indigo-600'>Forgot password?</Link></p>}
           {response==="verified" &&(navigate("/homePage"))}
           </form>
         </div>
