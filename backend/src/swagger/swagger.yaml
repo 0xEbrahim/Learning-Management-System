@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Authentication API
-  description: API for user authentication, registration, and password management
+  description: API doc for a learning platform system
   version: 1.0.0
 servers:
   - url: http://localhost:3000
@@ -12,6 +12,8 @@ paths:
   /auth/register:
     post:
       summary: Register a new user
+      tags:
+        - Auth
       description: Register a new user with name, email, password, and optional avatar
       requestBody:
         required: true
@@ -85,6 +87,8 @@ paths:
   /auth/login:
     post:
       summary: Login a user
+      tags:
+        - Auth
       description: Authenticate a user with email and password
       requestBody:
         required: true
@@ -149,6 +153,8 @@ paths:
   /auth/refresh:
     get:
       summary: Refresh access token
+      tags:
+        - Auth
       description: Generate a new access token using a refresh token
       responses:
         "200":
@@ -181,6 +187,8 @@ paths:
   /auth/verify-Email/{token}:
     get:
       summary: Verify email address
+      tags:
+        - Auth
       description: Verify a user's email address using a verification token
       parameters:
         - name: token
@@ -232,6 +240,8 @@ paths:
   /auth/google:
     get:
       summary: Authenticate with Google
+      tags:
+        - Auth
       description: Redirect to Google OAuth for authentication
       responses:
         "302":
@@ -240,6 +250,8 @@ paths:
   /auth/google/callback:
     get:
       summary: Google OAuth callback
+      tags:
+        - Auth
       description: Handle Google OAuth callback and redirect to user profile
       responses:
         "200":
@@ -264,6 +276,8 @@ paths:
   /auth/forgot-password:
     patch:
       summary: Request password reset
+      tags:
+        - Auth
       description: Send a password reset link to the user's email
       requestBody:
         required: true
@@ -294,6 +308,8 @@ paths:
   /auth/send-email:
     patch:
       summary: Send email verification token
+      tags:
+        - Auth
       description: Send an email verification token to the user's email
       responses:
         "200":
