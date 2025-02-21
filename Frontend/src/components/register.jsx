@@ -3,6 +3,7 @@ import {useState}  from "react";
 import axios from 'axios';
 
 function Register(){
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   let [userName,setUserName]= useState("");
   let [userEmail,setUserEmail]= useState("");
@@ -26,7 +27,7 @@ function Register(){
   function sendRegisterDate(){
     axios({
       method: 'post',
-      url: 'https://learning-management-system-262s.onrender.com/api/v1/auth/register',
+      url: `${apiUrl}/auth/register`,
       data: {
         name:userName,
         email:userEmail,

@@ -2,6 +2,8 @@ import {Link} from 'react-router-dom';
 import {useState} from 'react';
 import axios from 'axios';
 function Login(){
+  const apiUrl = import.meta.env.VITE_API_URL;
+  // console.log(apiUrl);
   let [userEmail,setUserEmail]=useState("");
   let [password,setPassword]=useState("");
   let[error,setError]=useState("");
@@ -16,7 +18,7 @@ function Login(){
     function sendLoginData(){
       axios({
         method: 'post',
-        url: 'https://learning-management-system-262s.onrender.com/api/v1/auth/login',
+        url: `${apiUrl}/auth/login`,
         data: {
           email:userEmail,
           password:password,
