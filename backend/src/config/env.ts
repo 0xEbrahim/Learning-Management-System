@@ -24,4 +24,5 @@ export default {
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
   GOOGLE_DEV_CALLBACK: process.env.GOOGLE_DEV_CALLBACK as string,
   GOOGLE_PROD_CALLBACK: process.env.GOOGLE_PROD_CALLBACK as string,
+  FRONT_END_BASE: process.env.FRONT_END_BASE as string,
 };

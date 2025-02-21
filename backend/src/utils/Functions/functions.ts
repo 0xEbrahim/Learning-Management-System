@@ -8,7 +8,7 @@ import sendEmail from "../../config/email";
 import { IUser } from "../../modules/User/User.interface";
 import { generatePasswordResetTemplate } from "../../views/passwordResetTemplate";
 export const hashPassword = async (password: string) => {
-  const hashed = await bcrypt.hash(password, 12);
+  const hashed = await bcrypt.hash(password, 10);
   return hashed;
 };
 
@@ -29,10 +29,7 @@ export const createEmailVerifyToken = async (user: IUser) => {
       emailVerificationTokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000),
     },
   });
-  let link;
-  if (config.NODE_ENV === "development")
-    link = `${config.DEV_URL}/auth/verify-Email/${code}`;
-  else link = `${config.PROD_URL}/auth/verify-Email/${code}`;
+  let link = `${config.FRONT_END_BASE}/verifyEmail/${code}`;
   const data: IEmail = {
     email: user.email,
     subject: "Email Verify",
@@ -54,10 +51,7 @@ export const createResetPasswordToken = async (user: IUser) => {
       passwordResetTokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000),
     },
   });
-  let link;
-  if (config.NODE_ENV === "development")
-    link = `${config.DEV_URL}/auth/reset-password/${code}`;
-  else link = `${config.PROD_URL}/auth/reset-password/${code}`;
+  let link = `${config.FRONT_END_BASE}/reset-password/${code}`;
   const data: IEmail = {
     email: user.email,
     subject: "Password Reset",

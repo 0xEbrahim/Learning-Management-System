@@ -38,7 +38,7 @@ class UserService {
     return response;
   }
 
-  async search(Payload: any): Promise<any> {
+  async search(Payload: any): Promise<IResponse> {
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
@@ -64,7 +64,6 @@ class UserService {
         orderBy[key] = value;
       }
     const options: Record<string, any> = { skip: skip, take: +limit };
-    console.log(options);
     if (JSON.stringify(fields) !== "{}") {
       options.select = fields;
     }
