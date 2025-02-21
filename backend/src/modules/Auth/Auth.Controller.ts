@@ -36,7 +36,7 @@ export const login = asyncHandler(
     const result: IResponse = await AuthService.login(req.body as ILoginBody);
     if (result.statusCode === 403) {
       res.cookie("email", req.body.email, {
-        maxAge: 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
         secure: config.NODE_ENV === "production",
         httpOnly: true,
       });
@@ -128,3 +128,5 @@ export const resetPassword = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+

@@ -27,6 +27,7 @@ const limiter = rateLimit({
   standardHeaders: "draft-8",
   legacyHeaders: false,
   message: "Too many requests, please try again later.",
+  validate: { xForwardedForHeader: false },
 });
 app.use(ExpressMongoSanitize());
 app.use(express.json({ limit: "50mb" }));
