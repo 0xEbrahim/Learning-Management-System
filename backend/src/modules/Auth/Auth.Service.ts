@@ -226,7 +226,7 @@ class AuthService {
         id: user.id,
       },
       data: {
-        password: password,
+        password: hashed,
         passwordResetToken: null,
         passwordResetTokenExpiresAt: null,
         passwordChangedAt: new Date(Date.now()),
