@@ -47,6 +47,11 @@ app.use(
 app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
+app.get("/", (req, res, next) => {
+  res.json({
+    message: "Hello to LMS API",
+  });
+});
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/courses", courseRouter);
