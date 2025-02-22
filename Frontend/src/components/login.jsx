@@ -1,9 +1,12 @@
 import {Link, useNavigate} from 'react-router-dom';
 import {useState} from 'react';
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
+import {useDispatch } from "react-redux";
+import { logIn } from '../rtk/slices/userSlice';
+
 function Login(){
   let navigate=useNavigate();
+  let dispatch=useDispatch();
   const apiUrl = import.meta.env.VITE_API_URL;
   // console.log(apiUrl);
   let [userEmail,setUserEmail]=useState("");
@@ -32,7 +35,9 @@ function Login(){
           "Content-Type":'application/json'
         }
       }).then((response)=>{
+        let userId=response.data.data.user.id;
         setResponse("verified");
+        dispatch(logIn({email:userEmail ,id:userId}));
       }).catch((err)=>{
         setError(err.response.data.message.slice(0,62));
       });
