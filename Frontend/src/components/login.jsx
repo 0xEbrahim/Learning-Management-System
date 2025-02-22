@@ -89,7 +89,7 @@ function Login(){
                 onChange={(e)=>{ handlePassowrd(e.target.value)}}
               />
             </div>
-  
+            <Link to="/forgotPassword" className='text-indigo-600 col-span-6'>Forgot password?</Link>
             <div className="col-span-6">
               <p className="text-sm text-gray-500">
                 By creating an account, you agree to our
@@ -114,7 +114,6 @@ function Login(){
             </div>
           {/* conditional redering */}
           {error && <p className='text-red-500 col-span-6'>{error}</p>}
-          {error==="Incorrect email or password." &&<p className='col-span-6 inline-block'><Link to="/forgotPassword" className='text-indigo-600'>Forgot password?</Link></p>}
           {response==="verified" &&(navigate("/homePage"))}
           </form>
         </div>
