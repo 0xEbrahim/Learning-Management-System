@@ -3,9 +3,14 @@ import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
-import { ICourse, ICreateCourseBody } from "./Course.interface";
+import {
+  ICourse,
+  ICreateCourseBody,
+  IDeleteCourseBody,
+} from "./Course.interface";
 import logger from "../../config/logger";
 import ApiFeatures from "../../utils/APIFeatures";
+import { deleteCourse } from "./Course.controller";
 
 class CourseService {
   async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
@@ -152,6 +157,40 @@ class CourseService {
       data: {
         courses,
       },
+    };
+    return response;
+  }
+
+  async deleteCourse(Payload: IDeleteCourseBody): Promise<IResponse> {
+    const { id, courseId } = Payload;
+    const user = await prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    const course = await prisma.course.findUnique({
+      where: {
+        id: courseId,
+      },
+    });
+    if (!course)
+      throw new APIError(
+        "courseId: " + courseId + " did not match any course.",
+        404
+      );
+    if (user?.role === "ADMIN" || course.publisherId === user?.id) {
+      await prisma.course.delete({
+        where: {
+          id: courseId,
+        },
+      });
+    } else {
+      throw new APIError("You are not authorized to delete this course", 401);
+    }
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "Course deleted successfully",
     };
     return response;
   }

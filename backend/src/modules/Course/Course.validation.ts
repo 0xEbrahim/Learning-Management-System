@@ -18,3 +18,9 @@ export const getCourseByIdValidation = z.object({
     id: z.string(),
   }),
 });
+
+export const deleteCourseValidation = z.object({
+  params: z.object({
+    id: z.string(),
+  }),
+});

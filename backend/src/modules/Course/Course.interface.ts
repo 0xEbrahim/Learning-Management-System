@@ -20,3 +20,8 @@ export interface ICreateCourseBody {
   description: string;
   thumbnail: string;
 }
+
+export interface IDeleteCourseBody {
+  id: string;
+  courseId: string;
+}

@@ -3,6 +3,7 @@ import isAuthenticated from "../../middlewares/isAuthenticated";
 import isAuthorized from "../../middlewares/isAuthorized";
 import {
   createCourse,
+  deleteCourse,
   getCourseById,
   getCourses,
   search,
@@ -11,6 +12,7 @@ import uplaoder from "../../config/multer";
 
 import {
   createCourseValidation,
+  deleteCourseValidation,
   getCourseByIdValidation,
 } from "./Course.validation";
 import { validate } from "../../utils/validation";
@@ -24,13 +26,20 @@ router.post(
   uplaoder.single("image"),
   createCourse
 );
-router.get("/", isAuthenticated, getCourses);
+router.get("/", isAuthenticated, isAuthorized("ADMIN"), getCourses);
 router.get("/search", isAuthenticated, search);
 router.get(
   "/:id",
   isAuthenticated,
   validate(getCourseByIdValidation),
   getCourseById
+);
+router.delete(
+  "/:id",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  validate(deleteCourseValidation),
+  deleteCourse
 );
 
 export const courseRouter = router;
