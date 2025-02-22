@@ -12,7 +12,10 @@ export interface ICourse {
   demoUrl: string;
 }
 
-
 export interface ICreateCourseBody {
-    
+  publisherId: string;
+  name: string;
+  price: string;
+  description: string;
+  thumbnail: string;
 }

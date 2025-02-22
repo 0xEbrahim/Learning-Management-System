@@ -118,9 +118,9 @@ model Course {
   name           String
   price          Float
   description    String
-  averageRatings Float
+  averageRatings Float           @default(0)
   thumbnail      String
-  purchased      Int
+  purchased      Int             @default(0)
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   demo           Demo?
