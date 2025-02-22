@@ -4,6 +4,7 @@ export interface IRegisterBody {
   password: string;
   confirmPassword: string;
   avatar?: string;
+  role: "TEACHER" | "STUDENT";
 }
 
 export interface ILoginBody {

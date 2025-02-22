@@ -12,6 +12,7 @@ export const registerValidation = z.object({
       confirmPassword: z
         .string()
         .min(6, "password should be more than 6 characters"),
+      role: z.enum(["TEACHER", "STUDENT"]),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
