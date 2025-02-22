@@ -31,7 +31,7 @@ class ApiFeatures<T> {
               ? op
               : null;
           if (prismaOp) {
-            queryObj[key] = { [prismaOp]: queryObj[key][op] };
+            queryObj[key] = { [prismaOp]: Number(queryObj[key][op]) };
           }
         });
       }

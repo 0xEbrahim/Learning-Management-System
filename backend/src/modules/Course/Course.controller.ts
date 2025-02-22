@@ -26,3 +26,11 @@ export const getCourseById = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+export const getCourses = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // console.log(req.query);
+    const result: IResponse = await CourseService.getCourses(req.query);
+    sendResponse(result, res);
+  }
+);

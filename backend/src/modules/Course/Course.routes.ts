@@ -1,7 +1,7 @@
 import express from "express";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import isAuthorized from "../../middlewares/isAuthorized";
-import { createCourse, getCourseById } from "./Course.controller";
+import { createCourse, getCourseById, getCourses } from "./Course.controller";
 import uplaoder from "../../config/multer";
 
 import {
@@ -19,6 +19,7 @@ router.post(
   uplaoder.single("image"),
   createCourse
 );
+router.get("/", isAuthenticated, isAuthorized("ADMIN"), getCourses);
 router.get(
   "/:id",
   isAuthenticated,

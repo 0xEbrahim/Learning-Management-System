@@ -3,8 +3,9 @@ import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
-import { ICreateCourseBody } from "./Course.interface";
+import { ICourse, ICreateCourseBody } from "./Course.interface";
 import logger from "../../config/logger";
+import ApiFeatures from "../../utils/APIFeatures";
 
 class CourseService {
   async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
@@ -66,6 +67,21 @@ class CourseService {
       data: {
         course,
       },
+    };
+    return response;
+  }
+
+  async getCourses(Payload: any): Promise<any> {
+    const query = new ApiFeatures(prisma, "course", Payload)
+      .filter()
+      .limitFields()
+      .sort()
+      .paginate();
+    const courses = await query.execute();
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: { courses },
     };
     return response;
   }
