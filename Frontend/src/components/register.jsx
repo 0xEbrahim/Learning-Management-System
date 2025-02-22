@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom';
 import {useState}  from "react";
 import axios from 'axios';
-import { useRef } from 'react';
+import { FaStarOfLife } from "react-icons/fa";
 function Register(){
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -9,10 +9,10 @@ function Register(){
   let [userEmail,setUserEmail]= useState("");
   let [password,setPassword]= useState("");
   let [confirmPassword,setConfirmPassword]=useState("");
+  let [userRole,setUserRole]=useState("");
   let [error,setError]=useState("");
   let [response,setResponse]=useState("");
-  // let[disabled,setDisabled]=useState(false);
-  // let buttonRef=useRef();
+
 
 
     let handleUserName=(value)=>{
@@ -20,6 +20,9 @@ function Register(){
     }
     let handleUserEmail=(value)=>{
       setUserEmail(value);
+    }
+  let handleUserRole=(value)=>{
+    setUserRole(value);
   }
     let handlePassowrd=(value)=>{
     setPassword(value);
@@ -27,6 +30,7 @@ function Register(){
     let handleConfirmPassword=(value)=>{
     setConfirmPassword(value);
   }
+
       // make sure password===confirm password
 
   function sendRegisterDate(){
@@ -43,7 +47,8 @@ function Register(){
         email:userEmail,
         password:password,
         confirmPassword:confirmPassword,
-        image:""
+        image:"",
+        role:userRole
       },
       headers:{
         Accept:'applicaton/json',
@@ -51,7 +56,6 @@ function Register(){
       }
     }).then((res)=>{
       setResponse(res.data.message)
-      // console.log(res.data.message)
     }).catch((err)=>{
       setError(err.response.data.message.slice(0,60));
     });
@@ -94,7 +98,6 @@ function Register(){
               name="first_name"
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-xs"
               onChange={(e)=>{handleUserName(e.target.value) 
-                // console.log(userName)
               }}
             />
           </div>
@@ -108,11 +111,19 @@ function Register(){
               name="email"
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-xs"
               onChange={(e)=>{handleUserEmail(e.target.value)
-                // console.log(userEmail)
               }}
             />
           </div>
-
+            {/* choose your rule */}
+            <div className='col-span-6 flex items-center gap-1 mt-3'><FaStarOfLife className='text-indigo-600 text-sm' /><p className='col-span-6 text-md font-bold'>Choose Your Rule</p></div>
+            <div className='col-span-3 items-center flex gap-1 mb-3'>
+              <input type="radio" id="teacher" name="role" value="TEACHER" className='accent-indigo-600' onChange={(e)=>{handleUserRole(e.target.value)}}></input>
+              <label  htmlFor="teacher" className="text-sm font-medium text-gray-700">Teacher</label>
+            </div>
+            <div className='col-span-3 items-center flex gap-1 mb-3'>
+              <input type="radio" id="student" name="role" value="STUDENT" className='accent-indigo-600' onChange={(e)=>{handleUserRole(e.target.value)}}></input>
+              <label  htmlFor="student" className="text-sm font-medium text-gray-700">Student</label>
+            </div>
           <div className="col-span-6 sm:col-span-3">
             <label htmlFor="Password" className="block text-sm font-medium text-gray-700"> Password </label>
 
@@ -122,7 +133,6 @@ function Register(){
               name="password"
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-xs"
               onChange={(e)=>{handlePassowrd(e.target.value)
-                // console.log(password)
               }}
             />
           </div>
@@ -138,7 +148,7 @@ function Register(){
               name="password_confirmation"
               className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-xs"
               onChange={(e)=>{handleConfirmPassword(e.target.value)
-                // console.log(confirmPassword)
+
               }}
             />
           </div>
@@ -156,10 +166,9 @@ function Register(){
           <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
             <button
               className="inline-block shrink-0 rounded-md border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden"
-              // disabled={disabled}
+
               onClick={()=>{
                 sendRegisterDate();
-                // console.log(userName,userEmail,password,confirmPassword);
               }}
             >
               Create an account
