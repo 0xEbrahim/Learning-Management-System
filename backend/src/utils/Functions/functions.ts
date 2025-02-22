@@ -60,7 +60,13 @@ export const createReactiveEmail = async (user: IUser) => {
 export const createResetPasswordToken = async (user: IUser) => {
   const code = crypto.randomBytes(32).toString("hex");
   const hashed = crypto.createHash("sha256").update(code).digest("hex");
-
+  let link = `${config.FRONT_END_BASE}/resetPassword/${code}`;
+  const data: IEmail = {
+    email: user.email,
+    subject: "Password Reset",
+    template: generatePasswordResetTemplate(link),
+  };
+  await sendEmail(data);
   user = await prisma.user.update({
     where: {
       id: user.id,
@@ -70,13 +76,6 @@ export const createResetPasswordToken = async (user: IUser) => {
       passwordResetTokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000),
     },
   });
-  let link = `${config.FRONT_END_BASE}/resetPassword/${code}`;
-  const data: IEmail = {
-    email: user.email,
-    subject: "Password Reset",
-    template: generatePasswordResetTemplate(link),
-  };
-  await sendEmail(data);
 };
 
 export const cleanUsersData = (user: any, ...props: any) => {
