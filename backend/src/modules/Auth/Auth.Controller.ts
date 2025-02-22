@@ -19,11 +19,6 @@ export const register = asyncHandler(
       data.avatar = req.file.path;
     }
     const result: string = await AuthService.register(data);
-    res.cookie("email", data.email, {
-      maxAge: 24 * 60 * 60 * 1000,
-      secure: config.NODE_ENV === "production",
-      httpOnly: true,
-    });
     res.status(201).json({
       status: "Success",
       message: result,
@@ -73,7 +68,6 @@ export const verifyEmailVerificationToken = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const { token } = req.params;
     const result = await AuthService.verifyEmail(token);
-    res.clearCookie("email");
     res.status(200).json({
       status: "Success",
       message: result,
@@ -128,5 +122,3 @@ export const resetPassword = asyncHandler(
     sendResponse(result, res);
   }
 );
-
-

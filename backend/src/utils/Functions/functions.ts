@@ -8,6 +8,7 @@ import sendEmail from "../../config/email";
 import { IUser } from "../../modules/User/User.interface";
 import { generatePasswordResetTemplate } from "../../views/passwordResetTemplate";
 import { generateAccountReactiveTemplate } from "../../views/accountReactive";
+
 export const hashPassword = async (password: string) => {
   const hashed = await bcrypt.hash(password, 10);
   return hashed;

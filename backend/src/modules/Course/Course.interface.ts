@@ -10,9 +10,13 @@ export interface ICourse {
   createdAt: Date;
   updatedAt: Date;
   demoUrl: string;
+  publisher?: { name: string; avatar?: string | null };
 }
 
-
 export interface ICreateCourseBody {
-    
+  publisherId: string;
+  name: string;
+  price: string;
+  description: string;
+  thumbnail: string;
 }
