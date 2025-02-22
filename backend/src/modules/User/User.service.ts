@@ -23,6 +23,18 @@ class UserService {
       where: {
         id: Payload,
       },
+      include: {
+        courses: {
+          select: {
+            id: true,
+          },
+        },
+        publishedCourses: {
+          select: {
+            id: true,
+          },
+        },
+      },
     });
     if (!user) throw new APIError("Invalid user id", 404);
     cleanUsersData(user);

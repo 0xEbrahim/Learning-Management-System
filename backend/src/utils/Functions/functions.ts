@@ -90,6 +90,7 @@ export const cleanUsersData = (user: any, ...props: any) => {
     "passwordChangedAt",
     "emailVerified",
     "deleteAt",
+    "isActive",
     ...props,
   ];
   deleted.forEach((el) => delete user[el]);

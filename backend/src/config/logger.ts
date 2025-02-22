@@ -11,7 +11,10 @@ const logger = winston.createLogger({
   level: "info",
   format: combine(timestamp(), json(), prettyPrint()),
   transports: [
-    new winston.transports.File({ filename:  `${__dirname}/../../logs/error.log`, level: 'error' }),
+    new winston.transports.File({
+      filename: `${__dirname}/../../logs/error.log`,
+      level: "error",
+    }),
     new winston.transports.File({
       filename: `${__dirname}/../../logs/app.log`,
     }),
@@ -19,9 +22,11 @@ const logger = winston.createLogger({
   ],
 });
 
-if (config.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple(),
-  }));
+if (config.NODE_ENV !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
 }
 export default logger;
