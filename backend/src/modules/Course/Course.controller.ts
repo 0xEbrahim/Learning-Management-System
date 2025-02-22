@@ -20,7 +20,7 @@ export const createCourse = asyncHandler(
 );
 
 export const getCourseById = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: IRequest, res: Response, next: NextFunction) => {
     const id = req.params.id;
     const result: IResponse = await CourseService.getCourseById(id);
     sendResponse(result, res);
@@ -28,9 +28,17 @@ export const getCourseById = asyncHandler(
 );
 
 export const getCourses = asyncHandler(
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: IRequest, res: Response, next: NextFunction) => {
     // console.log(req.query);
     const result: IResponse = await CourseService.getCourses(req.query);
+    sendResponse(result, res);
+  }
+);
+
+export const search = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const { query } = req;
+    const result: IResponse = await CourseService.search(query);
     sendResponse(result, res);
   }
 );
