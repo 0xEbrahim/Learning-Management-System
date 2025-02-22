@@ -54,6 +54,7 @@ class AuthService {
         email: Payload.email,
         password: hashedPassword,
         avatar: avatar,
+        role: Payload.role,
       },
     });
     if (!user) {
