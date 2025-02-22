@@ -55,7 +55,7 @@ function ForgotPassword(){
 
       <button
         type="submit"
-        className="flex w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white justify-center items-center gap-2"
+        className="flex w-full rounded-lg bg-indigo-600 px-5 py-3 text-sm font-medium text-white justify-center items-center gap-2 cursor-pointer"
         onClick={()=>{sendEmail()}}
 
       >
