@@ -19,3 +19,10 @@ export const createCourse = asyncHandler(
   }
 );
 
+export const getCourseById = asyncHandler(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const result: IResponse = await CourseService.getCourseById(id);
+    sendResponse(result, res);
+  }
+);

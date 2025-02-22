@@ -41,7 +41,34 @@ class CourseService {
     return response;
   }
 
-
+  async getCourseById(Payload: string): Promise<IResponse> {
+    const course = await prisma.course.findUnique({
+      where: {
+        id: Payload,
+      },
+      include: {
+        publisher: {
+          select: {
+            name: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+    if (!course)
+      throw new APIError(
+        `course id: ${Payload} did not match any course.`,
+        404
+      );
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        course,
+      },
+    };
+    return response;
+  }
 }
 
 export default new CourseService();

@@ -12,3 +12,9 @@ export const createCourseValidation = z.object({
       .min(20, "Description should bne more than 20 charcters"),
   }),
 });
+
+export const getCourseByIdValidation = z.object({
+  params: z.object({
+    id: z.string(),
+  }),
+});

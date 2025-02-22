@@ -1,10 +1,13 @@
 import express from "express";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import isAuthorized from "../../middlewares/isAuthorized";
-import { createCourse } from "./Course.controller";
+import { createCourse, getCourseById } from "./Course.controller";
 import uplaoder from "../../config/multer";
 
-import { createCourseValidation } from "./Course.validation";
+import {
+  createCourseValidation,
+  getCourseByIdValidation,
+} from "./Course.validation";
 import { validate } from "../../utils/validation";
 const router = express.Router();
 
@@ -15,6 +18,12 @@ router.post(
   validate(createCourseValidation),
   uplaoder.single("image"),
   createCourse
+);
+router.get(
+  "/:id",
+  isAuthenticated,
+  validate(getCourseByIdValidation),
+  getCourseById
 );
 
 export const courseRouter = router;
