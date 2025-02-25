@@ -6,7 +6,7 @@ export const createCourseValidation = z.object({
       .string()
       .min(6, "Course's name cannot be less than 6 charcters")
       .max(25, "Course's name cannot be more than 25 charcters"),
-    price: z.number(),
+    price: z.string(),
     description: z
       .string()
       .min(20, "Description should bne more than 20 charcters"),

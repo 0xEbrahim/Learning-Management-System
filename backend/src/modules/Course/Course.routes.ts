@@ -22,8 +22,8 @@ router.post(
   "/",
   isAuthenticated,
   isAuthorized("TEACHER"),
-  validate(createCourseValidation),
   uplaoder.single("image"),
+  validate(createCourseValidation),
   createCourse
 );
 router.get("/", isAuthenticated, isAuthorized("ADMIN"), getCourses);
