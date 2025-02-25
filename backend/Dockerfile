@@ -1,10 +1,11 @@
-FROM node:hydrogen-alpine3.21
+# STAGE 1
+FROM node:18-alpine AS build
 
 WORKDIR /backend
 
 COPY package*.json ./
 
-RUN npm ci
+RUN npm i
 
 COPY . .
 
@@ -14,4 +15,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["npm","run","start"]
+CMD ["node","dist/server.js"]

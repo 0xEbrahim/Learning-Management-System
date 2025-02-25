@@ -1,0 +1,34 @@
+version: "3.8"
+services:
+  db:
+    container_name: db
+    image: cockroachdb/cockroach:latest
+    env_file:
+      - .env
+    ports:
+      - published: 26257
+        target: 26257
+      - published: 8080
+        target: 8080
+
+    volumes:
+      - ./cockroach-data:/cockroachdb/cockroach-data
+    command: start-single-node --insecure
+  web:
+    build: .
+    depends_on:
+      - db
+    container_name: web
+    ports:
+      - published: 3000
+        target: 3000
+      - published: 5555
+        target: 5555
+    env_file:
+      - .env
+    volumes:
+      - /backend/node_modules
+    working_dir: /backend
+
+volumes:
+  cockroach-data:

@@ -32,21 +32,7 @@
     "winston": "^3.17.0",
     "yamljs": "^0.3.0",
     "zod": "^3.24.2",
-    "zod-validation-error": "^3.4.0"
-  },
-  "name": "backend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon",
-    "start": "node ./dist/server.js",
-    "build": "tsc&&node ./dist/copy.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "devDependencies": {
+    "zod-validation-error": "^3.4.0",
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
@@ -73,5 +59,18 @@
     "@types/winston": "^2.4.4",
     "@types/yamljs": "^0.2.34",
     "prisma": "^6.4.1"
-  }
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon",
+    "start": "node ./dist/server.js",
+    "build": "tsc && node ./dist/copy.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {}
 }

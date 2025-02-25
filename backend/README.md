@@ -10,16 +10,28 @@ git clone https://github.com/0xEbrahim/Learning-Management-System
 cd backend
 ```
 
-#### 2 - build the docker image from the Dockerfile
+#### 2 - Create your `.env` file.
 
-```docker
-docker build -t lms-api:v1.0 .
+- use `.env.example` file as a refrence for the variables that should be exist on the `.env` file, if you specified a PORT that is not 3000 make sure you changes to exposed ports at `dockerfile` and `docker-compose` files
+
+#### 3 - build the docker image from the `docker-compose.yml` file and make it up using
+
+```shell
+docker-compose up --build
 ```
 
-#### 3 - Run docker container from the image but you need to pass `.env` file providing all the requirements that exists at `.env.example` file and expose PORT `3000`
+- You can use `-d` tag with the command above to make it work on the background
 
-```
-docker container run --env-file .env -p 3000:3000 lms-api:v1.0
+#### 4 - Now you need to migrate your database before start working with the application
+
+```shell
+docker-compose exec web npx prisma migrate dev --name migrate_my_db
 ```
 
-- You should see that you application is running now
+#### 5 - You can access you prisma studio
+
+```shell
+docker-compose exec web npx prisma studio
+```
+
+#### 6 - Now your application is running on the port you specified at the `.env` file, you can start working with it
