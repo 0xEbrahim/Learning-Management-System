@@ -3,18 +3,14 @@ import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
-import {
-  ICourse,
-  ICreateCourseBody,
-  IDeleteCourseBody,
-} from "./Course.interface";
+import { ICreateCourseBody, IDeleteCourseBody } from "./Course.interface";
 import logger from "../../config/logger";
 import ApiFeatures from "../../utils/APIFeatures";
-import { deleteCourse } from "./Course.controller";
 
 class CourseService {
   async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
-    const { name, publisherId, thumbnail, price, description } = Payload;
+    const { name, publisherId, thumbnail, price, description, categories } =
+      Payload;
     if (!thumbnail) throw new APIError("Course should have a thumbnail", 400);
     const uploaded = await cloudinary.uploader.upload(thumbnail, {
       folder: "Course",
@@ -37,6 +33,14 @@ class CourseService {
     logger.info(
       "Teacher: " + publisherId + " created a new course : " + course.id
     );
+    categories.forEach(async (el) => {
+      await prisma.categoryOnCourses.create({
+        data: {
+          courseId: course.id,
+          categoryName: el,
+        },
+      });
+    });
     const response: IResponse = {
       status: "Success",
       statusCode: 201,
@@ -57,6 +61,37 @@ class CourseService {
           select: {
             name: true,
             avatar: true,
+          },
+        },
+        prerequisites: {
+          select: {
+            title: true,
+          },
+        },
+        demo: {
+          select: {
+            url: true,
+          },
+        },
+        courseData: {
+          select: {
+            title: true,
+            videoUrl: true,
+            videoLength: true,
+            videoThumbnail: true,
+          },
+        },
+        reviews: {
+          select: {
+            author: {
+              select: {
+                name: true,
+                avatar: true,
+              },
+            },
+            review: true,
+            rating: true,
+            Replies: true,
           },
         },
       },

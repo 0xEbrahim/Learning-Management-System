@@ -21,7 +21,7 @@ const router = express.Router();
 router.post(
   "/",
   isAuthenticated,
-  isAuthorized("TEACHER"),
+  isAuthorized("TEACHER", "ADMIN"),
   uplaoder.single("image"),
   validate(createCourseValidation),
   createCourse

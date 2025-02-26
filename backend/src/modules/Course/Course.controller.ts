@@ -13,7 +13,7 @@ export const createCourse = asyncHandler(
       price: req.body.price,
       description: req.body.description,
       thumbnail: req.file?.path as string,
-      categories: req.body.categpries,
+      categories: req.body.categories,
     };
     const result: IResponse = await CourseService.createCourse(data);
     sendResponse(result, res);

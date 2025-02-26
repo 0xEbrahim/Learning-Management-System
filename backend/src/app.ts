@@ -16,6 +16,7 @@ import { authRouter } from "./modules/Auth/Auth.Routes";
 import { globalErrorHandler, notFound } from "./middlewares/globalError";
 import { userRouter } from "./modules/User/User.routes";
 import { courseRouter } from "./modules/Course/Course.routes";
+import { categoryRouter } from "./modules/Category/Category.routes";
 
 dotenv.config();
 const app = express();
@@ -41,7 +42,7 @@ app.use(
     secret: config.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: { secure: config.NODE_ENV === "production" },
   })
 );
 app.use(helmet());
@@ -55,6 +56,7 @@ app.get("/", (req, res, next) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/courses", courseRouter);
+app.use("/api/v1/categories", categoryRouter);
 app.all("*", notFound);
 app.use(globalErrorHandler);
 export default app;

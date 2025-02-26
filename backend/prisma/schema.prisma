@@ -100,14 +100,13 @@ model Prerequisites {
   courseId  String
   title     String
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  url       String
   course    Course   @relation(fields: [courseId], references: [id])
 }
 
 model Demo {
   id       String  @id @default(uuid())
   courseId String  @unique
+  url       String
   course   Course? @relation(fields: [courseId], references: [id])
 }
 
@@ -122,7 +121,7 @@ model CategoryOnCourses {
   id         String   @id @default(uuid())
   courseId   String
   categoryName String
-  category   Category @relation(fields: [categoryName], references: [id])
+  category   Category @relation(fields: [categoryName], references: [name])
   course     Course   @relation(fields: [courseId], references: [id])
 }
 
