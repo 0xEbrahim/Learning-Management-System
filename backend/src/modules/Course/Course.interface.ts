@@ -15,7 +15,12 @@ export interface ICourse {
 
 export interface IGetCoursesByIdBody {
   id: string;
-  categoryId: string;
+  categoryId?: string;
+}
+
+export interface IGetCoursesBody {
+  query: any;
+  categoryId?: string;
 }
 export interface ICreateCourseBody {
   publisherId: string;

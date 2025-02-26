@@ -4,6 +4,7 @@ import { IRequest, IResponse } from "../../Interfaces/types";
 import {
   ICreateCourseBody,
   IDeleteCourseBody,
+  IGetCoursesBody,
   IGetCoursesByIdBody,
 } from "./Course.interface";
 import CourseService from "./Course.service";
@@ -38,7 +39,11 @@ export const getCourseById = asyncHandler(
 
 export const getCourses = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    const result: IResponse = await CourseService.getCourses(req.query);
+    const data: IGetCoursesBody = {
+      query: req.query,
+      categoryId: req.params.categoryId,
+    };
+    const result: IResponse = await CourseService.getCourses(data);
     sendResponse(result, res);
   }
 );

@@ -6,10 +6,12 @@ import APIError from "../../utils/APIError";
 import {
   ICreateCourseBody,
   IDeleteCourseBody,
+  IGetCoursesBody,
   IGetCoursesByIdBody,
 } from "./Course.interface";
 import logger from "../../config/logger";
 import ApiFeatures from "../../utils/APIFeatures";
+import { courseIncludeOptions } from "../../utils/options";
 
 class CourseService {
   async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
@@ -58,45 +60,6 @@ class CourseService {
   async getCourseById(Payload: IGetCoursesByIdBody): Promise<IResponse> {
     let course,
       check = false;
-    const includeOptions = {
-      publisher: {
-        select: {
-          name: true,
-          avatar: true,
-        },
-      },
-      prerequisites: {
-        select: {
-          title: true,
-        },
-      },
-      demo: {
-        select: {
-          url: true,
-        },
-      },
-      courseData: {
-        select: {
-          title: true,
-          videoUrl: true,
-          videoLength: true,
-          videoThumbnail: true,
-        },
-      },
-      reviews: {
-        select: {
-          author: {
-            select: {
-              name: true,
-              avatar: true,
-            },
-          },
-          review: true,
-          rating: true,
-          Replies: true,
-        },
-      },
-    };
     const { id, categoryId } = Payload;
     if (categoryId) {
       check = true;
@@ -117,7 +80,7 @@ class CourseService {
           categoryName: false,
           course: {
             include: {
-              ...includeOptions,
+              ...courseIncludeOptions,
             },
           },
         },
@@ -128,7 +91,7 @@ class CourseService {
           id: id,
         },
         include: {
-          ...includeOptions,
+          ...courseIncludeOptions,
         },
       });
     }
@@ -149,17 +112,48 @@ class CourseService {
     return response;
   }
 
-  async getCourses(Payload: any): Promise<IResponse> {
-    const query = new ApiFeatures(prisma, "course", Payload)
-      .filter()
-      .limitFields()
-      .sort()
-      .paginate();
-    const courses = await query.execute();
+  async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
+    const { query: q, categoryId } = Payload;
+    let courses,
+      check = false;
+    if (categoryId) {
+      check = true;
+      const category = await prisma.category.findUnique({
+        where: {
+          id: categoryId,
+        },
+      });
+      if (!category)
+        throw new APIError("Invalid category id: " + categoryId, 404);
+      courses = await prisma.categoryOnCourses.findMany({
+        where: {
+          categoryName: category.name,
+        },
+        select: {
+          courseId: false,
+          categoryName: false,
+          course: {
+            select: {
+              name: true,
+              thumbnail: true,
+              price: true,
+              description: true,
+            },
+          },
+        },
+      });
+    } else {
+      const query = new ApiFeatures(prisma, "course", q)
+        .filter()
+        .limitFields()
+        .sort()
+        .paginate();
+      courses = await query.execute();
+    }
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
-      data: { courses },
+      data: check ? courses : { courses },
     };
     return response;
   }
