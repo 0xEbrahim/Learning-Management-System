@@ -11,7 +11,7 @@ import {
 } from "./Course.interface";
 import logger from "../../config/logger";
 import ApiFeatures from "../../utils/APIFeatures";
-import { courseIncludeOptions } from "../../utils/options";
+import { courseIncludeOptions, searchFilterOptions } from "../../utils/options";
 
 class CourseService {
   async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
@@ -159,45 +159,9 @@ class CourseService {
   }
 
   async search(Payload: any): Promise<IResponse> {
-    let { sort, page, limit, fields, q, price, purchased, averageRatings } =
-      Payload;
+    let { q, price, purchased, averageRatings } = Payload;
     const filterWith: any = { price, purchased, averageRatings };
-    const exc = ["sort", "page", "fields", "q", "limit"];
-    exc.forEach((el) => delete Payload[el]);
-    page = page || 1;
-    limit = limit || 10;
-    const skip = (page - 1) * limit;
-    const options: Record<string, any> = {};
-    const orderBy: Record<string, any> = {};
-    const selected: Record<string, any> = {};
-    Object.keys(filterWith).forEach((key) => {
-      if (typeof filterWith[key] === "object") {
-        Object.keys(filterWith[key]).forEach((op) => {
-          const prismaOp =
-            op === "gte" || op === "gt" || op === "lte" || op === "lt"
-              ? op
-              : null;
-          if (prismaOp) filterWith[key][prismaOp] = Number(filterWith[key][op]);
-        });
-      } else {
-        delete filterWith[key];
-      }
-    });
-    options.skip = skip;
-    options.take = +limit;
-    if (fields) {
-      fields.split(",").forEach((el: any) => (selected[el] = true));
-      options.select = selected;
-    }
-    if (sort) {
-      sort = sort.split(",");
-      for (let i = 0; i < sort.length; i++) {
-        const key = sort[i].replace("-", "");
-        const value = sort[i].startsWith("-") ? "desc" : "asc";
-        orderBy[key] = value;
-      }
-      options.orderBy = orderBy;
-    }
+    const Options = searchFilterOptions(filterWith, Payload);
     const courses = await prisma.course.findMany({
       where: {
         OR: [
@@ -214,9 +178,9 @@ class CourseService {
             },
           },
         ],
-        ...filterWith,
+        ...Options[0],
       },
-      ...options,
+      ...Options[1],
     });
     const response: IResponse = {
       status: "Success",
