@@ -3,7 +3,11 @@ import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
-import { ICreateCourseBody, IDeleteCourseBody } from "./Course.interface";
+import {
+  ICreateCourseBody,
+  IDeleteCourseBody,
+  IGetCoursesByIdBody,
+} from "./Course.interface";
 import logger from "../../config/logger";
 import ApiFeatures from "../../utils/APIFeatures";
 
@@ -51,51 +55,83 @@ class CourseService {
     return response;
   }
 
-  async getCourseById(Payload: string): Promise<IResponse> {
-    const course = await prisma.course.findUnique({
-      where: {
-        id: Payload,
+  async getCourseById(Payload: IGetCoursesByIdBody): Promise<IResponse> {
+    let course,
+      check = false;
+    const includeOptions = {
+      publisher: {
+        select: {
+          name: true,
+          avatar: true,
+        },
       },
-      include: {
-        publisher: {
-          select: {
-            name: true,
-            avatar: true,
-          },
+      prerequisites: {
+        select: {
+          title: true,
         },
-        prerequisites: {
-          select: {
-            title: true,
-          },
+      },
+      demo: {
+        select: {
+          url: true,
         },
-        demo: {
-          select: {
-            url: true,
-          },
+      },
+      courseData: {
+        select: {
+          title: true,
+          videoUrl: true,
+          videoLength: true,
+          videoThumbnail: true,
         },
-        courseData: {
-          select: {
-            title: true,
-            videoUrl: true,
-            videoLength: true,
-            videoThumbnail: true,
-          },
-        },
-        reviews: {
-          select: {
-            author: {
-              select: {
-                name: true,
-                avatar: true,
-              },
+      },
+      reviews: {
+        select: {
+          author: {
+            select: {
+              name: true,
+              avatar: true,
             },
-            review: true,
-            rating: true,
-            Replies: true,
           },
+          review: true,
+          rating: true,
+          Replies: true,
         },
       },
-    });
+    };
+    const { id, categoryId } = Payload;
+    if (categoryId) {
+      check = true;
+      const category = await prisma.category.findUnique({
+        where: {
+          id: categoryId,
+        },
+      });
+      if (!category)
+        throw new APIError("Invalid category ID: " + categoryId, 404);
+      course = await prisma.categoryOnCourses.findFirst({
+        where: {
+          categoryName: category.name,
+          courseId: id,
+        },
+        select: {
+          courseId: false,
+          categoryName: false,
+          course: {
+            include: {
+              ...includeOptions,
+            },
+          },
+        },
+      });
+    } else {
+      course = await prisma.course.findUnique({
+        where: {
+          id: id,
+        },
+        include: {
+          ...includeOptions,
+        },
+      });
+    }
     if (!course)
       throw new APIError(
         `course id: ${Payload} did not match any course.`,
@@ -104,9 +140,11 @@ class CourseService {
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
-      data: {
-        course,
-      },
+      data: check
+        ? course
+        : {
+            course,
+          },
     };
     return response;
   }

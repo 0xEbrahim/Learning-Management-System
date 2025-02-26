@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import asyncHandler from "../../utils/asyncHandler";
 import { IRequest, IResponse } from "../../Interfaces/types";
-import { ICreateCourseBody, IDeleteCourseBody } from "./Course.interface";
+import {
+  ICreateCourseBody,
+  IDeleteCourseBody,
+  IGetCoursesByIdBody,
+} from "./Course.interface";
 import CourseService from "./Course.service";
 import sendResponse from "../../utils/sendResponse";
 
@@ -22,8 +26,12 @@ export const createCourse = asyncHandler(
 
 export const getCourseById = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IGetCoursesByIdBody = {
+      id: req.params.id,
+      categoryId: req.params.categoryId,
+    };
     const id = req.params.id;
-    const result: IResponse = await CourseService.getCourseById(id);
+    const result: IResponse = await CourseService.getCourseById(data);
     sendResponse(result, res);
   }
 );

@@ -11,8 +11,10 @@ import {
 } from "./Category.controller";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import isAuthorized from "../../middlewares/isAuthorized";
+import { courseRouter } from "../Course/Course.routes";
 const router = express.Router();
 
+router.use("/:categoryId/courses", courseRouter);
 router.post(
   "/",
   isAuthenticated,
