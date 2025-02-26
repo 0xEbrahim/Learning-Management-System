@@ -9,16 +9,26 @@ export interface ICourse {
   purchased: number;
   createdAt: Date;
   updatedAt: Date;
-  demoUrl: string;
+  url: string;
   publisher?: { name: string; avatar?: string | null };
 }
 
+export interface IGetCoursesByIdBody {
+  id: string;
+  categoryId?: string;
+}
+
+export interface IGetCoursesBody {
+  query: any;
+  categoryId?: string;
+}
 export interface ICreateCourseBody {
   publisherId: string;
   name: string;
   price: string;
   description: string;
   thumbnail: string;
+  categories: string[];
 }
 
 export interface IDeleteCourseBody {

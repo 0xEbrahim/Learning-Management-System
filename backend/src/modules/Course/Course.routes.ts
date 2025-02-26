@@ -16,12 +16,12 @@ import {
   getCourseByIdValidation,
 } from "./Course.validation";
 import { validate } from "../../utils/validation";
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.post(
   "/",
   isAuthenticated,
-  isAuthorized("TEACHER"),
+  isAuthorized("TEACHER", "ADMIN"),
   uplaoder.single("image"),
   validate(createCourseValidation),
   createCourse
