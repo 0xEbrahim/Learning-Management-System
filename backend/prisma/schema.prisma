@@ -111,19 +111,35 @@ model Demo {
   course   Course? @relation(fields: [courseId], references: [id])
 }
 
+model Category {
+  id      String              @id @default(uuid())
+  name    String              @unique
+  courses CategoryOnCourses[]
+  @@index([name])
+}
+
+model CategoryOnCourses {
+  id         String   @id @default(uuid())
+  courseId   String
+  categoryName String
+  category   Category @relation(fields: [categoryName], references: [id])
+  course     Course   @relation(fields: [courseId], references: [id])
+}
+
 model Course {
-  id             String          @id @default(uuid())
+  id             String              @id @default(uuid())
   publisherId    String
-  publisher      User            @relation("Publish", fields: [publisherId], references: [id])
+  publisher      User                @relation("Publish", fields: [publisherId], references: [id])
   name           String
   price          Float
   description    String
-  averageRatings Float           @default(0)
+  averageRatings Float               @default(0)
   thumbnail      String
-  purchased      Int             @default(0)
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
+  purchased      Int                 @default(0)
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
   demo           Demo?
+  categories     CategoryOnCourses[]
   prerequisites  Prerequisites[]
   reviews        Review[]
   courseData     Video[]

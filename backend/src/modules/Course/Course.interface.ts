@@ -19,6 +19,7 @@ export interface ICreateCourseBody {
   price: string;
   description: string;
   thumbnail: string;
+  categories: string[];
 }
 
 export interface IDeleteCourseBody {

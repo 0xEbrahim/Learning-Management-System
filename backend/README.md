@@ -10,6 +10,8 @@ git clone https://github.com/0xEbrahim/Learning-Management-System
 cd backend
 ```
 
+## If you have docker installed
+
 #### 2 - Create your `.env` file.
 
 - use `.env.example` file as a refrence for the variables that should be exist on the `.env` file, if you specified a PORT that is not 3000 make sure you changes to exposed ports at `dockerfile` and `docker-compose` files
