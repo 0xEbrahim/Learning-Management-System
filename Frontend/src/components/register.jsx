@@ -2,6 +2,7 @@ import {Link} from 'react-router-dom';
 import {useState}  from "react";
 import axios from 'axios';
 import { FaStarOfLife } from "react-icons/fa";
+
 function Register(){
   const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -62,7 +63,7 @@ function Register(){
   }
 
     return(
-<section className="bg-white">
+<section className="bg-white max-h-[100vh]">
   <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
     <aside className="relative block h-16 lg:order-last lg:col-span-5 lg:h-full xl:col-span-6">
       <img

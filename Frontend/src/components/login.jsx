@@ -35,9 +35,10 @@ function Login(){
           "Content-Type":'application/json'
         }
       }).then((response)=>{
-        let userId=response.data.data.user.id;
+        // let userId=response.data.data.user.id;
         setResponse("verified");
-        dispatch(logIn({email:userEmail ,id:userId}));
+        console.log(response);
+        dispatch(logIn(response.data.data.user));
       }).catch((err)=>{
         setError(err.response.data.message.slice(0,62));
       });
