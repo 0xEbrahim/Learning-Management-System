@@ -2,7 +2,7 @@ import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import ApiFeatures from "../../utils/APIFeatures";
-import { ICreateCategoryBody } from "./Category.interface";
+import { ICreateCategoryBody, IGetCategoryBody } from "./Category.interface";
 
 class CategoryService {
   async createCategory(Payload: ICreateCategoryBody): Promise<IResponse> {
@@ -38,6 +38,38 @@ class CategoryService {
       statusCode: 200,
       status: "Success",
       data: { categories },
+    };
+    return response;
+  }
+
+  async getCategoryById(Payload: IGetCategoryBody): Promise<IResponse> {
+    const category = await prisma.category.findUnique({
+      where: {
+        id: Payload.id,
+      },
+      include: {
+        courses: {
+          select: {
+            course: {
+              select: {
+                name: true,
+                thumbnail: true,
+                price: true,
+                description: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!category)
+      throw new APIError("No category matched ID: " + Payload.id, 404);
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        category,
+      },
     };
     return response;
   }

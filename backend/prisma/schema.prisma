@@ -106,7 +106,7 @@ model Prerequisites {
 model Demo {
   id       String  @id @default(uuid())
   courseId String  @unique
-  url       String
+  url      String
   course   Course? @relation(fields: [courseId], references: [id])
 }
 
@@ -114,15 +114,16 @@ model Category {
   id      String              @id @default(uuid())
   name    String              @unique
   courses CategoryOnCourses[]
+
   @@index([name])
 }
 
 model CategoryOnCourses {
-  id         String   @id @default(uuid())
-  courseId   String
+  id           String   @id @default(uuid())
+  courseId     String
   categoryName String
-  category   Category @relation(fields: [categoryName], references: [name])
-  course     Course   @relation(fields: [courseId], references: [id])
+  category     Category @relation(fields: [categoryName], references: [name])
+  course       Course   @relation(fields: [courseId], references: [id])
 }
 
 model Course {
