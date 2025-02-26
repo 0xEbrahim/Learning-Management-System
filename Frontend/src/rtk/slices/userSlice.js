@@ -11,7 +11,7 @@ const userSlice = createSlice({
    },
    logOut:(state,action)=>{
     window.localStorage.removeItem("user");
-    return{email:"", id:""};
+    return{};
     },
     },
   });

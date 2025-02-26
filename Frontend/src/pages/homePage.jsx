@@ -1,11 +1,21 @@
 
 import {useSelector} from "react-redux";
+import { useEffect } from "react";
+import AppNavBar from "../components/appnavbar";
+import SideBar from "../components/sidebar";
+import { initFlowbite } from "flowbite";
+import "./homePage.css";
 function HomePage(){
-    //consider userEmail&&userId undefined if there is no value for email
-let userEmail=useSelector((state)=>state.user?.email);
-let userId=useSelector((state)=>state.user?.id);
+  useEffect(()=>{
+    initFlowbite()
+  },[])
     return(
-     userEmail?<h4>loggedIn</h4>:<h4>loggedOut</h4>
+      <>
+        <AppNavBar/> 
+        <SideBar/> 
+        
+      </>
+    //  userEmail?<h4>loggedIn</h4>:<h4>loggedOut</h4>
     );
 }
 export default HomePage;
