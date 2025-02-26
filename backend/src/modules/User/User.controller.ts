@@ -3,11 +3,7 @@ import asyncHandler from "../../utils/asyncHandler";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import UserService from "./User.service";
 import sendResponse from "../../utils/sendResponse";
-import {
-  IUpdateProfilePicBody,
-  IUpdateUserBody,
-  
-} from "./User.interface";
+import { IUpdateProfilePicBody, IUpdateUserBody } from "./User.interface";
 
 export const getUserById = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
@@ -80,4 +76,3 @@ export const deactivateAccount = asyncHandler(
     sendResponse(result, res);
   }
 );
-
