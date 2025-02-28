@@ -1,19 +1,23 @@
 import {Link, useNavigate} from 'react-router-dom';
-import {useState} from 'react';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
 import {useDispatch } from "react-redux";
-import { logIn } from '../rtk/slices/userSlice';
-
+import { login } from '../rtk/slices/authSlice';
+import { useEffect,useState } from 'react';
 function Login(){
   let navigate=useNavigate();
   let dispatch=useDispatch();
-  const apiUrl = import.meta.env.VITE_API_URL;
+  // const apiUrl = import.meta.env.VITE_API_URL;
   // console.log(apiUrl);
   let [userEmail,setUserEmail]=useState("");
   let [password,setPassword]=useState("");
-  let[error,setError]=useState("");
-  let [response,setResponse]=useState("");
-  
+  let error=useSelector((state)=>state.auth.error);
+  let accessToken=useSelector((state)=>state.auth.token);
+
+  useEffect(()=>{
+    if(accessToken){
+      navigate("/homePage");
+    }
+  },[accessToken])
 
       let handleUserEmail=(value)=>{
         setUserEmail(value);
@@ -22,27 +26,27 @@ function Login(){
       setPassword(value);
     }
 
-    function sendLoginData(){
-      axios({
-        method: 'post',
-        url: `${apiUrl}/auth/login`,
-        data: {
-          email:userEmail,
-          password:password,
-        },
-        headers:{
-          Accept:'applicaton/json',
-          "Content-Type":'application/json'
-        }
-      }).then((response)=>{
-        // let userId=response.data.data.user.id;
-        setResponse("verified");
-        console.log(response);
-        dispatch(logIn(response.data.data.user));
-      }).catch((err)=>{
-        setError(err.response.data.message.slice(0,62));
-      });
-    }
+    // function sendLoginData(){
+    //   axios({
+    //     method: 'post',
+    //     url: `${apiUrl}/auth/login`,
+    //     data: {
+    //       email:userEmail,
+    //       password:password,
+    //     },
+    //     headers:{
+    //       Accept:'applicaton/json',
+    //       "Content-Type":'application/json'
+    //     }
+    //   }).then((response)=>{
+    //     // let userId=response.data.data.user.id;
+    //     setResponse("verified");
+    //     console.log(response);
+    //     dispatch(logIn(response.data.data.user));
+    //   }).catch((err)=>{
+    //     setError(err.response.data.message.slice(0,62));
+    //   });
+    // }
 
 
   return(
@@ -108,7 +112,7 @@ function Login(){
             <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
               <button
                 className="inline-block shrink-0 rounded-md border border-indigo-600 bg-indigo-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-indigo-600 focus:ring-3 focus:outline-hidden"
-                onClick={()=>{sendLoginData()}}
+                onClick={()=>{dispatch(login({userEmail,password}))}}
               >
                 Continue
               </button>
@@ -120,7 +124,7 @@ function Login(){
             </div>
           {/* conditional redering */}
           {error && <p className='text-red-500 col-span-6'>{error}</p>}
-          {response==="verified" &&(navigate("/homePage"))}
+          {/* {response==="verified" &&(navigate("/homePage"))} */}
           </form>
         </div>
       </main>
