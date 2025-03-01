@@ -32,7 +32,7 @@ export const login = asyncHandler(
     if (result.statusCode === 403) {
       res.cookie("email", req.body.email, {
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        secure: config.NODE_ENV === "production",
+        secure: false,
         httpOnly: true,
       });
     }
