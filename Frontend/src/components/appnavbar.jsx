@@ -17,7 +17,7 @@ function AppNavBar(){
              </button>
             <Link href="https://flowbite.com" className="flex ms-2 md:me-24">
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">Learnify</span>
-            </Link>
+            </Link>         
           </div>
           <div className="flex items-center">
               <div className="flex items-center ms-3">
@@ -53,7 +53,6 @@ function AppNavBar(){
         </div>
       </div>
     </nav>
-    
     );
 }
 export default AppNavBar;
