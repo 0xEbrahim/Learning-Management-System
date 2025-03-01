@@ -1,17 +1,19 @@
 
-import {useSelector} from "react-redux";
+import {useSelector,useDispatch} from "react-redux";
 import { useEffect } from "react";
 import AppNavBar from "../components/appnavbar";
 import SideBar from "../components/sidebar";
 import { initFlowbite } from "flowbite";
 import "./homePage.css";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { refreshAccessToken } from "../rtk/slices/authSlice";
 import { logout } from "../rtk/slices/authSlice";
+import { Outlet } from "react-router";
+import CoursesPage from "./coursesPage";
+import { useNavigate } from "react-router";
 function HomePage(){
   const accessToken=useSelector((state)=>state.auth.token);
   const dispatch=useDispatch();
+  const navigate=useNavigate();
   useEffect(()=>{
     initFlowbite()
   },[])
@@ -20,20 +22,25 @@ function HomePage(){
     let interval=setInterval(()=>{
       dispatch(refreshAccessToken());
 
-    },1000*60);
+    },1000*60*14);
     //clear interval when unmount component to stop refreshing access token
     //keep refreshing every 15 mins when token changes
     return ()=>clearInterval(interval);
   },[accessToken])
-  // useEffect(()=>{
-  //   if(accessToken===null){
-  //     dispatch(logout());
-  //   }
-  // })
+  useEffect(()=>{
+    if(accessToken===null){
+      navigate("/login");
+    }
+  })
     return(
       <>
         <AppNavBar/> 
         <SideBar/> 
+        <div className="p-4 sm:ml-64">
+              <div className="p-4 mt-14">
+                  <CoursesPage/>
+              </div>
+        </div>
       </>
     );
 }
