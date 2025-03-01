@@ -28,10 +28,11 @@ function HomePage(){
     return ()=>clearInterval(interval);
   },[accessToken])
   useEffect(()=>{
+    console.log(accessToken)
     if(accessToken===null){
       navigate("/login");
     }
-  })
+  },[accessToken])
     return(
       <>
         <AppNavBar/> 
