@@ -49,10 +49,10 @@ function SideBar(){
            </Link>
         </li>
 </>:         <li>
-            <Link href="#" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+            <button onClick={()=>dispatch(logout(accessToken))} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
             < BiLogOutCircle className="shrink-0 w-5 h-5 text-red-600 transition duration-75 dark:text-red-700 group-hover:text-red-600 dark:group-hover:text-white" />
                <span className="flex-1 ms-3 whitespace-nowrap">log out</span>
-            </Link>
+            </button>
          </li>}
 
       </ul>

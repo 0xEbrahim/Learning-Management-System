@@ -34,8 +34,14 @@ export const refreshAccessToken=createAsyncThunk('auth/refresh',async({rejectWit
     }
 })
 
-export const logout=createAsyncThunk('auth/logout',async()=>{
-    await axios.post(`${apiUrl}/auth/logout`)
+export const logout=createAsyncThunk('auth/logout',async(userAccessToken)=>{
+    await axios.post(`${apiUrl}/auth/logout`,{
+        headers:{
+            Accept:'applicaton/json',
+            "Content-Type":'application/json',
+            Authorization:`Bearer ${userAccessToken}`
+        },
+    })
 })
 
 const authSlice=createSlice({
