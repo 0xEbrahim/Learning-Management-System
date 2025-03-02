@@ -19,7 +19,7 @@ function HomePage() {
   useEffect(() => {
     let interval = setInterval(() => {
       dispatch(refreshAccessToken());
-    }, 1000 * 60 * 14);
+    }, 1000 * 30);
     //clear interval when unmount component to stop refreshing access token
     //keep refreshing every 15 mins when token changes
     return () => clearInterval(interval);
