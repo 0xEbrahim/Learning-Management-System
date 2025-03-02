@@ -1,5 +1,4 @@
 import { Response } from "express";
-import config from "../config/env";
 import { IResponse } from "../Interfaces/types";
 
 export default (data: IResponse, res: Response) => {
