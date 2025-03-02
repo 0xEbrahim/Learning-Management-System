@@ -7,21 +7,16 @@ export const login = createAsyncThunk(
   "auth/login",
   async (body, { rejectWithValue }) => {
     try {
-      const response = await axios(
-        {
-          method: "post",
-          url: `${apiUrl}/auth/login`,
-          data: {
-            email: body.userEmail,
-            password: body.password,
-          },
-          headers: {
-            Accept: "applicaton/json",
-            "Content-Type": "application/json",
-          },
+      const response = await axios({
+        method: "post",
+        url: `${apiUrl}/auth/login`,
+        data: { email: body.userEmail, password: body.password },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
         },
-        { withCredentials: true }
-      );
+        withCredentials: true,
+      });
       return response.data.token;
     } catch (error) {
       //considered action.payload for error
@@ -34,9 +29,11 @@ export const refreshAccessToken = createAsyncThunk(
   "auth/refresh",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${apiUrl}/auth/refresh`, {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        `${apiUrl}/auth/refresh`,
+        {},
+        { withCredentials: true }
+      );
       return response.data.token;
     } catch (error) {
       if (error.response?.status === 403 || error.response?.status === 401) {

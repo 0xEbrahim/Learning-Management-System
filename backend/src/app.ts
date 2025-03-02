@@ -2,7 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
-import session from "express-session";
+// import session from "express-session";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import YAML from "yamljs";
@@ -33,6 +33,7 @@ const limiter = rateLimit({
 app.use(ExpressMongoSanitize());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(limiter);
 app.use(morgan(config.NODE_ENV === "development" ? "dev" : "combined"));
 app.use(
@@ -41,22 +42,23 @@ app.use(
       config.NODE_ENV === "development"
         ? "http://localhost:5173"
         : "https://learning-management-system-frontend-5rpd.onrender.com",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     credentials: true,
   })
 );
-app.use(cookieParser());
-app.use(
-  session({
-    secret: config.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: config.NODE_ENV === "production" },
-  })
-);
+// app.use(
+//   session({
+//     secret: config.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//       secure: config.NODE_ENV === "production",
+//       maxAge: 30 * 24 * 60 * 60 * 1000,
+//     },
+//   })
+// );
 app.use(helmet());
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 app.get("/", (req, res, next) => {
   res.json({
     message: "Hello to LMS API",

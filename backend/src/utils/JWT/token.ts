@@ -14,7 +14,7 @@ export const generateToken = (id: string, loggedIn: boolean): string => {
 
 export const generateRefreshToken = (id: string): string => {
   const token: string = jwt.sign({ id }, config.REFRESH_SECRET as string, {
-    expiresIn: `30d`,
+    expiresIn: `${config.REFRESH_EXPIRES_IN}d`,
   });
   return token;
 };

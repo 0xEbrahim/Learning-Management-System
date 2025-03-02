@@ -6,6 +6,7 @@ import {
   IRegisterBody,
   IResetPasswordBody,
 } from "./Auth.Interface";
+import config from "../../config/env";
 import APIError from "../../utils/APIError";
 import sendResponse from "../../utils/sendResponse";
 import { IResponse } from "../../Interfaces/types";
@@ -28,13 +29,6 @@ export const register = asyncHandler(
 export const login = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const result: IResponse = await AuthService.login(req.body as ILoginBody);
-    res.cookie("token", result.refreshToken, {
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-      secure: true,
-      httpOnly: true,
-      sameSite: "none",
-      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-    });
     sendResponse(result, res);
   }
 );
@@ -42,7 +36,6 @@ export const login = asyncHandler(
 export const refresh = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
-    console.log("TOKEN: ", req.cookies);
     if (!token) {
       throw new APIError("Expired session, please login again", 403);
     }
@@ -83,6 +76,8 @@ export const handleCallBack = asyncHandler(
     res.cookie("token", refreshToken, {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true,
+      sameSite: config.NODE_ENV === "production" ? "none" : "lax",
+      secure: config.NODE_ENV === "production",
     });
     cleanUsersData(req.user);
     res.status(200).json({
@@ -107,6 +102,9 @@ export const logout = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(" ")[1];
     const result: IResponse = await AuthService.logout(token as string);
+    Object.keys(req.cookies).forEach((cookie) => {
+      res.clearCookie(cookie, { path: "/" });
+    });
     sendResponse(result, res);
   }
 );

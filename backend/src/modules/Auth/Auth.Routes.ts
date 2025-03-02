@@ -19,7 +19,6 @@ import {
   resetPassword,
   sendEmailVerificationToken,
   verifyEmailVerificationToken,
-
 } from "./Auth.Controller";
 import uplaoder from "../../config/multer";
 import isAuthenticated from "../../middlewares/isAuthenticated";
@@ -43,7 +42,7 @@ router.get(
   validate(emailVerificationValidation),
   verifyEmailVerificationToken
 );
-router.get("/refresh", refresh);
+router.post("/refresh", refresh);
 router.get(
   "/google",
   passport.authenticate(
