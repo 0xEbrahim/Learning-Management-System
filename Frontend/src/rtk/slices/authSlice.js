@@ -32,38 +32,37 @@ export const login = createAsyncThunk(
 
 export const refreshAccessToken = createAsyncThunk(
   "auth/refresh",
-  async ({ rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `${apiUrl}/auth/refresh`,
-        {},
-        { withCredentials: true }
-      );
+      const response = await axios.get(`${apiUrl}/auth/refresh`, {
+        withCredentials: true,
+      });
       return response.data.token;
     } catch (error) {
-      return rejectWithValue(error.response.data.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to refresh token"
+      );
     }
   }
 );
 
 export const logout = createAsyncThunk(
-    "auth/logout",
-    async (userAccessToken) => {
-      await axios.post(
-        `${apiUrl}/auth/logout`,
-        {}, 
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${userAccessToken}`,
-          },
-          withCredentials: true,
-        }
-      );
-    }
-  );
-  
+  "auth/logout",
+  async (userAccessToken) => {
+    await axios.post(
+      `${apiUrl}/auth/logout`,
+      {},
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userAccessToken}`,
+        },
+        withCredentials: true,
+      }
+    );
+  }
+);
 
 const authSlice = createSlice({
   name: "authSlice",
