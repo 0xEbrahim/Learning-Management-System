@@ -35,7 +35,16 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
 app.use(morgan(config.NODE_ENV === "development" ? "dev" : "combined"));
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://learning-management-system-262s.onrender.com",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(
   session({

@@ -8,6 +8,7 @@ import { IUser } from "../modules/User/User.interface";
 
 export default asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
+    // console.log(req.headers);
     const header = req.headers["authorization"];
     if (!header) {
       return next(new APIError("Please login to access this route", 403));
