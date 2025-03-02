@@ -5,7 +5,7 @@ import config from "../config/env";
 export default (data: IResponse, res: Response) => {
   if (data.refreshToken) {
     res.cookie("token", data.refreshToken, {
-      // maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
       secure: true,
       httpOnly: true,
       sameSite: "none",
