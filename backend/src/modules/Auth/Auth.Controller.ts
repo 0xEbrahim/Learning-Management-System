@@ -28,6 +28,13 @@ export const register = asyncHandler(
 export const login = asyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const result: IResponse = await AuthService.login(req.body as ILoginBody);
+    res.cookie("token", result.refreshToken, {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+      secure: true,
+      httpOnly: true,
+      sameSite: "none",
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    });
     sendResponse(result, res);
   }
 );
