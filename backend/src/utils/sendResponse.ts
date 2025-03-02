@@ -9,6 +9,7 @@ export default (data: IResponse, res: Response) => {
       secure: config.NODE_ENV === "production",
       httpOnly: true,
       sameSite: "none",
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
     });
   }
   if (data.message === "You have been logged out successfully.")
