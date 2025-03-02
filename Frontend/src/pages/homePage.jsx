@@ -7,7 +7,6 @@ import "./homePage.css";
 import { refreshAccessToken } from "../rtk/slices/authSlice";
 import { logout } from "../rtk/slices/authSlice";
 import { Outlet } from "react-router";
-import CoursesPage from "./coursesPage";
 import { useNavigate } from "react-router";
 function HomePage() {
   const accessToken = useSelector((state) => state.auth.token);
@@ -37,7 +36,7 @@ function HomePage() {
       <SideBar />
       <div className="p-4 sm:ml-64">
         <div className="p-4 mt-14">
-          <CoursesPage />
+          <Outlet></Outlet>
         </div>
       </div>
     </>
