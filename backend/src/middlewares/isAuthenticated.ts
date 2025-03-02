@@ -8,11 +8,11 @@ import { IUser } from "../modules/User/User.interface";
 
 export default asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    const header = req.headers.authorization;
+    const header = req.headers["authorization"];
     if (!header) {
       return next(new APIError("Please login to access this route", 403));
     }
-    if (!header.startsWith("Bearer"))
+    if (!header.startsWith("Bearer "))
       return next(new APIError("Invalid token", 400));
     const token = header.split(" ")[1];
     const blackListed = await prisma.token.findUnique({

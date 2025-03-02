@@ -6,7 +6,6 @@ import {
   IRegisterBody,
   IResetPasswordBody,
 } from "./Auth.Interface";
-import config from "../../config/env";
 import APIError from "../../utils/APIError";
 import sendResponse from "../../utils/sendResponse";
 import { IResponse } from "../../Interfaces/types";
