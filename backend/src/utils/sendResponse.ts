@@ -8,6 +8,7 @@ export default (data: IResponse, res: Response) => {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       secure: config.NODE_ENV === "production",
       httpOnly: true,
+      sameSite: "none",
     });
   }
   if (data.message === "You have been logged out successfully.")

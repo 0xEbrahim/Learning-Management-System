@@ -35,6 +35,7 @@ export const login = asyncHandler(
 export const refresh = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
+    console.log("TOKEN: ", req.cookies);
     if (!token) {
       throw new APIError("Expired session, please login again", 403);
     }
