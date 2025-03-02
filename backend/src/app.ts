@@ -39,7 +39,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://learning-management-system-262s.onrender.com",
+      "https://learning-management-system-frontend-5rpd.onrender.com",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
