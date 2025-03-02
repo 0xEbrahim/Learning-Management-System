@@ -39,9 +39,10 @@ export const refreshAccessToken = createAsyncThunk(
       });
       return response.data.token;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to refresh token"
-      );
+      if (error.response?.status === 403 || error.response?.status === 401) {
+        return rejectWithValue("Session expired, please login again");
+      }
+      return rejectWithValue("Failed to refresh token");
     }
   }
 );
