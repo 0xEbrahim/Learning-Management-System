@@ -12,11 +12,6 @@ function Login() {
   let [password, setPassword] = useState("");
   let error = useSelector((state) => state.auth.error);
   let accessToken = useSelector((state) => state.auth.token);
-  
-  useEffect(()=>{
-    //clear localStorage 
-    localStorage.removeItem("token");
-  },[])
 
   useEffect(() => {
     if (accessToken) {
