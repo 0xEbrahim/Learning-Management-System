@@ -1,3 +1,17 @@
 @import "flowbite/src/themes/default";
 /* @plugin "flowbite/plugin"; */
 @source "../node_modules/flowbite";
+
+.active,.unactive{
+    display:flex;
+    align-items: center;
+    padding:8px;
+    border-radius: 8px;
+    color:var(--color-gray-900);
+}
+.active:hover,.unactive:hover{
+    background-color: #F5EFFF;
+}
+.active{
+    background-color: #F5EFFF;
+}
