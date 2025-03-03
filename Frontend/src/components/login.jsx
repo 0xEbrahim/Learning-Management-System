@@ -14,6 +14,7 @@ function Login() {
   let accessToken = useSelector((state) => state.auth.token);
 
   useEffect(() => {
+    localStorage.removeItem("token");
     if (accessToken) {
       navigate("/homePage");
     }
