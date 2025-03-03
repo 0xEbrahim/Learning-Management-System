@@ -64,32 +64,27 @@ export const logout = createAsyncThunk(
 
 const authSlice = createSlice({
   name: "authSlice",
-  initialState: { token: localStorage.getItem("token") || null, error: null },
+  initialState: { token: null, error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
-        localStorage.setItem("token", action.payload);
         state.token = action.payload;
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
-        localStorage.setItem("token", null);
         state.token = null;
         state.error = action.payload;
       })
       .addCase(refreshAccessToken.fulfilled, (state, action) => {
-        localStorage.setItem("token", action.payload);
         state.token = action.payload;
         state.error = null;
       })
       .addCase(refreshAccessToken.rejected, (state, action) => {
-        localStorage.setItem("token", null);
         state.token = null;
         state.error = action.payload;
       })
       .addCase(logout.fulfilled, (state) => {
-        localStorage.removeItem("token");
         state.token = null;
       });
   },
