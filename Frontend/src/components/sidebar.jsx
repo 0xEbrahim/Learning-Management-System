@@ -69,9 +69,9 @@ function SideBar(){
            </NavLink>
         </li>
 </>:        <li>
-           <NavLink to="/" onClick={()=>dispatch(logout(accessToken))} className={({ isActive }) =>
+           <NavLink to="" onClick={()=>dispatch(logout(accessToken))} className={({ isActive }) =>
           isActive
-            ? "active"
+            ? "flex items-center"
             : "unactive"
         } >
            < BiLogOutCircle className=" text-red-600 shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900" />
