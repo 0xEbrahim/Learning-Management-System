@@ -17,7 +17,7 @@ function App() {
   const userId=useSelector((state)=>state.auth.userId);
   useEffect(()=>{
     socket.emit('initNotification',{currentAuthenticatedUserId:userId});
-    return () => socket.disconnect();
+    // return () => socket.disconnect();
   },[socket])
   return (
     <>
