@@ -19,13 +19,12 @@ function HomePage() {
   useEffect(() => {
     let interval = setInterval(() => {
       dispatch(refreshAccessToken());
-    }, 1000 * 30);
+    }, 1000 * 60 * 14);
     //clear interval when unmount component to stop refreshing access token
     //keep refreshing every 15 mins when token changes
     return () => clearInterval(interval);
   }, [accessToken]);
   useEffect(() => {
-    console.log(accessToken);
     if (accessToken === null) {
       navigate("/login");
     }
@@ -34,7 +33,7 @@ function HomePage() {
     <>
       <AppNavBar />
       <SideBar />
-      <div className="p-4 sm:ml-64">
+      <div className="p-4 sm:ml-64 bg-[#F5EFFF]">
         <div className="p-4 mt-14">
           <Outlet></Outlet>
         </div>

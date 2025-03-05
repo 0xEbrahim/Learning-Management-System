@@ -16,44 +16,68 @@ function SideBar(){
    <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
       <ul className="space-y-2 font-medium">
          <li>
-            <NavLink to="/homePage/dashboard" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            < IoHome className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-900 group-hover:text-gray-900 dark:group-hover:text-white" />
+            <NavLink to="/homePage/dashboard" className={({ isActive }) =>
+          isActive
+            ? "active"
+            : "unactive"
+        } >
+            < IoHome className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
                <span className="ms-3">Dashboard</span>
             </NavLink>
          </li>
          <li>
-            <NavLink to="/homePage/courses" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            < FiShoppingBag className="shrink-0 w-5 h-5 text-indigo-600 transition duration-75 dark:text-indigo-600 group-hover:text-indigo-600 dark:group-hover:text-white" />
+            <NavLink to="/homePage/courses" className={({ isActive }) =>
+          isActive
+            ? "active"
+            : "unactive"
+        } >
+            < FiShoppingBag className="shrink-0 w-5 h-5 text-indigo-600 transition duration-75 group-hover:text-indigo-600" />
                <span className="flex-1 ms-3 whitespace-nowrap">Courses</span>
 
             </NavLink>
          </li>
          <li>
-            <NavLink to="/homePage/settings" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            <IoMdSettings className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" />
+            <NavLink to="/homePage/settings" className={({ isActive }) =>
+          isActive
+            ? "active"
+            : "unactive"
+        } >
+            <IoMdSettings className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
                <span className="flex-1 ms-3 whitespace-nowrap">Settings</span>
             </NavLink>
          </li>
          {/* condetional rendering  */}
 {accessToken===null?<>
    <li>
-           <NavLink to="/login" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-           < IoMdLogIn className="shrink-0 w-5 h-5 text-indigo-600 transition duration-75 dark:text-indigo-600 group-hover:text-indigo-600 dark:group-hover:text-white" />
+           <NavLink to="/login" className={({ isActive }) =>
+          isActive
+            ? "active"
+            : "unactive"
+        } >
+           < IoMdLogIn className="shrink-0 w-5 h-5 text-indigo-600 transition duration-75 group-hover:text-indigo-600" />
               <span className="flex-1 ms-3 whitespace-nowrap">login</span>
            </NavLink>
         </li>
         <li>
-           <NavLink to="/" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-           < FaFileSignature className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-red-700 group-hover:text-gray-900 dark:group-hover:text-white" />
+           <NavLink to="/" className={({ isActive }) =>
+          isActive
+            ? "active"
+            : "unactive"
+        } >
+           < FaFileSignature className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
               <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
            </NavLink>
         </li>
-</>:         <li>
-            <NavLink onClick={()=>dispatch(logout(accessToken))} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-            < BiLogOutCircle className="shrink-0 w-5 h-5 text-red-600 transition duration-75 dark:text-red-700 group-hover:text-red-600 dark:group-hover:text-white" />
-               <span className="flex-1 ms-3 whitespace-nowrap">log out</span>
-            </NavLink>
-         </li>}
+</>:        <li>
+           <NavLink to="" onClick={()=>dispatch(logout(accessToken))} className={({ isActive }) =>
+          isActive
+            ? "flex items-center"
+            : "unactive"
+        } >
+           < BiLogOutCircle className=" text-red-600 shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900" />
+              <span className="flex-1 ms-3 whitespace-nowrap">logout</span>
+           </NavLink>
+        </li>}
 
       </ul>
    </div>
