@@ -1,6 +1,8 @@
 import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
+import { Server } from "socket.io";
+import { createServer } from "http";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
@@ -8,18 +10,24 @@ import rateLimit from "express-rate-limit";
 import YAML from "yamljs";
 import path from "path";
 import ExpressMongoSanitize from "express-mongo-sanitize";
-import SwaggerUI from "swagger-ui-express";
+import SwaggerUI, { serve } from "swagger-ui-express";
 import dotenv from "dotenv";
 import passport from "./config/passport";
 import config from "./config/env";
 import { authRouter } from "./modules/Auth/Auth.Routes";
 import { globalErrorHandler, notFound } from "./middlewares/globalError";
+import initSocket from "./Sockets/init.socket";
 import { userRouter } from "./modules/User/User.routes";
 import { courseRouter } from "./modules/Course/Course.routes";
 import { categoryRouter } from "./modules/Category/Category.routes";
 
 dotenv.config();
 const app = express();
+const server = createServer(app);
+const io = new Server(server, {
+  cors: { origin: "*", methods: ["GET", "POST"] },
+});
+initSocket(io);
 const swaggerDoc = YAML.load(path.join(__dirname, "./swagger/swagger.yaml"));
 app.use("/api/v1/api-docs", SwaggerUI.serve, SwaggerUI.setup(swaggerDoc));
 const limiter = rateLimit({
@@ -70,4 +78,4 @@ app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.all("*", notFound);
 app.use(globalErrorHandler);
-export default app;
+export default server;

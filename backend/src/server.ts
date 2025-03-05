@@ -2,7 +2,7 @@ import app from "./app";
 import config from "./config/env";
 import logger from "./config/logger";
 
-const server = app.listen(config.PORT, () => {
+app.listen(config.PORT, () => {
   if (config.NODE_ENV === "production") {
     logger.info(`Server started running on PORT ${config.PORT}`);
     logger.info("API Doc available at " + config.PROD_URL + "/api-docs");

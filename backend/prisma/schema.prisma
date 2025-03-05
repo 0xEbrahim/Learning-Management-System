@@ -37,7 +37,8 @@ model User {
   comments                        Comment[]
   courses                         Order[]
   publishedCourses                Course[]      @relation("Publish")
-
+  notificationsSent             Notification[]  @relation("sent")
+  notifications                 Notification[]  @relation("recieved")
   @@index([email])
   @@index([googleId])
 }
@@ -188,6 +189,17 @@ model Email {
   id      String @id
   email   String
   subject String
+}
+
+model Notification {
+  id    String @id @default(uuid())
+  senderId String
+  recieverId  String
+  text String
+  createdAt DateTime
+  opened Boolean
+  sender User @relation("sent",fields: [senderId], references: [id])
+  reciever User @relation("recieved",fields: [recieverId], references: [id])
 }
 
 enum Roles {
