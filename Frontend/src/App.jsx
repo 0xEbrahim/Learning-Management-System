@@ -9,21 +9,16 @@ import ResetPassword from "./pages/resetPassword.jsx";
 import CoursesPage from "./pages/coursesPage.jsx";
 import SettingsPage from "./pages/settingsPage.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
-import { useState , useEffect } from "react";
+import {useEffect } from "react";
+import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 const socket = io.connect("http://localhost:3000");
-
 function App() {
-  const [notification, setNotification] = useState("");
+  const userId=useSelector((state)=>state.auth.userId);
   useEffect(()=>{
-    socket.on('initNotification',(data)=>{
-      setNotification(data.CurrentauthenticateduserId);
-      console.log(notification);
-
-    })
+    socket.emit('initNotification',{currentAuthenticatedUserId:userId});
     return () => socket.disconnect();
   },[socket])
-
   return (
     <>
       <Routes>
