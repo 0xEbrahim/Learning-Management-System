@@ -8,20 +8,11 @@ import { refreshAccessToken } from "../rtk/slices/authSlice";
 import { logout } from "../rtk/slices/authSlice";
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router";
-import { io } from "socket.io-client";
-const socket = io.connect("http://localhost:3000");
+
 function HomePage() {
   const accessToken = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const sendTry=()=>{
-    socket.emit("try","try");
-  }
-  
-  useEffect(()=>{
-    socket.on('success',()=>console.log("success"));
-  },[socket])
 
   useEffect(() => {
     initFlowbite();
@@ -46,7 +37,6 @@ function HomePage() {
       <SideBar />
       <div className="p-4 sm:ml-64 bg-[#F5EFFF]">
         <div className="p-4 mt-14">
-          <button onClick={()=>sendTry()} className="btn cursor-pointer px-4 py-3 rounded-xl bg-indigo-600 text-white">click</button>
           <Outlet></Outlet>
         </div>
       </div>
