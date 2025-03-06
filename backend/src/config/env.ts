@@ -30,4 +30,8 @@ export default {
     process.env.NODE_ENV === "development"
       ? process.env.DEV_URL
       : process.env.PROD_URL,
+  REDIS_USERNAME: process.env.REDIS_USERNAME as string,
+  REDIS_PASSWORD: process.env.REDIS_PASSWORD as string,
+  REDIS_SOCKET_HOST: process.env.REDIS_SOCKET_HOST as string,
+  REDIS_SOCKET_PORT: parseInt(process.env.REDIS_SOCKET_PORT as string),
 };
