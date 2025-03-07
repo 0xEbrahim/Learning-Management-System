@@ -43,8 +43,6 @@ app.use(ExpressMongoSanitize());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(limiter);
-app.use(morgan(config.NODE_ENV === "development" ? "dev" : "combined"));
 app.use(
   cors({
     origin:
@@ -54,6 +52,8 @@ app.use(
     credentials: true,
   })
 );
+app.use(limiter);
+app.use(morgan(config.NODE_ENV === "development" ? "dev" : "combined"));
 app.use(
   session({
     secret: config.SESSION_SECRET,

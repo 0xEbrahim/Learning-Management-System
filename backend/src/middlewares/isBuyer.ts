@@ -16,7 +16,6 @@ export default asyncHandler(
     });
     if (!course) return next(new APIError("Invalid course ID", 404));
     const isBuyer = course.buyers.some((el) => el.userId === req.User?.id);
-    console.log(isBuyer);
     if (
       isBuyer ||
       req.User?.role === "ADMIN" ||
