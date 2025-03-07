@@ -4,8 +4,8 @@ import { validate } from "../../utils/validation";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import isAuthorized from "../../middlewares/isAuthorized";
 import isOwner from "../../middlewares/isOwner";
-import { getVideoValidation, uploadVideoValidation } from "./Video.validation";
-import { getVideoById, uploadVideo } from "./Video.controller";
+import { VideoValidation, uploadVideoValidation } from "./Video.validation";
+import { deleteVideo, getVideoById, uploadVideo } from "./Video.controller";
 import isBuyer from "../../middlewares/isBuyer";
 const router = express.Router({ mergeParams: true });
 
@@ -24,8 +24,16 @@ router.post(
 router.get(
   "/:videoId",
   isAuthenticated,
-  validate(getVideoValidation),
+  validate(VideoValidation),
   isBuyer,
   getVideoById
+);
+router.delete(
+  "/:videoId",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  isOwner,
+  validate(VideoValidation),
+  deleteVideo
 );
 export const videoRouter = router;

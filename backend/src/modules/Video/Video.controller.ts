@@ -4,7 +4,7 @@ import APIError from "../../utils/APIError";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import VideoService from "./Video.service";
 import sendResponse from "../../utils/sendResponse";
-import { getVideoByIdBody, uploadVideoBody } from "./Video.interface";
+import { VideoByIdBody, uploadVideoBody } from "./Video.interface";
 
 export const uploadVideo = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
@@ -33,7 +33,7 @@ export const uploadVideo = asyncHandler(
 
 export const getVideoById = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    const data: getVideoByIdBody = {
+    const data: VideoByIdBody = {
       courseId: req.params.courseId,
       videoId: req.params.videoId,
     };
@@ -41,3 +41,15 @@ export const getVideoById = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+export const deleteVideo = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: VideoByIdBody = {
+      courseId: req.params.courseId,
+      videoId: req.params.videoId,
+    };
+    const result: IResponse = await VideoService.deleteVideo(data);
+    sendResponse(result, res);
+  }
+);
+

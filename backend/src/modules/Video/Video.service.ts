@@ -2,7 +2,7 @@ import fs from "fs";
 import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
-import { getVideoByIdBody, uploadVideoBody } from "./Video.interface";
+import { VideoByIdBody, uploadVideoBody } from "./Video.interface";
 import APIError from "../../utils/APIError";
 
 class VideoService {
@@ -55,7 +55,7 @@ class VideoService {
     return response;
   }
 
-  async getVideoById(Payload: getVideoByIdBody): Promise<IResponse> {
+  async getVideoById(Payload: VideoByIdBody): Promise<IResponse> {
     const { courseId, videoId } = Payload;
     const video = await prisma.video.findUnique({
       where: {
@@ -70,6 +70,28 @@ class VideoService {
       data: {
         video,
       },
+    };
+    return response;
+  }
+
+  async deleteVideo(Payload: VideoByIdBody): Promise<IResponse> {
+    const { courseId, videoId } = Payload;
+    const video = await prisma.video.findUnique({
+      where: {
+        id: videoId,
+      },
+    });
+    if (!video || video.courseId !== courseId)
+      throw new APIError("Invalid video ID", 404);
+    await prisma.video.delete({
+      where: {
+        id: videoId,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "Video deleted successfully",
     };
     return response;
   }

@@ -13,7 +13,7 @@ export const uploadVideoValidation = z.object({
   }),
 });
 
-export const getVideoValidation = z.object({
+export const VideoValidation = z.object({
   params: z.object({
     courseId: z.string(),
     videoId: z.string(),

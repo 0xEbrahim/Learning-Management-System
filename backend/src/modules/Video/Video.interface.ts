@@ -6,7 +6,7 @@ export interface uploadVideoBody {
   courseId: string;
 }
 
-export interface getVideoByIdBody {
+export interface VideoByIdBody {
   courseId: string;
   videoId: string;
 }
