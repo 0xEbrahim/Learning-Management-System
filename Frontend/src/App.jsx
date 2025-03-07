@@ -8,6 +8,7 @@ import ResetPassword from "./pages/resetPassword.jsx";
 import CoursesPage from "./pages/coursesPage.jsx";
 import SettingsPage from "./pages/settingsPage.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
+import NewCourse from "./pages/newCoursePage.jsx";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path="/homePage" element={<HomePage />}>
           <Route path="/homePage/courses" element={<CoursesPage />} />
+          <Route path="/homePage/newCourse" element={<NewCourse />} />
           <Route path="/homePage/dashboard" element={<DashboardPage />} />
           <Route path="/homePage/settings" element={<SettingsPage />} />
         </Route>

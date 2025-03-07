@@ -1,10 +1,11 @@
 import { FaPlus } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 function CoursesPage(){
     return(
         <>
             <div className="flex items-center justify-between">
                     <div> <h1 className="text-2xl font-bold">Courses</h1></div>
-                    <div><button className="btn bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-md cursor-pointer flex items-center gap-2"><FaPlus />Add course</button></div>
+                    <div><Link to="/homePage/newCourse" className="btn bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-md cursor-pointer flex items-center gap-2"><FaPlus />Add course</Link></div>
                 </div>
                 <div className="grid grid-cols-1 gap-4 mt-4 mb-4 items-center">
                 <div>
