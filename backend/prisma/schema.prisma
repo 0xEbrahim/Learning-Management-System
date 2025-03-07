@@ -92,7 +92,7 @@ model Video {
   course         Course              @relation(fields: [courseId], references: [id])
   videoUrl       String
   videoThumbnail String
-  videoLength    BigInt
+  videoLength    Int
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
   title          String
