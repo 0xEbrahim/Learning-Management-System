@@ -2,7 +2,8 @@ import fs from "fs";
 import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
-import { uploadVideoBody } from "./Video.interface";
+import { getVideoByIdBody, uploadVideoBody } from "./Video.interface";
+import APIError from "../../utils/APIError";
 
 class VideoService {
   async uploadVideo(Payload: uploadVideoBody): Promise<IResponse> {
@@ -49,6 +50,25 @@ class VideoService {
       statusCode: 201,
       data: {
         Video,
+      },
+    };
+    return response;
+  }
+
+  async getVideoById(Payload: getVideoByIdBody): Promise<IResponse> {
+    const { courseId, videoId } = Payload;
+    const video = await prisma.video.findUnique({
+      where: {
+        id: videoId,
+      },
+    });
+    if (!video || video.courseId !== courseId)
+      throw new APIError("Invalid video ID", 404);
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        video,
       },
     };
     return response;

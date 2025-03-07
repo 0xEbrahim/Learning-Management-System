@@ -5,3 +5,8 @@ export interface uploadVideoBody {
   videoLength: number;
   courseId: string;
 }
+
+export interface getVideoByIdBody {
+  courseId: string;
+  videoId: string;
+}

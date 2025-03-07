@@ -8,4 +8,14 @@ export const uploadVideoValidation = z.object({
       .max(300, "Too long video title"),
     videoLength: z.string(),
   }),
+  params: z.object({
+    courseId: z.string(),
+  }),
+});
+
+export const getVideoValidation = z.object({
+  params: z.object({
+    courseId: z.string(),
+    videoId: z.string(),
+  }),
 });
