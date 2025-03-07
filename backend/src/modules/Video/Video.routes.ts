@@ -11,6 +11,8 @@ import {
 } from "./Video.validation";
 import {
   deleteVideo,
+  editThumbnail,
+  editVideoCtrl,
   getVideoById,
   updateVideo,
   uploadVideo,
@@ -52,5 +54,23 @@ router.delete(
   isOwner,
   validate(VideoValidation),
   deleteVideo
+);
+router.patch(
+  "/:videoId/video",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  isOwner,
+  uplaoder.fields([{ name: "video", maxCount: 1 }]),
+  validate(VideoValidation),
+  editVideoCtrl
+);
+router.patch(
+  "/:videoId/thumbnail",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  isOwner,
+  uplaoder.fields([{ name: "image", maxCount: 1 }]),
+  validate(VideoValidation),
+  editThumbnail
 );
 export const videoRouter = router;

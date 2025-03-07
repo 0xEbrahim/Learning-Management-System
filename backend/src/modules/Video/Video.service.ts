@@ -4,6 +4,8 @@ import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import {
   VideoByIdBody,
+  editThumbnailBody,
+  editVideo,
   updateVideoBody,
   uploadVideoBody,
 } from "./Video.interface";
@@ -43,7 +45,7 @@ class VideoService {
     const Video = await prisma.video.create({
       data: {
         title: title,
-        videoLength: Number(videoLength) * 60 * 1000,
+        videoLength: Number(videoLength) * 60,
         videoThumbnail: videoThumbnailUpload,
         videoUrl: videoUpload,
         courseId: courseId,
@@ -122,6 +124,90 @@ class VideoService {
       status: "Success",
       statusCode: 200,
       message: "Video updated successfully",
+      data: {
+        video,
+      },
+    };
+    return response;
+  }
+  async editVideo(Payload: editVideo): Promise<IResponse> {
+    const { courseId, videoId, video, videoLength } = Payload;
+    let Video = await prisma.video.findFirst({
+      where: {
+        id: videoId,
+        courseId: courseId,
+      },
+    });
+    if (!Video) throw new APIError("Invalid video ID", 404);
+    let videoUpload: any = await new Promise((resolve, reject) => {
+      cloudinary.uploader.upload_large(
+        video,
+        {
+          resource_type: "video",
+          folder: "Videos",
+          chunk_size: 6000000,
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+    });
+    videoUpload = videoUpload.secure_url;
+    fs.unlinkSync(video);
+    Video = await prisma.video.update({
+      where: {
+        id: videoId,
+        courseId: courseId,
+      },
+      data: {
+        videoUrl: videoUpload,
+        videoLength: Number(videoLength) * 60,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        Video,
+      },
+    };
+    return response;
+  }
+
+  async editThumbnail(Payload: editThumbnailBody): Promise<IResponse> {
+    const { courseId, thumbnail, videoId } = Payload;
+    let video = await prisma.video.findFirst({
+      where: {
+        id: videoId,
+        courseId: courseId,
+      },
+    });
+    if (!video) throw new APIError("Invalid video ID", 404);
+    let videoThumbnailUpload: any = await cloudinary.uploader.upload(
+      thumbnail,
+      {
+        resource_type: "image",
+        folder: "Video Thumbnails",
+      }
+    );
+    videoThumbnailUpload = videoThumbnailUpload.secure_url;
+    fs.unlinkSync(thumbnail);
+    video = await prisma.video.update({
+      where: {
+        id: videoId,
+        courseId: courseId,
+      },
+      data: {
+        videoThumbnail: videoThumbnailUpload,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
       data: {
         video,
       },
