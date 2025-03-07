@@ -1,3 +1,4 @@
+import fs from "fs";
 import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
@@ -14,6 +15,7 @@ class VideoService {
       }
     );
     videoThumbnailUpload = videoThumbnailUpload.secure_url;
+    fs.unlinkSync(videoThumbnail);
     let videoUpload: any = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_large(
         video,
@@ -32,6 +34,7 @@ class VideoService {
       );
     });
     videoUpload = videoUpload.secure_url;
+    fs.unlinkSync(video);
     const Video = await prisma.video.create({
       data: {
         title: title,
