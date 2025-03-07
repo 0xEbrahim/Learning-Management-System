@@ -16,7 +16,10 @@ import {
   getCourseByIdValidation,
 } from "./Course.validation";
 import { validate } from "../../utils/validation";
+import { videoRouter } from "../Video/Video.routes";
 const router = express.Router({ mergeParams: true });
+
+router.use("/:courseId/videos", videoRouter);
 
 router.post(
   "/",

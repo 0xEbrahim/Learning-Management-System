@@ -6,10 +6,11 @@ const storage = multer.diskStorage({
     const isProfPic =
       req.baseUrl === "/api/v1/users" || req.baseUrl === "/api/v1/auth";
     const isCourse = req.baseUrl === "/api/v1/courses";
+    const isVideo = req.baseUrl.endsWith("/videos");
     cb(
       null,
       `${__dirname}/../uploads/${
-        isProfPic ? "users" : isCourse ? "courses" : ""
+        isProfPic ? "users" : isCourse ? "courses" : isVideo ? "videos" : ""
       }`
     );
   },
@@ -33,8 +34,7 @@ const fileFilter = function (req: any, file: any, cb: any) {
     file.mimetype === "image/jpeg" ||
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
-    file.mimetype === "video/mp4" ||
-    file.mimetype === "video/mpeg"
+    file.mimetype.startsWith("video/")
   )
     cb(null, true);
   else cb({ message: "Unsupported file format" }, false);
