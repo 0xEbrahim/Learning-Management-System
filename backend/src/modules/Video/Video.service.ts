@@ -2,7 +2,11 @@ import fs from "fs";
 import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
-import { VideoByIdBody, uploadVideoBody } from "./Video.interface";
+import {
+  VideoByIdBody,
+  updateVideoBody,
+  uploadVideoBody,
+} from "./Video.interface";
 import APIError from "../../utils/APIError";
 
 class VideoService {
@@ -57,13 +61,13 @@ class VideoService {
 
   async getVideoById(Payload: VideoByIdBody): Promise<IResponse> {
     const { courseId, videoId } = Payload;
-    const video = await prisma.video.findUnique({
+    const video = await prisma.video.findFirst({
       where: {
         id: videoId,
+        courseId: courseId,
       },
     });
-    if (!video || video.courseId !== courseId)
-      throw new APIError("Invalid video ID", 404);
+    if (!video) throw new APIError("Invalid video ID", 404);
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
@@ -76,13 +80,13 @@ class VideoService {
 
   async deleteVideo(Payload: VideoByIdBody): Promise<IResponse> {
     const { courseId, videoId } = Payload;
-    const video = await prisma.video.findUnique({
+    const video = await prisma.video.findFirst({
       where: {
         id: videoId,
+        courseId: courseId,
       },
     });
-    if (!video || video.courseId !== courseId)
-      throw new APIError("Invalid video ID", 404);
+    if (!video) throw new APIError("Invalid video ID", 404);
     await prisma.video.delete({
       where: {
         id: videoId,
@@ -92,6 +96,35 @@ class VideoService {
       status: "Success",
       statusCode: 200,
       message: "Video deleted successfully",
+    };
+    return response;
+  }
+
+  async updateVideo(Payload: updateVideoBody): Promise<IResponse> {
+    const { courseId, title, videoId } = Payload;
+    let video = await prisma.video.findFirst({
+      where: {
+        id: videoId,
+        courseId: courseId,
+      },
+    });
+    if (!video) throw new APIError("Invalid video ID", 404);
+    video = await prisma.video.update({
+      where: {
+        id: videoId,
+        courseId: courseId,
+      },
+      data: {
+        title: title,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "Video updated successfully",
+      data: {
+        video,
+      },
     };
     return response;
   }

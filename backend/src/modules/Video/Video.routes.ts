@@ -4,8 +4,17 @@ import { validate } from "../../utils/validation";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import isAuthorized from "../../middlewares/isAuthorized";
 import isOwner from "../../middlewares/isOwner";
-import { VideoValidation, uploadVideoValidation } from "./Video.validation";
-import { deleteVideo, getVideoById, uploadVideo } from "./Video.controller";
+import {
+  VideoValidation,
+  updateVideoValidation,
+  uploadVideoValidation,
+} from "./Video.validation";
+import {
+  deleteVideo,
+  getVideoById,
+  updateVideo,
+  uploadVideo,
+} from "./Video.controller";
 import isBuyer from "../../middlewares/isBuyer";
 const router = express.Router({ mergeParams: true });
 
@@ -27,6 +36,14 @@ router.get(
   validate(VideoValidation),
   isBuyer,
   getVideoById
+);
+router.patch(
+  "/:videoId",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  isOwner,
+  validate(updateVideoValidation),
+  updateVideo
 );
 router.delete(
   "/:videoId",

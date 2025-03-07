@@ -4,7 +4,11 @@ import APIError from "../../utils/APIError";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import VideoService from "./Video.service";
 import sendResponse from "../../utils/sendResponse";
-import { VideoByIdBody, uploadVideoBody } from "./Video.interface";
+import {
+  VideoByIdBody,
+  updateVideoBody,
+  uploadVideoBody,
+} from "./Video.interface";
 
 export const uploadVideo = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
@@ -53,3 +57,14 @@ export const deleteVideo = asyncHandler(
   }
 );
 
+export const updateVideo = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: updateVideoBody = {
+      courseId: req.params.courseId,
+      videoId: req.params.videoId,
+      title: req.body.title,
+    };
+    const result = await VideoService.updateVideo(data);
+    sendResponse(result, res);
+  }
+);

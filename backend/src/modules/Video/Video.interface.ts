@@ -10,3 +10,9 @@ export interface VideoByIdBody {
   courseId: string;
   videoId: string;
 }
+
+export interface updateVideoBody {
+  title: string;
+  videoId: string;
+  courseId: string;
+}
