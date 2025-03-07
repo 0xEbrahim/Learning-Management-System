@@ -11,6 +11,7 @@ export default asyncHandler(
         id: req.params.courseId,
       },
     });
+    if (!course) return next(new APIError("Invalid course ID", 404));
     if (course?.publisherId === req.User?.id) next();
     else {
       return next(
