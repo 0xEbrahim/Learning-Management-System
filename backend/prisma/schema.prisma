@@ -12,33 +12,36 @@ enum crdb_internal_region {
 }
 
 model User {
-  id                              String        @id @default(uuid())
-  googleId                        String?       @unique
+  id                              String               @id @default(uuid())
+  googleId                        String?              @unique
   name                            String
   avatar                          String?
-  email                           String        @unique
+  email                           String               @unique
   emailVerificationToken          String?
   emailVerificationTokenExpiresAt DateTime?
-  emailVerified                   Boolean       @default(false)
+  emailVerified                   Boolean              @default(false)
   password                        String
-  passwordChangedAt               DateTime      @default(now())
+  passwordChangedAt               DateTime             @default(now())
   passwordResetToken              String?
   passwordResetTokenExpiresAt     DateTime?
-  role                            Roles         @default(STUDENT)
-  isActive                        Boolean       @default(true)
-  twoFactorAuth                   Boolean       @default(false)
+  role                            Roles                @default(STUDENT)
+  isActive                        Boolean              @default(true)
+  twoFactorAuth                   Boolean              @default(false)
   OTP                             String?
   OTPExpiresAt                    DateTime?
-  createdAt                       DateTime      @default(now())
-  updatedAt                       DateTime      @updatedAt
+  createdAt                       DateTime             @default(now())
+  updatedAt                       DateTime             @updatedAt
   deleteAt                        DateTime?
   reviews                         Review[]
   replies                         ReviewReply[]
   comments                        Comment[]
   courses                         Order[]
-  publishedCourses                Course[]      @relation("Publish")
-  notificationsSent             Notification[]  @relation("sent")
-  notifications                 Notification[]  @relation("recieved")
+  publishedCourses                Course[]             @relation("Publish")
+  userCourseProgress              UserCourseProgress[]
+  userVideoProgress               UserVideoProgress[]
+  notificationsSent               Notification[]       @relation("sent")
+  notifications                   Notification[]       @relation("recieved")
+
   @@index([email])
   @@index([googleId])
 }
@@ -84,15 +87,16 @@ model Comment {
 }
 
 model Video {
-  id             String    @id @default(uuid())
+  id             String              @id @default(uuid())
   courseId       String
-  course         Course    @relation(fields: [courseId], references: [id])
+  course         Course              @relation(fields: [courseId], references: [id])
   videoUrl       String
   videoThumbnail String
   videoLength    BigInt
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
   title          String
+  userProgress   UserVideoProgress[]
   comments       Comment[]
 }
 
@@ -128,23 +132,56 @@ model CategoryOnCourses {
 }
 
 model Course {
-  id             String              @id @default(uuid())
+  id             String               @id @default(uuid())
   publisherId    String
-  publisher      User                @relation("Publish", fields: [publisherId], references: [id])
+  publisher      User                 @relation("Publish", fields: [publisherId], references: [id])
   name           String
   price          Float
   description    String
-  averageRatings Float               @default(0)
+  averageRatings Float                @default(0)
   thumbnail      String
-  purchased      Int                 @default(0)
-  createdAt      DateTime            @default(now())
-  updatedAt      DateTime            @updatedAt
+  purchased      Int                  @default(0)
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
   demo           Demo?
   categories     CategoryOnCourses[]
   prerequisites  Prerequisites[]
+  userProgress   UserCourseProgress[]
   reviews        Review[]
   courseData     Video[]
   buyers         Order[]
+}
+
+model UserCourseProgress {
+  id          String       @id @default(uuid())
+  userId      String
+  courseId    String
+  status      CourseStatus @default(ONGOING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  completedAt DateTime?
+  user        User         @relation(fields: [userId], references: [id])
+  course      Course       @relation(fields: [courseId], references: [id])
+  totalWatchedMinutes Int @default(0)
+  @@unique([userId, courseId])
+}
+
+model UserVideoProgress {
+  id             String   @id @default(uuid())
+  userId         String
+  videoId        String
+  watchedMinutes Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id])
+  video          Video    @relation(fields: [videoId], references: [id])
+ lastWatchedAt DateTime @updatedAt
+  @@unique([userId, videoId])
+}
+
+enum CourseStatus {
+  ONGOING
+  COMPLETED
 }
 
 model Payment {
@@ -192,14 +229,14 @@ model Email {
 }
 
 model Notification {
-  id    String @id @default(uuid())
-  senderId String
-  recieverId  String
-  text String
-  createdAt DateTime
-  opened Boolean
-  sender User @relation("sent",fields: [senderId], references: [id])
-  reciever User @relation("recieved",fields: [recieverId], references: [id])
+  id         String   @id @default(uuid())
+  senderId   String
+  recieverId String
+  text       String
+  createdAt  DateTime
+  opened     Boolean
+  sender     User     @relation("sent", fields: [senderId], references: [id])
+  reciever   User     @relation("recieved", fields: [recieverId], references: [id])
 }
 
 enum Roles {
