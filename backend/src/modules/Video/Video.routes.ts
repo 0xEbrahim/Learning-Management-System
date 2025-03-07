@@ -4,8 +4,19 @@ import { validate } from "../../utils/validation";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import isAuthorized from "../../middlewares/isAuthorized";
 import isOwner from "../../middlewares/isOwner";
-import { getVideoValidation, uploadVideoValidation } from "./Video.validation";
-import { getVideoById, uploadVideo } from "./Video.controller";
+import {
+  VideoValidation,
+  updateVideoValidation,
+  uploadVideoValidation,
+} from "./Video.validation";
+import {
+  deleteVideo,
+  editThumbnail,
+  editVideoCtrl,
+  getVideoById,
+  updateVideo,
+  uploadVideo,
+} from "./Video.controller";
 import isBuyer from "../../middlewares/isBuyer";
 const router = express.Router({ mergeParams: true });
 
@@ -24,8 +35,42 @@ router.post(
 router.get(
   "/:videoId",
   isAuthenticated,
-  validate(getVideoValidation),
+  validate(VideoValidation),
   isBuyer,
   getVideoById
+);
+router.patch(
+  "/:videoId",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  isOwner,
+  validate(updateVideoValidation),
+  updateVideo
+);
+router.delete(
+  "/:videoId",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  isOwner,
+  validate(VideoValidation),
+  deleteVideo
+);
+router.patch(
+  "/:videoId/video",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  isOwner,
+  uplaoder.fields([{ name: "video", maxCount: 1 }]),
+  validate(VideoValidation),
+  editVideoCtrl
+);
+router.patch(
+  "/:videoId/thumbnail",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  isOwner,
+  uplaoder.fields([{ name: "image", maxCount: 1 }]),
+  validate(VideoValidation),
+  editThumbnail
 );
 export const videoRouter = router;
