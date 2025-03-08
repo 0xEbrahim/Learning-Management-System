@@ -5,18 +5,24 @@ import SideBar from "../components/sidebar";
 import { initFlowbite } from "flowbite";
 import "./homePage.css";
 import { refreshAccessToken } from "../rtk/slices/authSlice";
-import { logout } from "../rtk/slices/authSlice";
 import { Outlet } from "react-router";
 import { useNavigate } from "react-router";
-
+import { getUserDataById } from "../rtk/slices/userSlice";
 function HomePage() {
   const accessToken = useSelector((state) => state.auth.token);
+  const userId = useSelector((state) => state.auth.userId);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     initFlowbite();
   }, []);
+
+  useEffect(()=>{
+    if(userId && accessToken){
+      dispatch(getUserDataById({userId,accessToken}))
+    }
+  },[accessToken,userId])
 
   useEffect(() => {
     let interval = setInterval(() => {
@@ -26,6 +32,7 @@ function HomePage() {
     //keep refreshing every 15 mins when token changes
     return () => clearInterval(interval);
   }, [accessToken]);
+
   useEffect(() => {
     if (accessToken === null) {
       navigate("/login");

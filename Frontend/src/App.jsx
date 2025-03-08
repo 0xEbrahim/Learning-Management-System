@@ -11,14 +11,14 @@ import DashboardPage from "./pages/dashboard.jsx";
 import NewCourse from "./pages/newCoursePage.jsx";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { io } from "socket.io-client";
-const socket = io.connect("http://localhost:3000");
+// import { io } from "socket.io-client";
+// const socket = io.connect("http://localhost:3000");
 function App() {
   const userId=useSelector((state)=>state.auth.userId);
-  useEffect(()=>{
-    socket.emit('initNotification',{currentAuthenticatedUserId:userId});
-    return () => socket.disconnect();
-  },[socket])
+  // useEffect(()=>{
+  //   socket.emit('initNotification',{currentAuthenticatedUserId:userId});
+  //   return () => socket.disconnect();
+  // },[socket])
   return (
     <>
       <Routes>
