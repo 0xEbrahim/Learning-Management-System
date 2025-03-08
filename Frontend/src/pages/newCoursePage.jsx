@@ -5,11 +5,12 @@ import axios from "axios";
 import { useState } from "react";
 import { FaPlusSquare } from "react-icons/fa";
 function NewCourse(){
+    const navigate=useNavigate();
     return(
         <>
             <h1 className="font-bold text-2xl">Add New Course</h1>
             <div className="flex items-center justify-end gap-1">
-                <button className=" font-bold btn bg-indigo-100 hover:bg-indigo-200 text-indigo-600 px-3 py-2 rounded-lg text-md cursor-pointer mt-8">Cancel</button>
+                <button onClick={()=>navigate("/homePage/courses")} className=" font-bold btn bg-indigo-100 hover:bg-indigo-200 text-indigo-600 px-3 py-2 rounded-lg text-md cursor-pointer mt-8">Cancel</button>
                 <button className="btn bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-md cursor-pointer mt-8">Save & Continue</button>
             </div>
             <form className="grid lg:grid-cols-3 gap-3 sm:grid-cols-1 mt-4">
