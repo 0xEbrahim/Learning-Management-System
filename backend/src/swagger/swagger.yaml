@@ -797,6 +797,476 @@ paths:
                   message:
                     type: string
                     example: Unauthorized access
+  /courses:
+    post:
+      tags:
+        - Course
+      summary: Create a new course
+      description: Create a new course (Teacher or Admin only)
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Advanced Python Programming"
+                price:
+                  type: string
+                  example: "99.99"
+                description:
+                  type: string
+                  example: "Master Python programming language"
+                categories:
+                  type: array
+                  items:
+                    type: string
+                    example: "Programming"
+                image:
+                  type: string
+                  format: binary
+                  description: Course thumbnail image
+      responses:
+        "201":
+          description: Course created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      course:
+                        $ref: "#/components/schemas/Course"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Course's name cannot be less than 6 characters
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: You are not authorized to create courses
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Error while creating course
+
+    get:
+      tags:
+        - Course
+      summary: Get all courses (Admin only)
+      description: Retrieve courses with filtering and pagination
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+          description: Number of items per page
+        - in: query
+          name: sort
+          schema:
+            type: string
+            example: "-createdAt"
+          description: Sorting criteria
+      responses:
+        "200":
+          description: Courses retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      courses:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Course"
+        "403":
+          description: Forbidden access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Admin access required
+
+  /courses/search:
+    get:
+      tags:
+        - Course
+      summary: Search courses
+      description: Search courses by name or description
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: q
+          schema:
+            type: string
+            example: "Python"
+          description: Search query
+        - in: query
+          name: price
+          schema:
+            type: number
+            example: 100
+          description: Maximum price filter
+        - in: query
+          name: purchased
+          schema:
+            type: integer
+            example: 50
+          description: Minimum purchase count
+      responses:
+        "200":
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      courses:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Course"
+
+  /courses/{id}:
+    get:
+      tags:
+        - Course
+      summary: Get course by ID
+      description: Retrieve detailed course information
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Course ID
+      responses:
+        "200":
+          description: Course details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      course:
+                        $ref: "#/components/schemas/DetailedCourse"
+        "404":
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Course not found
+
+    delete:
+      tags:
+        - Course
+      summary: Delete a course
+      description: Delete course (Admin or Course Publisher only)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Course ID
+      responses:
+        "200":
+          description: Course deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  message:
+                    type: string
+                    example: Course deleted successfully
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: You are not authorized to delete this course
+  /categories:
+    post:
+      tags:
+        - Category
+      summary: Create a new category
+      description: Create a new course category (Admin only)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategoryBody"
+      responses:
+        "201":
+          description: Category created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      category:
+                        $ref: "#/components/schemas/Category"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Category name must be between 3 and 25 characters
+        "403":
+          description: Forbidden (non-admin access)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Error while creating category
+
+    get:
+      tags:
+        - Category
+      summary: Get all categories
+      description: Retrieve categories with filtering, sorting, and pagination
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          description: Page number for pagination
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+          description: Number of items per page
+        - in: query
+          name: sort
+          schema:
+            type: string
+            example: "-createdAt"
+          description: Sorting criteria
+        - in: query
+          name: fields
+          schema:
+            type: string
+            example: "name"
+          description: Comma-separated fields to include
+      responses:
+        "200":
+          description: Categories retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      categories:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/Category"
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
+
+  /categories/{id}:
+    get:
+      tags:
+        - Category
+      summary: Get category by ID
+      description: Retrieve a category including its associated courses
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: Category ID
+      responses:
+        "200":
+          description: Category details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      category:
+                        $ref: "#/components/schemas/CategoryWithCourses"
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: "No category matched ID: 123"
+        "401":
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: Error
+                  message:
+                    type: string
+                    example: Unauthorized access
+
 components:
   schemas:
     RegisterBody:
@@ -889,6 +1359,126 @@ components:
           type: string
           example: John Doe
           description: New name for the user
+
+    CreateCategoryBody:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 3
+          maxLength: 25
+          example: Programming
+    Course:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "cln5zq6pd0000qyfg5q5q5q5q"
+        name:
+          type: string
+          example: "Advanced Python"
+        price:
+          type: number
+          example: 99.99
+        description:
+          type: string
+          example: "Master Python programming"
+        thumbnail:
+          type: string
+          example: "https://res.cloudinary.com/.../python.jpg"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    DetailedCourse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+        description:
+          type: string
+        averageRatings:
+          type: number
+        thumbnail:
+          type: string
+        purchased:
+          type: integer
+        publisher:
+          type: object
+          properties:
+            name:
+              type: string
+            avatar:
+              type: string
+        categories:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "cln5zq6pd0000qyfg5q5q5q5q"
+        name:
+          type: string
+          example: Programming
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-09-01T00:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-09-01T00:00:00Z"
+    CategoryWithCourses:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "cln5zq6pd0000qyfg5q5q5q5q"
+        name:
+          type: string
+          example: Programming
+        courses:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Learn TypeScript"
+              thumbnail:
+                type: string
+                example: "https://example.com/thumbnail.jpg"
+              price:
+                type: number
+                example: 49.99
+              description:
+                type: string
+                example: "Master TypeScript fundamentals"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
 
   securitySchemes:
     BearerAuth:
