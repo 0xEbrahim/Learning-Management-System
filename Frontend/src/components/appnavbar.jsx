@@ -1,10 +1,7 @@
 import {useSelector} from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../rtk/slices/authSlice";
-import { useDispatch } from "react-redux";
 function AppNavBar(){
-    const accessToken=useSelector((state)=>state.auth.token);
-    const dispatch=useDispatch();
     return(
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -42,7 +39,7 @@ function AppNavBar(){
                   </button>
                   <button type="button" className="cursor-pointer flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span className="sr-only">Open user menu</span>
-                    <img className="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-4.jpg" alt="user photo"/>
+                    <img className="w-12 h-12 rounded-full" src="../../assets/images/unknown.jpg" alt="user photo"/>
                   </button>
                 </div>
                 <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
