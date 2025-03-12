@@ -46,6 +46,7 @@ function HomePage() {
       <SideBar />
       <div className="p-4 sm:ml-64 bg-[#F5EFFF] min-h-[100vh]">
         <div className="p-4 mt-14">
+
           <Outlet></Outlet>
         </div>
       </div>

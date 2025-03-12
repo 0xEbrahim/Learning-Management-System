@@ -34,4 +34,6 @@ export default {
   REDIS_PASSWORD: process.env.REDIS_PASSWORD as string,
   REDIS_SOCKET_HOST: process.env.REDIS_SOCKET_HOST as string,
   REDIS_SOCKET_PORT: parseInt(process.env.REDIS_SOCKET_PORT as string),
+  STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY as string,
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
 };

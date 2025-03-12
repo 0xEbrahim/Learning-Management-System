@@ -21,6 +21,7 @@ import { userRouter } from "./modules/User/User.routes";
 import { courseRouter } from "./modules/Course/Course.routes";
 import { categoryRouter } from "./modules/Category/Category.routes";
 import { videoRouter } from "./modules/Video/Video.routes";
+import { orderRouter } from "./modules/Order/Order.routes";
 
 dotenv.config();
 const app = express();
@@ -78,6 +79,7 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/courses", courseRouter);
 app.use("/api/v1/categories", categoryRouter);
 app.use("/api/v1/videos", videoRouter);
+app.use("/api/v1/orders", orderRouter);
 app.all("*", notFound);
 app.use(globalErrorHandler);
 export default server;
