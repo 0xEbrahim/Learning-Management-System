@@ -100,7 +100,7 @@ function DashboardPage(){
                                <form onSubmit={(e)=>{e.preventDefault()}}>
                                <label htmlFor="image" className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">
                                     Upload photo
-                                    <input id="image" type="file" className="hidden" onChange={(e)=>{handleNewAvatar(e.target.value)}}/>
+                                    <input id="image" type="file" className="hidden" onChange={(e)=>{handleNewAvatar(e.target.files[0])}}/>
                                 </label>
                                 {/* <button className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Upload photo</button> */}
                                </form>
