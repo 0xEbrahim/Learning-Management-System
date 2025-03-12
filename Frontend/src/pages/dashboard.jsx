@@ -1,11 +1,51 @@
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { MdModeEdit } from "react-icons/md";
+import api from "../axiosInstance";
+import Swal from 'sweetalert2'
+import { useNavigate } from "react-router-dom";
 function DashboardPage(){
+    const navigate=useNavigate();
     const userName=useSelector((state)=>state.user.userData?.name);
     const userEmail=useSelector((state)=>state.user.userData?.email);
     const userAvatar=useSelector((state)=>state.user.userData?.avatar||"../../assets/images/unknown.jpg");
+    const userId=useSelector((state)=>state.user.userData?.id);
     const [expand,setExpand]=useState(false);
+    const [newUserName,setNewUserName]=useState("");
+
+    const handleUserNameChange=(value)=>{
+        setNewUserName(value);
+    }
+
+    const updateUserName=async()=>{
+        try{
+            const res=await api.patch(`/users/${userId}/update`,{
+                name:newUserName
+            });
+
+            if(res.status === 200){
+                Swal.fire({
+                    title: "your name is updated successfully",
+                    icon: "success",
+                    draggable: true
+                  }).then(()=>{
+                    setExpand(false);
+                    window.location.reload();
+                  });
+               }
+            
+        }catch(error){
+            if(error.response?.status === 403 || error.response?.status === 401){
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Session expired, please login again",
+                  }).then(()=>{
+                    navigate("/login");
+                  });
+            }
+        }
+    }
     return(
        <>
         <h1 className="text-2xl font-bold">Dashboard</h1>
@@ -33,10 +73,10 @@ function DashboardPage(){
                 {expand?( <div>
                     <form className="w-full bg-white" onSubmit={(e)=>e.preventDefault()}>
                     <div className="mb-4">
-                            <input type="text" id="name" className="outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Edit userName.."/>
+                            <input type="text" id="name" className="outline-none border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" placeholder="Edit userName.." onChange={(e)=>{handleUserNameChange(e.target.value)}}/>
                         </div>
                         <div className="flex items-center gap-1">
-                            <button className="btn bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded-lg text-md cursor-pointer mb-3">Save</button>
+                            <button onClick={()=>{updateUserName()}} className="btn bg-indigo-600 hover:bg-indigo-700 text-white px-2 py-1 rounded-lg text-md cursor-pointer mb-3">Save</button>
                             <button onClick={()=>setExpand(false)} className="btn bg-indigo-300 hover:bg-indigo-400 text-white px-2 py-1 rounded-lg text-md cursor-pointer mb-3" >Cancel</button>
                         </div>
                     </form>
