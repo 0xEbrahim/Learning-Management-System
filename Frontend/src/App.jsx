@@ -13,11 +13,11 @@ import { useSelector } from "react-redux";
 import { io } from "socket.io-client";
 const socket = io.connect("http://localhost:3000");
 function App() {
-  const userId=useSelector((state)=>state.auth.userId);
-  useEffect(()=>{
-    socket.emit('initNotification',{currentAuthenticatedUserId:userId});
-    return () => socket.disconnect();
-  },[socket])
+  const userId = useSelector((state) => state.auth.userId);
+  useEffect(() => {
+    socket.emit("initNotification", { currentAuthenticatedUserId: userId });
+    // return () => socket.disconnect();
+  }, [socket]);
   return (
     <>
       <Routes>
