@@ -2,7 +2,7 @@ import { FaPlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 function CoursesPage(){
-    const userRole=useSelector((state)=>state.user.userData?.user.role);
+    const userRole=useSelector((state)=>state.user.userData?.role);
     return(
         <>
             <div className="flex items-center justify-between">

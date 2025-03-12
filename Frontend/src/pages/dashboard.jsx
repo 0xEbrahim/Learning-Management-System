@@ -2,9 +2,9 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 function DashboardPage(){
-    const userName=useSelector((state)=>state.user.userData?.user.name);
-    const userEmail=useSelector((state)=>state.user.userData?.user.email);
-    const userAvatar=useSelector((state)=>state.user.userData?.user.avatar||"../../assets/images/unknown.jpg");
+    const userName=useSelector((state)=>state.user.userData?.name);
+    const userEmail=useSelector((state)=>state.user.userData?.email);
+    const userAvatar=useSelector((state)=>state.user.userData?.avatar||"../../assets/images/unknown.jpg");
     const [expand,setExpand]=useState(false);
     return(
        <>
