@@ -1,22 +1,53 @@
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdModeEdit } from "react-icons/md";
 import api from "../axiosInstance";
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+const apiUrl=import.meta.env.VITE_API_URL;
 function DashboardPage(){
     const navigate=useNavigate();
+    const accessToken=useSelector((state)=>state.auth.token);
     const userName=useSelector((state)=>state.user.userData?.name);
     const userEmail=useSelector((state)=>state.user.userData?.email);
     const userAvatar=useSelector((state)=>state.user.userData?.avatar||"../../assets/images/unknown.jpg");
     const userId=useSelector((state)=>state.user.userData?.id);
     const [expand,setExpand]=useState(false);
     const [newUserName,setNewUserName]=useState("");
+    const [newAvatar,setNewAvatar]=useState("");
 
     const handleUserNameChange=(value)=>{
         setNewUserName(value);
     }
 
+    const handleNewAvatar=(value)=>{
+        setNewAvatar(value);
+        console.log(value);
+    }
+
+    useEffect(()=>{
+        if(newAvatar){
+
+            const uploadAvatar=async()=>{
+                try{
+                    const formData=new FormData();
+                    formData.append("image",`string ${newAvatar}`);
+                    formData.append("remove",false);
+                    const res= await  api.patch(`/users/${userId}/update/pic`,formData,
+                    {
+                        headers:{
+                            "Content-Type": "multipart/form-data",
+                        }
+                    });
+                    console.log(res);
+                }catch(error){
+                    console.log(error);
+                }
+            }
+            uploadAvatar();
+        }
+    },[newAvatar])
     const updateUserName=async()=>{
         try{
             const res=await api.patch(`/users/${userId}/update`,{
@@ -46,6 +77,7 @@ function DashboardPage(){
             }
         }
     }
+
     return(
        <>
         <h1 className="text-2xl font-bold">Dashboard</h1>
@@ -64,7 +96,14 @@ function DashboardPage(){
                                 <button className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Remove avatar</button>
                             </li>
                             <li>
-                                <button className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Upload photo</button>
+                                {/* <button className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Upload photo</button> */}
+                               <form onSubmit={(e)=>{e.preventDefault()}}>
+                               <label htmlFor="image" className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">
+                                    Upload photo
+                                    <input id="image" type="file" className="hidden" onChange={(e)=>{handleNewAvatar(e.target.value)}}/>
+                                </label>
+                                {/* <button className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Upload photo</button> */}
+                               </form>
                             </li>
                             </ul>
                         </div>
