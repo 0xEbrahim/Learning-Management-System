@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import { logout } from "../rtk/slices/authSlice";
 import { useDispatch } from "react-redux";
 function AppNavBar(){
-    const accessToken=useSelector((state)=>state.auth.token);
-    const dispatch=useDispatch();
+  const userName=useSelector((state)=>state.user.userData?.name);
+  const userEmail=useSelector((state)=>state.user.userData?.email);
+  const userAvatar=useSelector((state)=>state.user.userData?.avatar||"../../assets/images/unknown.jpg");
+  const dispatch=useDispatch();
+  const accessToken=useSelector((state)=>state.auth.token);
+  
     return(
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -26,7 +30,7 @@ function AppNavBar(){
                 <button type="button" className="cursor-pointer relative inline-flex items-center p-2 rounded-full text-sm text-center text-black hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
+                    className="h-7 w-7"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -38,20 +42,20 @@ function AppNavBar(){
                   </svg>
                   <span className="sr-only">Notifications</span>
                   {/* add number of notifications */}
-                    <div className="absolute inline-flex items-center justify-center w-4 h-4 text-sm font-bold text-white bg-indigo-600 border-2 border-white rounded-full -top-0 -end-0"></div>
+                    <div className="absolute inline-flex items-center justify-center w-3.5 h-3.5 text-sm font-bold text-white bg-indigo-600 border-2 border-white rounded-full -top-[-4px] -end-[-4px]"></div>
                   </button>
-                  <button type="button" className="cursor-pointer flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                  <button type="button" className="cursor-pointer flex text-sm rounded-full" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span className="sr-only">Open user menu</span>
-                    <img className="w-10 h-10 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-4.jpg" alt="user photo"/>
+                    <img className="w-12 h-12 rounded-full" src={userAvatar} alt="user photo"/>
                   </button>
                 </div>
                 <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
                   <div className="px-4 py-3" role="none">
                     <p className="text-sm text-gray-900 dark:text-white" role="none">
-                      BoshraEmad
+                      {userName}
                     </p>
                     <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                      boshraemadawad2004@gmail.com
+                      {userEmail}
                     </p>
                   </div>
                   <ul className="py-1" role="none">
