@@ -20,7 +20,6 @@ function DashboardPage(){
 
     const handleNewAvatar=(value)=>{
         setNewAvatar(value);
-        console.log(value);
     }
 
     useEffect(()=>{
@@ -64,6 +63,16 @@ function DashboardPage(){
             uploadAvatar();
         }
     },[newAvatar])
+
+    const removeUserAvatar=async()=>{
+        try{
+            await api.patch(`/users/${userId}/update/pic`,{remove:true});
+            window.location.reload();
+        }catch(error){
+            return;
+        }
+    }
+
     const updateUserName=async()=>{
         try{
             const res=await api.patch(`/users/${userId}/update`,{
@@ -109,7 +118,7 @@ function DashboardPage(){
                         <div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
                             <ul className="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
                             <li>
-                                <button className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Remove avatar</button>
+                                <button onClick={()=>{removeUserAvatar()}} className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Remove avatar</button>
                             </li>
                             <li>
                                 {/* <button className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Upload photo</button> */}
