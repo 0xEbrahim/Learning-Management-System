@@ -46,7 +46,7 @@ function AppNavBar(){
                   </button>
                   <button type="button" className="cursor-pointer flex text-sm rounded-full" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span className="sr-only">Open user menu</span>
-                    <img className="w-12 h-12 rounded-full" src={userAvatar} alt="user photo"/>
+                    <img className="w-12 h-12 rounded-full object-cover" src={userAvatar} alt="user photo"/>
                   </button>
                 </div>
                 <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">

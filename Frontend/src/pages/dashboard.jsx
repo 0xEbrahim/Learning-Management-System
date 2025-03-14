@@ -4,11 +4,8 @@ import { MdModeEdit } from "react-icons/md";
 import api from "../axiosInstance";
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-const apiUrl=import.meta.env.VITE_API_URL;
 function DashboardPage(){
     const navigate=useNavigate();
-    const accessToken=useSelector((state)=>state.auth.token);
     const userName=useSelector((state)=>state.user.userData?.name);
     const userEmail=useSelector((state)=>state.user.userData?.email);
     const userAvatar=useSelector((state)=>state.user.userData?.avatar||"../../assets/images/unknown.jpg");
@@ -40,9 +37,28 @@ function DashboardPage(){
                             "Content-Type": "multipart/form-data",
                         }
                     });
-                    console.log(res);
+                    
+                    if(res.status === 200){
+                        Swal.fire({
+                            title: "your avatar has been updated successfully",
+                            icon: "success",
+                            draggable: true
+                          }).then(()=>{
+                            setExpand(false);
+                            window.location.reload();
+                          });
+                    }
+
                 }catch(error){
-                    console.log(error);
+                    if(error.response?.status === 403 || error.response?.status === 401){
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Session expired, please login again",
+                          }).then(()=>{
+                            navigate("/login");
+                          });
+                    }
                 }
             }
             uploadAvatar();
@@ -87,7 +103,7 @@ function DashboardPage(){
             </div>
             <div className="bg-white rounded-xl p-2 flex items-center flex-col gap-2">
                 <div className=" relative user-avatar mt-4">
-                    <img className=" cursor-pointer w-35 h-35 rounded-full" src={userAvatar} alt="user photo"/>
+                    <img className="w-30 h-30 cursor-pointer rounded-full object-cover" src={userAvatar} alt="user photo"/>
                     <div className="absolute top-[70%] left-[10px]">
                     <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" className="cursor-pointer text-white font-medium rounded-lg text-sm px-1.5 py-1 text-center inline-flex items-center gap-1 bg-gray-400"><MdModeEdit/>Edit</button>
                         <div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
