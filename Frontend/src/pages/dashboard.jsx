@@ -32,7 +32,7 @@ function DashboardPage(){
             const uploadAvatar=async()=>{
                 try{
                     const formData=new FormData();
-                    formData.append("image",`string ${newAvatar}`);
+                    formData.append("image",newAvatar);
                     formData.append("remove",false);
                     const res= await  api.patch(`/users/${userId}/update/pic`,formData,
                     {

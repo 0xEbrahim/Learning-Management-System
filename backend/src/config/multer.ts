@@ -37,7 +37,6 @@ const fileFilter = function (req: any, file: any, cb: any) {
     file.mimetype === "image/jpg" ||
     file.mimetype.startsWith("video/")
   ) {
-    console.log(file);
     cb(null, true);
   } else cb({ message: "Unsupported file format" }, false);
 };

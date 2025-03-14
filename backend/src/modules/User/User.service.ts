@@ -128,7 +128,8 @@ class UserService {
   async updateProfilePic(Payload: IUpdateProfilePicBody): Promise<IResponse> {
     const { avatar, id, remove } = Payload;
     let user;
-    if (remove) {
+    if (remove === true) {
+      console.log("NOOO");
       user = await prisma.user.update({
         where: {
           id: id,
@@ -138,6 +139,8 @@ class UserService {
         },
       });
     } else {
+      console.log("YESSS");
+
       let uploaded;
       if (avatar) {
         uploaded = await cloudinary.uploader.upload(avatar, {
