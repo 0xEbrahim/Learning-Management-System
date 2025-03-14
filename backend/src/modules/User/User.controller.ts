@@ -48,6 +48,7 @@ export const search = asyncHandler(
 
 export const updateProfilePic = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
+    console.log(JSON.parse(req.body.image));
     const data: IUpdateProfilePicBody = {
       id: req.User?.id,
       avatar: req.file?.path,

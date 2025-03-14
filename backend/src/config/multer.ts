@@ -25,6 +25,7 @@ const storage = multer.diskStorage({
           .replace(".", "")
       ) +
       path.extname(file.originalname);
+
     callback(null, filename);
   },
 });
@@ -35,9 +36,10 @@ const fileFilter = function (req: any, file: any, cb: any) {
     file.mimetype === "image/png" ||
     file.mimetype === "image/jpg" ||
     file.mimetype.startsWith("video/")
-  )
+  ) {
+    console.log(file);
     cb(null, true);
-  else cb({ message: "Unsupported file format" }, false);
+  } else cb({ message: "Unsupported file format" }, false);
 };
 
 const uplaoder = multer({

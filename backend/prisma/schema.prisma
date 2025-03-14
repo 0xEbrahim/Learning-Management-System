@@ -186,18 +186,11 @@ enum CourseStatus {
 
 model Payment {
   id      String        @id @default(uuid())
+  checkout_session      String
   orderId String        @unique
   order   Order         @relation(fields: [orderId], references: [id])
   price   Float
   status  PaymentStatus @default(PENDING)
-}
-
-model Address {
-  id         String  @id @default(uuid())
-  country    String
-  city       String
-  postalCode String
-  orders     Order[]
 }
 
 model Order {
@@ -209,16 +202,12 @@ model Order {
   user        User     @relation(fields: [userId], references: [id])
   course      Course   @relation(fields: [courseId], references: [id])
   paymentInfo Payment?
-  addressId   String
-  address     Address  @relation(fields: [addressId], references: [id])
-
   @@unique([userId, courseId])
 }
 
 model Token {
   id    String @id @default(uuid())
   token String @unique
-
   @@index([token])
 }
 
