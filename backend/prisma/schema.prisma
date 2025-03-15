@@ -153,16 +153,17 @@ model Course {
 }
 
 model UserCourseProgress {
-  id          String       @id @default(uuid())
-  userId      String
-  courseId    String
-  status      CourseStatus @default(ONGOING)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  completedAt DateTime?
-  user        User         @relation(fields: [userId], references: [id])
-  course      Course       @relation(fields: [courseId], references: [id])
-  totalWatchedMinutes Int @default(0)
+  id                  String       @id @default(uuid())
+  userId              String
+  courseId            String
+  status              CourseStatus @default(ONGOING)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+  completedAt         DateTime?
+  user                User         @relation(fields: [userId], references: [id])
+  course              Course       @relation(fields: [courseId], references: [id])
+  totalWatchedMinutes Int          @default(0)
+
   @@unique([userId, courseId])
 }
 
@@ -175,7 +176,8 @@ model UserVideoProgress {
   updatedAt      DateTime @updatedAt
   user           User     @relation(fields: [userId], references: [id])
   video          Video    @relation(fields: [videoId], references: [id])
- lastWatchedAt DateTime @updatedAt
+  lastWatchedAt  DateTime @updatedAt
+
   @@unique([userId, videoId])
 }
 
@@ -185,12 +187,14 @@ enum CourseStatus {
 }
 
 model Payment {
-  id      String        @id @default(uuid())
-  checkout_session      String
-  orderId String        @unique
-  order   Order         @relation(fields: [orderId], references: [id])
-  price   Float
-  status  PaymentStatus @default(PENDING)
+  id               String @id @default(uuid())
+  checkout_session String
+  orderId          String @unique
+  customerId       String
+  email            String
+  order            Order  @relation(fields: [orderId], references: [id])
+  price            Float
+  status           String
 }
 
 model Order {
@@ -202,12 +206,14 @@ model Order {
   user        User     @relation(fields: [userId], references: [id])
   course      Course   @relation(fields: [courseId], references: [id])
   paymentInfo Payment?
+
   @@unique([userId, courseId])
 }
 
 model Token {
   id    String @id @default(uuid())
   token String @unique
+
   @@index([token])
 }
 
@@ -238,4 +244,5 @@ enum PaymentStatus {
   PENDING
   SUCCESS
   FAIL
+  PAID
 }

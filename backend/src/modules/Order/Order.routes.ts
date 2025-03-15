@@ -10,7 +10,7 @@ import {
 const router = express.Router();
 
 router.post("/create-checkout-session", isAuthenticated, createCheckoutSession);
-router.post("/success", isAuthenticated, verifyOrder);
-router.post("/webhook", express.json({ type: "application/json" }), webhooks);
+router.post("/success", verifyOrder);
+router.post("/webhook", express.raw({ type: "application/json" }), webhooks);
 
 export const orderRouter = router;
