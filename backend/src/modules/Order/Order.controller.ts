@@ -1,9 +1,10 @@
 import { NextFunction, Response } from "express";
 import stripe from "../../config/stripe";
-import { IRequest } from "../../Interfaces/types";
+import { IRequest, IResponse } from "../../Interfaces/types";
 import asyncHandler from "../../utils/asyncHandler";
 import OrderService from "./Order.service";
-import { ICheckoutBody, IWebhookBody } from "./Order.interface";
+import { ICheckoutBody, IGetOrderBody, IWebhookBody } from "./Order.interface";
+import sendResponse from "../../utils/sendResponse";
 
 export const createCheckoutSession = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
@@ -39,5 +40,16 @@ export const webhooks = asyncHandler(
     };
     const result = await OrderService.webhook(data);
     res.send().end();
+  }
+);
+
+export const getOrder = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IGetOrderBody = {
+      orderId: req.params.id,
+      userId: req.User?.id as string,
+    };
+    const result: IResponse = await OrderService.getOrder(data);
+    sendResponse(result, res);
   }
 );

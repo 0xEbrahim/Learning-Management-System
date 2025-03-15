@@ -239,10 +239,3 @@ enum Roles {
   TEACHER
   ADMIN
 }
-
-enum PaymentStatus {
-  PENDING
-  SUCCESS
-  FAIL
-  PAID
-}

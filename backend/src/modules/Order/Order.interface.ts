@@ -4,5 +4,10 @@ export interface ICheckoutBody {
 }
 
 export interface IWebhookBody {
-  req: any
+  req: any;
+}
+
+export interface IGetOrderBody {
+  orderId: string;
+  userId: string;
 }

@@ -2,8 +2,8 @@ import stripe from "../../config/stripe";
 import config from "../../config/env";
 import prisma from "../../config/prisma";
 import APIError from "../../utils/APIError";
-import { ICheckoutBody, IWebhookBody } from "./Order.interface";
-import { IEmail } from "../../Interfaces/types";
+import { ICheckoutBody, IGetOrderBody, IWebhookBody } from "./Order.interface";
+import { IEmail, IResponse } from "../../Interfaces/types";
 import { generateOrderConfirmTemplate } from "../../views/OrderConfirm";
 import sendEmail from "../../config/email";
 
@@ -49,7 +49,7 @@ class OrderService {
     });
 
     const response = {
-      session,     
+      session,
     };
     return response;
   }
@@ -125,6 +125,32 @@ class OrderService {
       await sendEmail(email);
     }
     return;
+  }
+
+  async getOrder(Payload: IGetOrderBody): Promise<IResponse> {
+    const { orderId, userId } = Payload;
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      select: {
+        userId: true,
+        id: true,
+        course: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+          },
+        },
+      },
+    });
+    if (order?.userId !== userId)
+      throw new APIError("You are not eligable to see this order", 401);
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: { order },
+    };
+    return response;
   }
 }
 
