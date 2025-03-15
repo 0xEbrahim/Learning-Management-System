@@ -4,7 +4,7 @@ import { FaFileSignature } from "react-icons/fa";
 import { FiShoppingBag } from "react-icons/fi";
 import { IoHome } from "react-icons/io5";
 import { IoMdLogIn } from "react-icons/io";
-import { NavLink } from "react-router-dom";
+import { NavLink , Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../rtk/slices/authSlice";
 function SideBar(){
@@ -13,8 +13,8 @@ function SideBar(){
     return(
         <>
             <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
-   <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
-      <ul className="space-y-2 font-medium">
+            <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+            <ul className="space-y-2 font-medium h-full relative">
          <li>
             <NavLink to="/homePage/dashboard" className={({ isActive }) =>
           isActive
@@ -47,8 +47,9 @@ function SideBar(){
             </NavLink>
          </li>
          {/* condetional rendering  */}
-{accessToken===null?<>
-   <li>
+   {accessToken===null ?
+<div className="absolute w-full bottom-[10px]">
+<li>
            <NavLink to="/login" className={({ isActive }) =>
           isActive
             ? "active"
@@ -68,15 +69,12 @@ function SideBar(){
               <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
            </NavLink>
         </li>
-</>:        <li>
-           <NavLink to="" onClick={()=>dispatch(logout(accessToken))} className={({ isActive }) =>
-          isActive
-            ? "flex items-center"
-            : "unactive"
-        } >
+</div>
+:        <li className="absolute bottom-[15px] w-full">
+           <Link to="" onClick={()=>dispatch(logout(accessToken))} className="flex items-center hover:bg-[#f5efff] p-2 rounded-lg" >
            < BiLogOutCircle className=" text-red-600 shrink-0 w-5 h-5 transition duration-75 group-hover:text-gray-900" />
               <span className="flex-1 ms-3 whitespace-nowrap">logout</span>
-           </NavLink>
+           </Link>
         </li>}
 
       </ul>
