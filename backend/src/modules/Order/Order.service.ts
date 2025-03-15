@@ -183,6 +183,7 @@ class OrderService {
           orders: JSON.parse(cachedData),
         },
       };
+      return response;
     }
     const query = new ApiFeatures(prisma, "order", searchQuery)
       .filter()
@@ -191,7 +192,7 @@ class OrderService {
       .paginate();
     // TODO: Fetch more data from the orders
     orders = await query.execute();
-    redis.setEx(cacheKey, 3600, JSON.stringify(orders));
+    redis.setEx(cacheKey, 86400, JSON.stringify(orders));
     response = {
       status: "Success",
       statusCode: 200,

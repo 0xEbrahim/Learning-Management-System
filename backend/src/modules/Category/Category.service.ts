@@ -1,3 +1,5 @@
+import stringify from "fast-json-stable-stringify";
+import redis from "../../config/redis";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
@@ -28,13 +30,27 @@ class CategoryService {
   }
 
   async getCategories(Payload: any): Promise<IResponse> {
+    const cacheKey = `categories:${stringify(Payload)}`;
+    const cachedData = await redis.get(cacheKey);
+    let response: IResponse;
+    if (cachedData) {
+      response = {
+        statusCode: 200,
+        status: "Success",
+        data: {
+          categories: JSON.parse(cachedData),
+        },
+      };
+      return response;
+    }
     const query = new ApiFeatures(prisma, "category", Payload)
       .filter()
       .sort()
       .limitFields()
       .paginate();
     const categories = await query.execute();
-    const response: IResponse = {
+    await redis.setEx(cacheKey, 86400, JSON.stringify(categories));
+    response = {
       statusCode: 200,
       status: "Success",
       data: { categories },
@@ -74,5 +90,6 @@ class CategoryService {
     return response;
   }
 }
+// TODO: Add [Delet, Update] category
 
 export default new CategoryService();

@@ -63,7 +63,7 @@ class UserService {
       .paginate();
     const users = await query.execute();
     for (let i = 0; i < users.length; i++) cleanUsersData(users[i] as IUser);
-    await redis.setEx(cacheKey, 3600, JSON.stringify(users));
+    await redis.setEx(cacheKey, 86400, JSON.stringify(users));
     response = {
       status: "Success",
       statusCode: 200,
@@ -129,7 +129,7 @@ class UserService {
       ...options,
     });
     for (let i = 0; i < users.length; i++) cleanUsersData(users[i], "email");
-    redis.setEx(cacheKey, 3600, JSON.stringify(users));
+    redis.setEx(cacheKey, 86400, JSON.stringify(users));
     response.data = { users };
     return response;
   }
