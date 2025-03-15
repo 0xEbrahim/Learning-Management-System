@@ -1,11 +1,11 @@
 import stripe from "../../config/stripe";
 import config from "../../config/env";
-import Stripe from "stripe";
 import prisma from "../../config/prisma";
 import APIError from "../../utils/APIError";
-import { ICheckoutBody } from "./Order.interface";
+import { ICheckoutBody, IWebhookBody } from "./Order.interface";
 
 class OrderService {
+  private endpointSecret = config.STRIPE_WEBHOOK_SECRET;
   async createCheckoutSession(
     Payload: ICheckoutBody
   ): Promise<Record<string, any>> {
@@ -45,6 +45,26 @@ class OrderService {
       order,
     };
     return response;
+  }
+
+  async webhook(Payload: IWebhookBody): Promise<any> {
+    const { req } = Payload;
+    let event = req.body;
+    if (this.endpointSecret) {
+      const signature = req.headers["stripe-signature"];
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.body,
+          signature as any,
+          this.endpointSecret
+        );
+        console.log("Webhook is working");
+      } catch (err: any) {
+        console.log(`⚠️  Webhook signature verification failed.`, err.message);
+        throw new APIError(err.message, 400);
+      }
+    }
+    return;
   }
 }
 

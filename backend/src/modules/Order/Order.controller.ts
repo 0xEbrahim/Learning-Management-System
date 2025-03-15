@@ -1,8 +1,9 @@
 import { NextFunction, Response } from "express";
+import stripe from "../../config/stripe";
 import { IRequest } from "../../Interfaces/types";
 import asyncHandler from "../../utils/asyncHandler";
 import OrderService from "./Order.service";
-import { ICheckoutBody } from "./Order.interface";
+import { ICheckoutBody, IWebhookBody } from "./Order.interface";
 
 export const createCheckoutSession = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
@@ -21,5 +22,15 @@ export const createCheckoutSession = asyncHandler(
 export const verifyOrder = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
     res.json(req.body);
+  }
+);
+
+export const webhooks = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IWebhookBody = {
+      req,
+    };
+    const result = await OrderService.webhook(data);
+    res.send().end();
   }
 );

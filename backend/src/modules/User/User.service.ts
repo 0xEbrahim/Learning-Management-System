@@ -1,4 +1,5 @@
 import cron from "node-cron";
+import fs from "fs";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { cleanUsersData } from "../../utils/Functions/functions";
@@ -129,7 +130,6 @@ class UserService {
     const { avatar, id, remove } = Payload;
     let user;
     if (remove === true) {
-      console.log("NOOO");
       user = await prisma.user.update({
         where: {
           id: id,
@@ -139,13 +139,12 @@ class UserService {
         },
       });
     } else {
-      console.log("YESSS");
-
       let uploaded;
       if (avatar) {
         uploaded = await cloudinary.uploader.upload(avatar, {
           folder: "Users",
         });
+        fs.unlinkSync(avatar);
       } else {
         throw new APIError("Failed, please provide profile picture", 400);
       }
