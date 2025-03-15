@@ -1,9 +1,15 @@
 import { NextFunction, Response } from "express";
 import stripe from "../../config/stripe";
-import { IRequest } from "../../Interfaces/types";
+import { IRequest, IResponse } from "../../Interfaces/types";
 import asyncHandler from "../../utils/asyncHandler";
 import OrderService from "./Order.service";
-import { ICheckoutBody, IWebhookBody } from "./Order.interface";
+import {
+  ICheckoutBody,
+  IGetAllOrders,
+  IGetOrderBody,
+  IWebhookBody,
+} from "./Order.interface";
+import sendResponse from "../../utils/sendResponse";
 
 export const createCheckoutSession = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
@@ -15,13 +21,20 @@ export const createCheckoutSession = asyncHandler(
     res.status(303).json({
       message: "Redirecting",
       url: result.session.url,
-      order: result.order,
     });
   }
 );
 export const verifyOrder = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    res.json(req.body);
+    if (req.query.q === "true") {
+      res.status(200).json({
+        message: "Purchasing done successfully.",
+      });
+    } else {
+      res.status(200).json({
+        message: "Purchasing did not complete.",
+      });
+    }
   }
 );
 
@@ -33,4 +46,31 @@ export const webhooks = asyncHandler(
     const result = await OrderService.webhook(data);
     res.send().end();
   }
+);
+
+export const getOrder = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IGetOrderBody = {
+      orderId: req.params.id,
+      userId: req.User?.id as string,
+    };
+    const result: IResponse = await OrderService.getOrder(data);
+    sendResponse(result, res);
+  }
+);
+
+export const getAllOrders = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IGetAllOrders = {
+      query: req.query,
+      userId: req.params.userId,
+      authUser: req.User?.id as string,
+    };
+    const result: IResponse = await OrderService.getAllOrders(data);
+    sendResponse(result, res);
+  }
+);
+
+export const getCurrentUserOrders = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {}
 );

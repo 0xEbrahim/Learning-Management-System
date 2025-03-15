@@ -11,7 +11,10 @@ import {
 import { validate } from "../../utils/validation";
 import { getUserByIdValidation, updateUserValidation } from "./User.validation";
 import uplaoder from "../../config/multer";
+import { orderRouter } from "../Order/Order.routes";
 const router = express.Router();
+
+router.use("/:userId/orders", orderRouter);
 
 router.get("/", isAuthenticated, getUsers);
 router.get("/search", isAuthenticated, search);
