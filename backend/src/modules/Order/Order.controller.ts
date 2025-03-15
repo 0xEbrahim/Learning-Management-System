@@ -53,3 +53,11 @@ export const getOrder = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+export const getAllOrders = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const result: IResponse = await OrderService.getAllOrders(req.query);
+    sendResponse(result, res);
+  }
+);
+

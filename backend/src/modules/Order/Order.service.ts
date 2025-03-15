@@ -6,6 +6,7 @@ import { ICheckoutBody, IGetOrderBody, IWebhookBody } from "./Order.interface";
 import { IEmail, IResponse } from "../../Interfaces/types";
 import { generateOrderConfirmTemplate } from "../../views/OrderConfirm";
 import sendEmail from "../../config/email";
+import ApiFeatures from "../../utils/APIFeatures";
 
 let endpointSecret: any;
 endpointSecret = config.STRIPE_WEBHOOK_SECRET as string;
@@ -149,6 +150,20 @@ class OrderService {
       status: "Success",
       statusCode: 200,
       data: { order },
+    };
+    return response;
+  }
+  async getAllOrders(Payload: any): Promise<IResponse> {
+    const query = new ApiFeatures(prisma, "order", Payload)
+      .filter()
+      .limitFields()
+      .sort()
+      .paginate();
+    const orders = await query.execute();
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: { orders },
     };
     return response;
   }
