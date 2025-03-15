@@ -2,7 +2,12 @@ import stripe from "../../config/stripe";
 import config from "../../config/env";
 import prisma from "../../config/prisma";
 import APIError from "../../utils/APIError";
-import { ICheckoutBody, IGetOrderBody, IWebhookBody } from "./Order.interface";
+import {
+  ICheckoutBody,
+  IGetAllOrders,
+  IGetOrderBody,
+  IWebhookBody,
+} from "./Order.interface";
 import { IEmail, IResponse } from "../../Interfaces/types";
 import { generateOrderConfirmTemplate } from "../../views/OrderConfirm";
 import sendEmail from "../../config/email";
@@ -119,7 +124,7 @@ class OrderService {
           course.thumbnail,
           order.id,
           course.name,
-          payment.price,
+          payment.price / 100,
           new Date(Date.now())
         ),
       };
@@ -153,13 +158,22 @@ class OrderService {
     };
     return response;
   }
-  async getAllOrders(Payload: any): Promise<IResponse> {
-    const query = new ApiFeatures(prisma, "order", Payload)
+  async getAllOrders(Payload: IGetAllOrders): Promise<IResponse> {
+    const { userId, query: searchQuery, authUser } = Payload;
+    let orders;
+    if (userId) {
+      searchQuery.userId = userId;
+    } else {
+      const user = await prisma.user.findUnique({ where: { id: authUser } });
+      if (user?.role !== "ADMIN")
+        throw new APIError("You are not eligble to access this.", 401);
+    }
+    const query = new ApiFeatures(prisma, "order", searchQuery)
       .filter()
       .limitFields()
       .sort()
       .paginate();
-    const orders = await query.execute();
+    orders = await query.execute();
     const response: IResponse = {
       status: "Success",
       statusCode: 200,

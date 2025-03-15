@@ -11,3 +11,9 @@ export interface IGetOrderBody {
   orderId: string;
   userId: string;
 }
+
+export interface IGetAllOrders {
+  query: Record<string, any>;
+  userId?: string;
+  authUser: string;
+}

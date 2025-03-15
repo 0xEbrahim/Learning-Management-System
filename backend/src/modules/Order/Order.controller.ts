@@ -3,7 +3,12 @@ import stripe from "../../config/stripe";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import asyncHandler from "../../utils/asyncHandler";
 import OrderService from "./Order.service";
-import { ICheckoutBody, IGetOrderBody, IWebhookBody } from "./Order.interface";
+import {
+  ICheckoutBody,
+  IGetAllOrders,
+  IGetOrderBody,
+  IWebhookBody,
+} from "./Order.interface";
 import sendResponse from "../../utils/sendResponse";
 
 export const createCheckoutSession = asyncHandler(
@@ -56,8 +61,16 @@ export const getOrder = asyncHandler(
 
 export const getAllOrders = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    const result: IResponse = await OrderService.getAllOrders(req.query);
+    const data: IGetAllOrders = {
+      query: req.query,
+      userId: req.params.userId,
+      authUser: req.User?.id as string,
+    };
+    const result: IResponse = await OrderService.getAllOrders(data);
     sendResponse(result, res);
   }
 );
 
+export const getCurrentUserOrders = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {}
+);

@@ -9,7 +9,7 @@ import {
   webhooks,
 } from "./Order.controller";
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.post("/create-checkout-session", isAuthenticated, createCheckoutSession);
 router.post("/success", isAuthenticated, verifyOrder);
