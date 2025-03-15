@@ -1,3 +1,4 @@
+import stringify from "fast-json-stable-stringify";
 import stripe from "../../config/stripe";
 import config from "../../config/env";
 import prisma from "../../config/prisma";
@@ -12,6 +13,7 @@ import { IEmail, IResponse } from "../../Interfaces/types";
 import { generateOrderConfirmTemplate } from "../../views/OrderConfirm";
 import sendEmail from "../../config/email";
 import ApiFeatures from "../../utils/APIFeatures";
+import redis from "../../config/redis";
 
 let endpointSecret: any;
 endpointSecret = config.STRIPE_WEBHOOK_SECRET as string;
@@ -160,6 +162,7 @@ class OrderService {
   }
   async getAllOrders(Payload: IGetAllOrders): Promise<IResponse> {
     const { userId, query: searchQuery, authUser } = Payload;
+    let response: IResponse;
     let orders;
     if (userId) {
       searchQuery.userId = userId;
@@ -168,13 +171,26 @@ class OrderService {
       if (user?.role !== "ADMIN")
         throw new APIError("You are not eligble to access this.", 401);
     }
+    const cacheKey = `orders:${stringify(searchQuery)}`;
+    const cachedData = await redis.get(cacheKey);
+    if (cachedData) {
+      response = {
+        status: "Success",
+        statusCode: 200,
+        data: {
+          orders: JSON.parse(cachedData),
+        },
+      };
+    }
     const query = new ApiFeatures(prisma, "order", searchQuery)
       .filter()
       .limitFields()
       .sort()
       .paginate();
+    // TODO: Fetch more data from the orders
     orders = await query.execute();
-    const response: IResponse = {
+    redis.setEx(cacheKey, 3600, JSON.stringify(orders));
+    response = {
       status: "Success",
       statusCode: 200,
       data: { orders },

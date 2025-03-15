@@ -19,7 +19,7 @@ export interface IGetCoursesByIdBody {
 }
 
 export interface IGetCoursesBody {
-  query: any;
+  query: Record<string, any>;
   categoryId?: string;
 }
 export interface ICreateCourseBody {
