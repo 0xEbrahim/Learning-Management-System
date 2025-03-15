@@ -29,7 +29,7 @@ router.post(
   validate(createCourseValidation),
   createCourse
 );
-router.get("/", isAuthenticated, isAuthorized("ADMIN"), getCourses);
+router.get("/", isAuthenticated, getCourses);
 router.get("/search", isAuthenticated, search);
 router.get(
   "/:id",

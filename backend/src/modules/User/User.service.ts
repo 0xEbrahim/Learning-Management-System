@@ -1,4 +1,5 @@
 import cron from "node-cron";
+import stringify from "fast-json-stable-stringify";
 import fs from "fs";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
@@ -13,7 +14,7 @@ import ApiFeatures from "../../utils/APIFeatures";
 import prisma from "../../config/prisma";
 import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
-
+import redis from "../../config/redis";
 class UserService {
   async getUserById(Payload: string): Promise<IResponse> {
     const response: IResponse = {
@@ -44,6 +45,17 @@ class UserService {
   }
 
   async getUsers(Payload: any): Promise<IResponse> {
+    const cacheKey = `users:${stringify(Payload)}`;
+    const cachedData = await redis.get(cacheKey);
+    let response: IResponse;
+    if (cachedData) {
+      response = {
+        status: "Success",
+        statusCode: 200,
+        data: { users: JSON.parse(cachedData) },
+      };
+      return response;
+    }
     const query = new ApiFeatures(prisma, "user", Payload)
       .filter()
       .limitFields()
@@ -51,7 +63,8 @@ class UserService {
       .paginate();
     const users = await query.execute();
     for (let i = 0; i < users.length; i++) cleanUsersData(users[i] as IUser);
-    const response: IResponse = {
+    await redis.setEx(cacheKey, 3600, JSON.stringify(users));
+    response = {
       status: "Success",
       statusCode: 200,
       data: { users },
@@ -67,6 +80,20 @@ class UserService {
     let { page, sort, limit, fields, q } = Payload;
     const excFields = ["page", "sort", "limit", "fields", "q"];
     excFields.forEach((el) => delete Payload[el]);
+    const cacheKeyObject = {
+      q: q?.toLowerCase(),
+      page: page || 1,
+      limit: limit || 100,
+      sort,
+      fields,
+      filters: Payload,
+    };
+    const cacheKey = `users:${stringify(cacheKeyObject)}`;
+    const cachedData = await redis.get(cacheKey);
+    if (cachedData) {
+      response.data = { users: JSON.parse(cachedData) };
+      return response;
+    }
     page = page || 1;
     limit = limit || 100;
     const skip = (page - 1) * limit;
@@ -102,6 +129,7 @@ class UserService {
       ...options,
     });
     for (let i = 0; i < users.length; i++) cleanUsersData(users[i], "email");
+    redis.setEx(cacheKey, 3600, JSON.stringify(users));
     response.data = { users };
     return response;
   }
@@ -114,6 +142,8 @@ class UserService {
         name: Payload.name,
       },
     });
+    const keys = await redis.keys(`users:*`);
+    if (keys.length > 0) redis.del(keys);
     if (!user) throw new APIError("Error while updating user", 500);
     cleanUsersData(user);
     const response: IResponse = {
@@ -157,6 +187,8 @@ class UserService {
         },
       });
     }
+    const keys = await redis.keys(`users:*`);
+    if (keys.length > 0) redis.del(keys);
     cleanUsersData(user);
     const response: IResponse = {
       status: "Success",
