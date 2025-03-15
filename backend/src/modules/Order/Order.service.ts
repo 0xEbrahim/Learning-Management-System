@@ -164,10 +164,12 @@ class OrderService {
     const { userId, query: searchQuery, authUser } = Payload;
     let response: IResponse;
     let orders;
+    const user = await prisma.user.findUnique({ where: { id: authUser } });
     if (userId) {
+      if (userId !== authUser && user?.role !== "ADMIN")
+        throw new APIError("You are not eligble to access this.", 401);
       searchQuery.userId = userId;
     } else {
-      const user = await prisma.user.findUnique({ where: { id: authUser } });
       if (user?.role !== "ADMIN")
         throw new APIError("You are not eligble to access this.", 401);
     }
