@@ -12,6 +12,8 @@ import {
 import logger from "../../config/logger";
 import ApiFeatures from "../../utils/APIFeatures";
 import { courseIncludeOptions, searchFilterOptions } from "../../utils/options";
+import stringify from "fast-json-stable-stringify";
+import redis from "../../config/redis";
 
 class CourseService {
   async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
@@ -115,7 +117,24 @@ class CourseService {
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
     const { query: q, categoryId } = Payload;
     let courses,
-      check = false;
+      check = false,
+      cacheKey: string,
+      response: IResponse;
+    if (categoryId) {
+      cacheKey = `courses:${stringify(categoryId)}`;
+    } else {
+      cacheKey = `courses:${stringify(q)}`;
+    }
+
+    const cachedData = await redis.get(cacheKey);
+    if (cachedData) {
+      response = {
+        status: "Success",
+        statusCode: 200,
+        data: JSON.parse(cachedData),
+      };
+      return response;
+    }
     if (categoryId) {
       check = true;
       const category = await prisma.category.findUnique({
@@ -150,16 +169,38 @@ class CourseService {
         .paginate();
       courses = await query.execute();
     }
-    const response: IResponse = {
+    const ttl = categoryId ? 86400 : 3600;
+    response = {
       status: "Success",
       statusCode: 200,
       data: check ? courses : { courses },
     };
+    await redis.setEx(cacheKey, ttl, JSON.stringify(response.data));
     return response;
   }
 
   async search(Payload: any): Promise<IResponse> {
-    let { q, price, purchased, averageRatings } = Payload;
+    let { q, price, purchased, averageRatings, ...rest } = Payload;
+    const cacheKey = `courses:search:${stringify({
+      q: q?.toLowerCase(),
+      price,
+      purchased,
+      averageRatings,
+      ...rest,
+    })}`;
+    let response: IResponse;
+    const cachedData = await redis.get(cacheKey);
+    if (cachedData) {
+      response = {
+        status: "Success",
+        statusCode: 200,
+        data: {
+          courses: JSON.parse(cachedData),
+        },
+      };
+      return response;
+    }
+
     const filterWith: any = { price, purchased, averageRatings };
     const Options = searchFilterOptions(filterWith, Payload);
     const courses = await prisma.course.findMany({
@@ -182,7 +223,7 @@ class CourseService {
       },
       ...Options[1],
     });
-    const response: IResponse = {
+    response = {
       status: "Success",
       statusCode: 200,
       data: {
@@ -215,6 +256,8 @@ class CourseService {
           id: courseId,
         },
       });
+      const keys = await redis.keys(`courses:*`);
+      if (keys.length > 0) await redis.del(keys);
     } else {
       throw new APIError("You are not authorized to delete this course", 401);
     }
@@ -226,5 +269,7 @@ class CourseService {
     return response;
   }
 }
+
+// TODO: Update course data
 
 export default new CourseService();
