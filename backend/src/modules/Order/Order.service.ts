@@ -44,18 +44,12 @@ class OrderService {
         },
       ],
       mode: "payment",
-      success_url: `${config.BASE_URL}/orders/success`,
-      cancel_url: `${config.BASE_URL}/orders/success`,
+      success_url: `${config.BASE_URL}/orders/success?q=true`,
+      cancel_url: `${config.BASE_URL}/orders/success?q=false`,
     });
-    // const order = await prisma.order.create({
-    //   data: {
-    //     courseId: courseId,
-    //     userId: userId,
-    //   },
-    // });
+
     const response = {
-      session,
-      // order,
+      session,     
     };
     return response;
   }

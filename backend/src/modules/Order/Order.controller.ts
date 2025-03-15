@@ -15,13 +15,20 @@ export const createCheckoutSession = asyncHandler(
     res.status(303).json({
       message: "Redirecting",
       url: result.session.url,
-      order: result.order,
     });
   }
 );
 export const verifyOrder = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    res.json(req.body);
+    if (req.query.q === "true") {
+      res.status(200).json({
+        message: "Purchasing done successfully.",
+      });
+    } else {
+      res.status(200).json({
+        message: "Purchasing did not complete.",
+      });
+    }
   }
 );
 
