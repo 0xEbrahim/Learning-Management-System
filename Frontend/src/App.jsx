@@ -9,8 +9,7 @@ import CoursesPage from "./pages/coursesPage.jsx";
 import SettingsPage from "./pages/settingsPage.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
 import NewCourse from "./pages/newCoursePage.jsx";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import ProfilePage from "./pages/profilePage.jsx";
 // import { io } from "socket.io-client";
 // const socket = io.connect("http://localhost:3000");
 function App() {
@@ -22,6 +21,7 @@ function App() {
           <Route path="/homePage/newCourse" element={<NewCourse />} />
           <Route path="/homePage/dashboard" element={<DashboardPage />} />
           <Route path="/homePage/settings" element={<SettingsPage />} />
+          <Route path="/homePage/Profile" element={<ProfilePage />} />
         </Route>
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />
