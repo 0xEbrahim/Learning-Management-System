@@ -3,6 +3,7 @@ import { BiLogOutCircle } from "react-icons/bi";
 import { FaFileSignature } from "react-icons/fa";
 import { FiShoppingBag } from "react-icons/fi";
 import { IoHome } from "react-icons/io5";
+import { CgProfile } from "react-icons/cg";
 import { IoMdLogIn } from "react-icons/io";
 import { NavLink , Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +13,7 @@ function SideBar(){
    const dispatch=useDispatch();
     return(
         <>
-            <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+            <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0" aria-label="Sidebar">
             <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul className="space-y-2 font-medium h-full relative">
          <li>
@@ -26,12 +27,22 @@ function SideBar(){
             </NavLink>
          </li>
          <li>
+            <NavLink to="/homePage/Profile" className={({ isActive }) =>
+          isActive
+            ? "active"
+            : "unactive"
+        } >
+            < CgProfile className="shrink-0 w-5 h-5 text-indigo-600 transition duration-75 group-hover:text-gray-900" />
+               <span className="ms-3">Profile</span>
+            </NavLink>
+         </li>
+         <li>
             <NavLink to="/homePage/courses" className={({ isActive }) =>
           isActive
             ? "active"
             : "unactive"
         } >
-            < FiShoppingBag className="shrink-0 w-5 h-5 text-indigo-600 transition duration-75 group-hover:text-indigo-600" />
+            < FiShoppingBag className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-indigo-600" />
                <span className="flex-1 ms-3 whitespace-nowrap">Courses</span>
 
             </NavLink>
@@ -42,7 +53,7 @@ function SideBar(){
             ? "active"
             : "unactive"
         } >
-            <IoMdSettings className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900" />
+            <IoMdSettings className="shrink-0 w-5 h-5 text-indigo-600 transition duration-75 group-hover:text-gray-900" />
                <span className="flex-1 ms-3 whitespace-nowrap">Settings</span>
             </NavLink>
          </li>

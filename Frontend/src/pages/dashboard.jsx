@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { MdModeEdit } from "react-icons/md";
+import { useState } from "react";
 import api from "../axiosInstance";
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
@@ -18,65 +17,9 @@ function DashboardPage(){
     const userId=useSelector((state)=>state.user.userData?.id);
     const [expand,setExpand]=useState(false);
     const [newUserName,setNewUserName]=useState("");
-    const [newAvatar,setNewAvatar]=useState("");
 
     const handleUserNameChange=(value)=>{
         setNewUserName(value);
-    }
-
-    const handleNewAvatar=(value)=>{
-        setNewAvatar(value);
-    }
-
-    useEffect(()=>{
-        if(newAvatar){
-
-            const uploadAvatar=async()=>{
-                try{
-                    const formData=new FormData();
-                    formData.append("image",newAvatar);
-                    formData.append("remove",false);
-                    const res= await  api.patch(`/users/${userId}/update/pic`,formData,
-                    {
-                        headers:{
-                            "Content-Type": "multipart/form-data",
-                        }
-                    });
-                    
-                    if(res.status === 200){
-                        Swal.fire({
-                            title: "your avatar has been updated successfully",
-                            icon: "success",
-                            draggable: true
-                          }).then(()=>{
-                            setExpand(false);
-                            window.location.reload();
-                          });
-                    }
-
-                }catch(error){
-                    if(error.response?.status === 403 || error.response?.status === 401){
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: "Session expired, please login again",
-                          }).then(()=>{
-                            navigate("/login");
-                          });
-                    }
-                }
-            }
-            uploadAvatar();
-        }
-    },[newAvatar])
-
-    const removeUserAvatar=async()=>{
-        try{
-            await api.patch(`/users/${userId}/update/pic`,{remove:true});
-            window.location.reload();
-        }catch(error){
-            return;
-        }
     }
 
     const updateUserName=async()=>{
@@ -133,24 +76,6 @@ function DashboardPage(){
             <div className="bg-white rounded-xl p-3 flex items-center flex-col gap-2 mb-3">
 <div className=" relative user-avatar mt-4">
     <img className="lg:w-30 lg:h-30 w-25 h-25 cursor-pointer rounded-full object-cover" src={userAvatar} alt="user photo"/>
-    <div className="absolute top-[70%] left-[10px]">
-    <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown" className="cursor-pointer text-white font-medium rounded-lg text-sm px-1.5 py-1 text-center inline-flex items-center gap-1 bg-gray-400"><MdModeEdit/>Edit</button>
-        <div id="dropdown" className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700">
-            <ul className="py-2 text-sm text-gray-700" aria-labelledby="dropdownDefaultButton">
-            <li>
-                <button onClick={()=>{removeUserAvatar()}} className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">Remove avatar</button>
-            </li>
-            <li>
-               <form onSubmit={(e)=>{e.preventDefault()}}>
-               <label htmlFor="image" className="flex px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 w-full dark:hover:text-white">
-                    Upload photo
-                    <input id="image" type="file" className="hidden" onChange={(e)=>{handleNewAvatar(e.target.files[0])}}/>
-                </label>
-               </form>
-            </li>
-            </ul>
-        </div>
-    </div>
 </div>
 {expand?( <div>
     <form className="w-full bg-white" onSubmit={(e)=>e.preventDefault()}>
