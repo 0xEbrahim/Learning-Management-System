@@ -60,19 +60,21 @@ function NewCourse(){
                     title: "course added successfully",
                     icon: "success"
                   }).then(()=>{
-                    navigate("/courses");
+                    navigate("/homePage/courses");
                   });
             }
             
         }catch(error){
             if(error.response?.status === 400){
-                setError(error.response?.message);
+                Swal.fire({
+                    icon: "error",
+                    text: `${error.response?.data?.message?.slice(18,64)}`,
+                  })
             }
 
             if(error.response?.status === 403){
                 Swal.fire({
                     icon: "error",
-                    title: "Oops...",
                     text: "Session expired, please login again",
                   }).then(()=>{
                     navigate("/login");
@@ -82,7 +84,6 @@ function NewCourse(){
             if(error.response?.status === 500){
                 Swal.fire({
                     icon: "error",
-                    title: "Oops...",
                     text: "Error while creating course",
                   })
             }
@@ -143,7 +144,6 @@ function NewCourse(){
                     </div>
                 </div>
             </form>
-            {error&&<span className="block mt-3 text-red-500 text-md">{error}</span>}
         </>
     );
 }export default NewCourse;
