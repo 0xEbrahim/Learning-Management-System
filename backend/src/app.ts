@@ -33,8 +33,8 @@ initSocket(io);
 const swaggerDoc = YAML.load(path.join(__dirname, "./swagger/swagger.yaml"));
 app.use("/api/v1/api-docs", SwaggerUI.serve, SwaggerUI.setup(swaggerDoc));
 const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000,
-  limit: 500,
+  windowMs: 30 * 60 * 1000,
+  limit: 1000,
   standardHeaders: "draft-8",
   legacyHeaders: false,
   message: "Too many requests, please try again later.",
