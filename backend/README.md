@@ -36,6 +36,7 @@ docker-compose exec web npx prisma migrate dev --name migrate_my_db
 docker-compose exec web npx prisma studio
 ```
 
+<<<<<<< HEAD
 #### 5 - Now your application is running on the port you specified at the `.env` file, you can start working with it
 
 ## 2 - You don't have docker installed
@@ -137,6 +138,11 @@ DEFAULT_PROF_PIC=DEFAULT PFP LINK
 
 ## File structure
 
+=======
+#### 6 - Now your application is running on the port you specified at the `.env` file, you can start working with it
+
+## File structure
+>>>>>>> bbddc62 (Update README.md)
 ```txt
 .
 ├── cockroach-db
