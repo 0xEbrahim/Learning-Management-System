@@ -3,6 +3,7 @@ import cloudinary from "../../config/cloudinary";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import {
+  IGetVideosOnCourseBody,
   VideoByIdBody,
   editThumbnailBody,
   editVideo,
@@ -10,6 +11,7 @@ import {
   uploadVideoBody,
 } from "./Video.interface";
 import APIError from "../../utils/APIError";
+import { cleanVideoData } from "../../utils/Functions/functions";
 
 class VideoService {
   async uploadVideo(Payload: uploadVideoBody): Promise<IResponse> {
@@ -210,6 +212,42 @@ class VideoService {
       statusCode: 200,
       data: {
         video,
+      },
+    };
+    return response;
+  }
+
+  async getVideosOnCourse(Payload: IGetVideosOnCourseBody): Promise<IResponse> {
+    const { courseId, userId } = Payload;
+    const course = await prisma.course.findUnique({
+      where: {
+        id: courseId,
+      },
+      include: {
+        courseData: true,
+      },
+    });
+    if (!course) throw new APIError("Invalid course ID: " + courseId, 404);
+    const videos = course.courseData;
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: {
+        courses: true,
+        publishedCourses: true,
+      },
+    });
+
+    const purchasedOrOwned =
+      user?.courses.some((el) => el.courseId === courseId) ||
+      user?.publishedCourses.some((el) => el.id === courseId);
+    if (!purchasedOrOwned) {
+      for (let i = 0; i < videos.length; i++) cleanVideoData(videos[i]);
+    }
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        videos,
       },
     };
     return response;

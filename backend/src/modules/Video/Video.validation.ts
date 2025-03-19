@@ -32,3 +32,9 @@ export const updateVideoValidation = z.object({
     videoId: z.string(),
   }),
 });
+
+export const getVideoOnCourseValidation = z.object({
+  params: z.object({
+    courseId: z.string(),
+  }),
+});

@@ -5,6 +5,7 @@ import { IRequest, IResponse } from "../../Interfaces/types";
 import VideoService from "./Video.service";
 import sendResponse from "../../utils/sendResponse";
 import {
+  IGetVideosOnCourseBody,
   VideoByIdBody,
   editThumbnailBody,
   editVideo,
@@ -103,6 +104,17 @@ export const editThumbnail = asyncHandler(
       thumbnail: videoThumbnail[0].path,
     };
     const result: IResponse = await VideoService.editThumbnail(data);
+    sendResponse(result, res);
+  }
+);
+
+export const getVideosOnCourse = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IGetVideosOnCourseBody = {
+      courseId: req.params.courseId,
+      userId: req.User?.id as string
+    };
+    const result: IResponse = await VideoService.getVideosOnCourse(data);
     sendResponse(result, res);
   }
 );

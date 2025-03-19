@@ -78,6 +78,11 @@ export const createResetPasswordToken = async (user: IUser) => {
   });
 };
 
+export const cleanVideoData= (video: any) => {
+  const deleted = ["videoUrl"];
+  deleted.forEach(el => delete video[el])
+}
+
 export const cleanUsersData = (user: any, ...props: any) => {
   const deleted = [
     "password",
