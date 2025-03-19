@@ -74,7 +74,11 @@ class ApiFeatures<T> {
 
     return this;
   }
-
+  populate(): this {
+    if (this.model !== "course") return this;
+    
+    return this;
+  }
   async execute(): Promise<T[]> {
     return (this.prisma[this.model] as any).findMany(this.queryOptions);
   }
