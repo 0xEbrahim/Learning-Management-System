@@ -28,10 +28,12 @@ class CourseService {
       where: { name: { in: categories } },
       select: { name: true },
     });
-  
-    const existingCategoryNames = existingCategories.map(c => c.name);
-    const invalidCategories = categories.filter(c => !existingCategoryNames.includes(c));
-  
+
+    const existingCategoryNames = existingCategories.map((c) => c.name);
+    const invalidCategories = categories.filter(
+      (c) => !existingCategoryNames.includes(c)
+    );
+
     if (invalidCategories.length > 0) {
       throw new APIError(
         `Invalid categories: ${invalidCategories.join(", ")}`,
@@ -132,7 +134,7 @@ class CourseService {
 
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
     const { query: q, categoryId } = Payload;
-    let courses,
+    let courses: any,
       check = false,
       cacheKey: string,
       response: IResponse;
@@ -184,6 +186,17 @@ class CourseService {
         .sort()
         .paginate();
       courses = await query.execute();
+      for (let i = 0; i < courses.length; i++) {
+        const categories = await prisma.categoryOnCourses.findMany({
+          where: {
+            courseId: courses[i].id,
+          },
+          select: {
+            categoryName: true,
+          },
+        });
+        courses[i].categories = categories;
+      }
     }
     const ttl = categoryId ? 86400 : 3600;
     response = {
