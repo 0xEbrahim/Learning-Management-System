@@ -29,3 +29,8 @@ export interface editThumbnailBody {
   courseId: string;
   thumbnail: string;
 }
+
+export interface IGetVideosOnCourseBody {
+  courseId: string;
+  userId: string;
+}

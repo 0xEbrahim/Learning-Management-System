@@ -22,7 +22,14 @@ class OrderService {
     Payload: ICheckoutBody
   ): Promise<Record<string, any>> {
     const { courseId, userId } = Payload;
-
+    const order = await prisma.order.findFirst({
+      where: {
+        courseId: courseId,
+        userId: userId,
+      },
+    });
+    if (order)
+      throw new APIError("You have already purchased this course.", 400);
     const course = await prisma.course.findUnique({
       where: {
         id: courseId,
@@ -137,6 +144,11 @@ class OrderService {
 
   async getOrder(Payload: IGetOrderBody): Promise<IResponse> {
     const { orderId, userId } = Payload;
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
     const order = await prisma.order.findUnique({
       where: { id: orderId },
       select: {
@@ -151,7 +163,7 @@ class OrderService {
         },
       },
     });
-    if (order?.userId !== userId)
+    if (order?.userId !== userId && user?.role !== "ADMIN")
       throw new APIError("You are not eligable to see this order", 401);
     const response: IResponse = {
       status: "Success",

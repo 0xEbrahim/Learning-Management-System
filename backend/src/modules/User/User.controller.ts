@@ -76,3 +76,9 @@ export const deactivateAccount = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+/*
+  TODO:
+    - User Statistics Controller
+    - Permanent Account Deletion (Admin) 
+*/

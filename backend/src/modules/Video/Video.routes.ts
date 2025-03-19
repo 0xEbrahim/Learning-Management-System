@@ -6,6 +6,7 @@ import isAuthorized from "../../middlewares/isAuthorized";
 import isOwner from "../../middlewares/isOwner";
 import {
   VideoValidation,
+  getVideoOnCourseValidation,
   updateVideoValidation,
   uploadVideoValidation,
 } from "./Video.validation";
@@ -14,6 +15,7 @@ import {
   editThumbnail,
   editVideoCtrl,
   getVideoById,
+  getVideosOnCourse,
   updateVideo,
   uploadVideo,
 } from "./Video.controller";
@@ -31,6 +33,12 @@ router.post(
   ]),
   validate(uploadVideoValidation),
   uploadVideo
+);
+router.get(
+  "/",
+  isAuthenticated,
+  validate(getVideoOnCourseValidation),
+  getVideosOnCourse
 );
 router.get(
   "/:videoId",
