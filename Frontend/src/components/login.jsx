@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 function Login() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
-  // const apiUrl = import.meta.env.VITE_API_URL;
-  // console.log(apiUrl);
   let [userEmail, setUserEmail] = useState("");
   let [password, setPassword] = useState("");
   let error = useSelector((state) => state.auth.error);
@@ -27,27 +25,6 @@ function Login() {
     setPassword(value);
   };
 
-  // function sendLoginData(){
-  //   axios({
-  //     method: 'post',
-  //     url: `${apiUrl}/auth/login`,
-  //     data: {
-  //       email:userEmail,
-  //       password:password,
-  //     },
-  //     headers:{
-  //       Accept:'applicaton/json',
-  //       "Content-Type":'application/json'
-  //     }
-  //   }).then((response)=>{
-  //     // let userId=response.data.data.user.id;
-  //     setResponse("verified");
-  //     console.log(response);
-  //     dispatch(logIn(response.data.data.user));
-  //   }).catch((err)=>{
-  //     setError(err.response.data.message.slice(0,62));
-  //   });
-  // }
 
   return (
     <section className="bg-white">
