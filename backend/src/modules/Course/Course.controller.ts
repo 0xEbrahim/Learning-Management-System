@@ -66,3 +66,11 @@ export const deleteCourse = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+/**
+ TODO:
+  - Update course
+  - Update course thumbnail
+  - Course Categories Management
+  - Course Statistics Controller
+ */

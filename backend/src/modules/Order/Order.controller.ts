@@ -74,3 +74,9 @@ export const getAllOrders = asyncHandler(
 export const getCurrentUserOrders = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {}
 );
+
+/*
+  TODO:
+    - Generate order recipt
+    - Cancle order
+*/

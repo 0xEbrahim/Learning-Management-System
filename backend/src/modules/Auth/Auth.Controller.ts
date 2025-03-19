@@ -120,3 +120,11 @@ export const resetPassword = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+/**
+ TODO:
+  - Change password
+  - Email Update Controller
+  - Admin Role Management Controller
+  
+ */
