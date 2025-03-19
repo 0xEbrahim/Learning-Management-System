@@ -5,6 +5,17 @@ import logger from "./config/logger";
 const HOST = config.BASE_URL;
 const PORT: number = Number(process.env.PORT) || 3000;
 
+process
+  .on("unhandledRejection", (reason, p) => {
+    console.error(reason, "Unhandled Rejection at Promise", p);
+    logger.error(reason + " Unhandled Rejection at Promise " + p);
+  })
+  .on("uncaughtException", (err) => {
+    console.error(err, "Uncaught Exception thrown");
+    logger.error(err + " Uncaught Exception thrown");
+    process.exit(1);
+  });
+
 app.listen(PORT, async () => {
   if (config.NODE_ENV === "production") {
     logger.info(`Server started running on PORT ${PORT}`);
@@ -43,14 +54,3 @@ app.listen(PORT, async () => {
     });
   }
 });
-
-process
-  .on("unhandledRejection", (reason, p) => {
-    console.error(reason, "Unhandled Rejection at Promise", p);
-    logger.error(reason + " Unhandled Rejection at Promise " + p);
-  })
-  .on("uncaughtException", (err) => {
-    console.error(err, "Uncaught Exception thrown");
-    logger.error(err + " Uncaught Exception thrown");
-    process.exit(1);
-  });

@@ -17,8 +17,27 @@ import redis from "../../config/redis";
 
 class CourseService {
   async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
-    const { name, publisherId, thumbnail, price, description, categories } =
+    let { name, publisherId, thumbnail, price, description, categories } =
       Payload;
+    if (typeof categories === "string") {
+      categories = JSON.parse(categories);
+    }
+    categories = [...new Set(categories)];
+
+    const existingCategories = await prisma.category.findMany({
+      where: { name: { in: categories } },
+      select: { name: true },
+    });
+  
+    const existingCategoryNames = existingCategories.map(c => c.name);
+    const invalidCategories = categories.filter(c => !existingCategoryNames.includes(c));
+  
+    if (invalidCategories.length > 0) {
+      throw new APIError(
+        `Invalid categories: ${invalidCategories.join(", ")}`,
+        400
+      );
+    }
     if (!thumbnail) throw new APIError("Course should have a thumbnail", 400);
     const uploaded = await cloudinary.uploader.upload(thumbnail, {
       folder: "Course",
@@ -98,10 +117,7 @@ class CourseService {
       });
     }
     if (!course)
-      throw new APIError(
-        `course id: ${Payload} did not match any course.`,
-        404
-      );
+      throw new APIError(`course id: ${id} did not match any course.`, 404);
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
