@@ -2,6 +2,7 @@
 /* @plugin "flowbite/plugin"; */
 @source "../node_modules/flowbite";
 
+
 .active,.unactive{
     display:flex;
     align-items: center;
