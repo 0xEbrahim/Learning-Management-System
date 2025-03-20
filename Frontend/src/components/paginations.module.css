@@ -1,0 +1,19 @@
+.active,.unactive:hover{
+    color:#4f39f6;
+    background-color: #F5EFFF;
+    font-weight: bold;
+}
+
+.active,.unactive{
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    padding:12px;
+    height:32px;
+    cursor: pointer;
+    border:solid 1px #d1d5dc;
+}
+.unactive{
+   color:#6a7282;
+   background-color:white;
+}
