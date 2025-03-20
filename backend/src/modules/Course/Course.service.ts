@@ -81,7 +81,7 @@ class CourseService {
   }
 
   async getCourseById(Payload: IGetCoursesByIdBody): Promise<IResponse> {
-    let course,
+    let course: any,
       check = false;
     const { id, categoryId } = Payload;
     if (categoryId) {
@@ -120,6 +120,15 @@ class CourseService {
     }
     if (!course)
       throw new APIError(`course id: ${id} did not match any course.`, 404);
+    const categories = await prisma.categoryOnCourses.findMany({
+      where: {
+        courseId: id,
+      },
+      select: {
+        categoryName: true,
+      },
+    });
+    course.categories = categories;
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
