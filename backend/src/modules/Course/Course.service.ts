@@ -18,14 +18,7 @@ import stringify from "fast-json-stable-stringify";
 import redis from "../../config/redis";
 
 class CourseService {
-  async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
-    let { name, publisherId, thumbnail, price, description, categories } =
-      Payload;
-    if (typeof categories === "string") {
-      categories = JSON.parse(categories);
-    }
-    categories = [...new Set(categories)];
-
+  private async validateCategories(categories: string[]): Promise<void> {
     const existingCategories = await prisma.category.findMany({
       where: { name: { in: categories } },
       select: { name: true },
@@ -42,59 +35,95 @@ class CourseService {
         400
       );
     }
+  }
+
+  private async uploadThumbnail(thumbnail: string): Promise<string> {
     if (!thumbnail) throw new APIError("Course should have a thumbnail", 400);
     const uploaded = await cloudinary.uploader.upload(thumbnail, {
       folder: "Course",
     });
     fs.unlinkSync(thumbnail);
+    return uploaded.secure_url;
+  }
+
+  private async clearCourseCache(): Promise<void> {
+    const keys = await redis.keys(`courses:*`);
+    if (keys.length > 0) await redis.del(keys);
+  }
+
+  private async createCategoryAssociations(
+    courseId: string,
+    categories: string[]
+  ): Promise<void> {
+    for (const categoryName of categories) {
+      await prisma.categoryOnCourses.create({
+        data: {
+          courseId,
+          categoryName,
+        },
+      });
+    }
+  }
+
+  private formatResponse<T extends object | null>(
+    data: T,
+    statusCode: number = 200,
+    message?: string
+  ): IResponse {
+    return {
+      status: "Success",
+      statusCode,
+      message,
+      data: data === null ? undefined : data,
+    };
+  }
+
+  async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
+    let { name, publisherId, thumbnail, price, description, categories } =
+      Payload;
+    if (typeof categories === "string") {
+      categories = JSON.parse(categories);
+    }
+    categories = [...new Set(categories)];
+
+    await this.validateCategories(categories);
+    const thumbnailUrl = await this.uploadThumbnail(thumbnail);
+
     const course = await prisma.course.create({
       data: {
-        name: name,
-        publisherId: publisherId,
-        thumbnail: uploaded.secure_url,
-        description: description,
+        name,
+        publisherId,
+        thumbnail: thumbnailUrl,
+        description,
         price: Number(price),
       },
     });
-    if (!course)
+
+    if (!course) {
       throw new APIError(
         "Error while creating a course, please try again",
         500
       );
-    logger.info(
-      "Teacher: " + publisherId + " created a new course : " + course.id
-    );
-    categories.forEach(async (el) => {
-      await prisma.categoryOnCourses.create({
-        data: {
-          courseId: course.id,
-          categoryName: el,
-        },
-      });
-    });
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 201,
-      data: {
-        course,
-      },
-    };
-    return response;
+    }
+
+    logger.info(`Teacher: ${publisherId} created a new course: ${course.id}`);
+    await this.createCategoryAssociations(course.id, categories);
+
+    return this.formatResponse({ course }, 201);
   }
 
   async getCourseById(Payload: IGetCoursesByIdBody): Promise<IResponse> {
-    let course: any,
-      check = false;
     const { id, categoryId } = Payload;
+    let course: any;
+
     if (categoryId) {
-      check = true;
       const category = await prisma.category.findUnique({
-        where: {
-          id: categoryId,
-        },
+        where: { id: categoryId },
       });
-      if (!category)
+      if (!category) {
         throw new APIError("Invalid category ID: " + categoryId, 404);
+      }
+
       course = await prisma.categoryOnCourses.findFirst({
         where: {
           categoryName: category.name,
@@ -104,75 +133,51 @@ class CourseService {
           courseId: false,
           categoryName: false,
           course: {
-            include: {
-              ...courseIncludeOptions,
-            },
+            include: courseIncludeOptions,
           },
         },
       });
     } else {
       course = await prisma.course.findUnique({
-        where: {
-          id: id,
-        },
-        include: {
-          ...courseIncludeOptions,
-        },
+        where: { id },
+        include: courseIncludeOptions,
       });
     }
-    if (!course)
-      throw new APIError(`course id: ${id} did not match any course.`, 404);
+
+    if (!course) {
+      throw new APIError(`Course id: ${id} did not match any course.`, 404);
+    }
+
     const categories = await prisma.categoryOnCourses.findMany({
-      where: {
-        courseId: id,
-      },
-      select: {
-        categoryName: true,
-      },
+      where: { courseId: id },
+      select: { categoryName: true },
     });
+
     course.categories = categories;
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: check
-        ? course
-        : {
-            course,
-          },
-    };
-    return response;
+    return this.formatResponse(categoryId ? course : { course });
   }
 
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
     const { query: q, categoryId } = Payload;
     const numberOfCourses = await prisma.course.count();
-    let courses: any,
-      check = false,
-      cacheKey: string,
-      response: IResponse;
-    if (categoryId) {
-      cacheKey = `courses:${stringify(categoryId)}`;
-    } else {
-      cacheKey = `courses:${stringify(q)}`;
-    }
+    const cacheKey = `courses:${stringify(categoryId || q)}`;
 
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
       return JSON.parse(cachedData);
     }
+
+    let courses: any;
     if (categoryId) {
-      check = true;
       const category = await prisma.category.findUnique({
-        where: {
-          id: categoryId,
-        },
+        where: { id: categoryId },
       });
-      if (!category)
+      if (!category) {
         throw new APIError("Invalid category id: " + categoryId, 404);
+      }
+
       courses = await prisma.categoryOnCourses.findMany({
-        where: {
-          categoryName: category.name,
-        },
+        where: { categoryName: category.name },
         select: {
           courseId: false,
           categoryName: false,
@@ -193,31 +198,27 @@ class CourseService {
         .sort()
         .paginate();
       courses = await query.execute();
-      for (let i = 0; i < courses.length; i++) {
+
+      for (const course of courses) {
         const categories = await prisma.categoryOnCourses.findMany({
-          where: {
-            courseId: courses[i].id,
-          },
-          select: {
-            categoryName: true,
-          },
+          where: { courseId: course.id },
+          select: { categoryName: true },
         });
-        courses[i].categories = categories;
+        course.categories = categories;
       }
     }
-    const ttl = categoryId ? 86400 : 3600;
-    response = {
-      status: "Success",
-      size: numberOfCourses,
-      statusCode: 200,
-      data: check ? courses : { courses },
-    };
-    await redis.setEx(cacheKey, ttl, JSON.stringify(response));
+
+    const response = this.formatResponse({ courses, size: numberOfCourses });
+    await redis.setEx(
+      cacheKey,
+      categoryId ? 86400 : 3600,
+      JSON.stringify(response)
+    );
     return response;
   }
 
   async search(Payload: any): Promise<IResponse> {
-    let { q, price, purchased, averageRatings, ...rest } = Payload;
+    const { q, price, purchased, averageRatings, ...rest } = Payload;
     const cacheKey = `courses:search:${stringify({
       q: q?.toLowerCase(),
       price,
@@ -225,21 +226,15 @@ class CourseService {
       averageRatings,
       ...rest,
     })}`;
-    let response: IResponse;
+
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
-      response = {
-        status: "Success",
-        statusCode: 200,
-        data: {
-          courses: JSON.parse(cachedData),
-        },
-      };
-      return response;
+      return this.formatResponse({ courses: JSON.parse(cachedData) });
     }
 
-    const filterWith: any = { price, purchased, averageRatings };
+    const filterWith = { price, purchased, averageRatings };
     const Options = searchFilterOptions(filterWith, Payload);
+
     const courses = await prisma.course.findMany({
       where: {
         OR: [
@@ -260,50 +255,37 @@ class CourseService {
       },
       ...Options[1],
     });
-    response = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        courses,
-      },
-    };
-    return response;
+
+    return this.formatResponse({ courses });
   }
 
   async deleteCourse(Payload: IDeleteCourseBody): Promise<IResponse> {
     const { id, courseId } = Payload;
     const user = await prisma.user.findUnique({
-      where: {
-        id: id,
-      },
+      where: { id },
     });
+
     const course = await prisma.course.findUnique({
-      where: {
-        id: courseId,
-      },
+      where: { id: courseId },
     });
-    if (!course)
+
+    if (!course) {
       throw new APIError(
-        "courseId: " + courseId + " did not match any course.",
+        `Course id: ${courseId} did not match any course.`,
         404
       );
+    }
+
     if (user?.role === "ADMIN" || course.publisherId === user?.id) {
       await prisma.course.delete({
-        where: {
-          id: courseId,
-        },
+        where: { id: courseId },
       });
-      const keys = await redis.keys(`courses:*`);
-      if (keys.length > 0) await redis.del(keys);
+      await this.clearCourseCache();
     } else {
       throw new APIError("You are not authorized to delete this course", 401);
     }
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      message: "Course deleted successfully",
-    };
-    return response;
+
+    return this.formatResponse(null, 200, "Course deleted successfully");
   }
 
   async updateCourse(Payload: IUpdateCourseBody): Promise<IResponse> {
@@ -336,52 +318,15 @@ class CourseService {
     });
 
     if (categories) {
-      // Validate categories
-      const existingCategories = await prisma.category.findMany({
-        where: { name: { in: categories } },
-        select: { name: true },
-      });
-
-      const existingCategoryNames = existingCategories.map((c) => c.name);
-      const invalidCategories = categories.filter(
-        (c) => !existingCategoryNames.includes(c)
-      );
-
-      if (invalidCategories.length > 0) {
-        throw new APIError(
-          `Invalid categories: ${invalidCategories.join(", ")}`,
-          400
-        );
-      }
-
-      // Delete existing category associations
+      await this.validateCategories(categories);
       await prisma.categoryOnCourses.deleteMany({
         where: { courseId: id },
       });
-
-      // Create new category associations
-      for (const categoryName of categories) {
-        await prisma.categoryOnCourses.create({
-          data: {
-            courseId: id,
-            categoryName,
-          },
-        });
-      }
+      await this.createCategoryAssociations(id, categories);
     }
 
-    // Clear cache
-    const keys = await redis.keys(`courses:*`);
-    if (keys.length > 0) await redis.del(keys);
-
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        course: updatedCourse,
-      },
-    };
-    return response;
+    await this.clearCourseCache();
+    return this.formatResponse({ course: updatedCourse });
   }
 
   async updateCourseThumbnail(
@@ -405,38 +350,16 @@ class CourseService {
       throw new APIError("You are not authorized to update this course", 401);
     }
 
-    if (!thumbnail) {
-      throw new APIError("Course should have a thumbnail", 400);
-    }
-
-    // Upload new thumbnail
-    const uploaded = await cloudinary.uploader.upload(thumbnail, {
-      folder: "Course",
-    });
-    fs.unlinkSync(thumbnail);
+    const thumbnailUrl = await this.uploadThumbnail(thumbnail);
 
     const updatedCourse = await prisma.course.update({
       where: { id },
-      data: {
-        thumbnail: uploaded.secure_url,
-      },
+      data: { thumbnail: thumbnailUrl },
     });
 
-    // Clear cache
-    const keys = await redis.keys(`courses:*`);
-    if (keys.length > 0) await redis.del(keys);
-
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        course: updatedCourse,
-      },
-    };
-    return response;
+    await this.clearCourseCache();
+    return this.formatResponse({ course: updatedCourse });
   }
 }
-
-// TODO: Update course data
 
 export default new CourseService();
