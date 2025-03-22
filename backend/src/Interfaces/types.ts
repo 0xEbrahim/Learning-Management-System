@@ -4,12 +4,13 @@ import { IUser } from "../modules/User/User.interface";
 
 export interface IResponse {
   status: string;
-  size?:number
+  size?: number;
   statusCode: number;
   message?: string;
   data?: object;
   token?: string;
   refreshToken?: string;
+  pages?: number;
 }
 
 export interface IRequest extends Request {

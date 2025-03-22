@@ -176,6 +176,8 @@ class CourseService {
           categoryName: false,
           course: {
             select: {
+              id: true,
+              publisherId: true,
               name: true,
               thumbnail: true,
               price: true,
