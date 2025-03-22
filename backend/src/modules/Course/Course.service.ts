@@ -179,11 +179,16 @@ class CourseService {
           course: {
             select: {
               id: true,
-              publisherId: true,
               name: true,
               thumbnail: true,
               price: true,
               description: true,
+              publisher: {
+                select: {
+                  name: true,
+                  avatar: true,
+                },
+              },
             },
           },
         },
