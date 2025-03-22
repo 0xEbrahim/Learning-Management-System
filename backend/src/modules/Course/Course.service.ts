@@ -156,13 +156,7 @@ class CourseService {
 
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
-      response = {
-        status: "Success",
-        statusCode: 200,
-        size: numberOfCourses,
-        data: JSON.parse(cachedData),
-      };
-      return response;
+      return JSON.parse(cachedData);
     }
     if (categoryId) {
       check = true;
@@ -216,7 +210,7 @@ class CourseService {
       statusCode: 200,
       data: check ? courses : { courses },
     };
-    await redis.setEx(cacheKey, ttl, JSON.stringify(response.data));
+    await redis.setEx(cacheKey, ttl, JSON.stringify(response));
     return response;
   }
 

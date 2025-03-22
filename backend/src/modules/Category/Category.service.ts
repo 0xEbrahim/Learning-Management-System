@@ -34,14 +34,7 @@ class CategoryService {
     const cachedData = await redis.get(cacheKey);
     let response: IResponse;
     if (cachedData) {
-      response = {
-        statusCode: 200,
-        status: "Success",
-        data: {
-          categories: JSON.parse(cachedData),
-        },
-      };
-      return response;
+      return JSON.parse(cachedData);
     }
     const query = new ApiFeatures(prisma, "category", Payload)
       .filter()
@@ -49,12 +42,12 @@ class CategoryService {
       .limitFields()
       .paginate();
     const categories = await query.execute();
-    await redis.setEx(cacheKey, 86400, JSON.stringify(categories));
     response = {
       statusCode: 200,
       status: "Success",
       data: { categories },
     };
+    await redis.setEx(cacheKey, 86400, JSON.stringify(response));
     return response;
   }
 

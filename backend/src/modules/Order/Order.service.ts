@@ -188,14 +188,7 @@ class OrderService {
     const cacheKey = `orders:${stringify(searchQuery)}`;
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
-      response = {
-        status: "Success",
-        statusCode: 200,
-        data: {
-          orders: JSON.parse(cachedData),
-        },
-      };
-      return response;
+      return JSON.parse(cachedData)
     }
     const numberOfOrders = await prisma.order.count();
     const query = new ApiFeatures(prisma, "order", searchQuery)
@@ -211,7 +204,7 @@ class OrderService {
       statusCode: 200,
       data: { orders },
     };
-    redis.setEx(cacheKey, 86400, JSON.stringify(orders));
+    redis.setEx(cacheKey, 86400, JSON.stringify(response));
     return response;
   }
 }
