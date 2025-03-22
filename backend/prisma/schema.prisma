@@ -32,13 +32,13 @@ model User {
   createdAt                       DateTime             @default(now())
   updatedAt                       DateTime             @updatedAt
   deleteAt                        DateTime?
-  reviews                         Review[]
-  replies                         ReviewReply[]
-  comments                        Comment[]
-  courses                         Order[]
+  reviews                         Review[]             @relation("UserReviews")
+  replies                         ReviewReply[]        @relation("UserReplies")
+  comments                        Comment[]            @relation("UserComments")
+  courses                         Order[]              @relation("UserOrders")
   publishedCourses                Course[]             @relation("Publish")
-  userCourseProgress              UserCourseProgress[]
-  userVideoProgress               UserVideoProgress[]
+  userCourseProgress              UserCourseProgress[] @relation("UserProgress")
+  userVideoProgress               UserVideoProgress[]  @relation("UserVideoProgress")
   notificationsSent               Notification[]       @relation("sent")
   notifications                   Notification[]       @relation("recieved")
 
@@ -54,8 +54,8 @@ model Review {
   review    String
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
-  author    User          @relation(fields: [userId], references: [id])
-  course    Course        @relation(fields: [courseId], references: [id])
+  author    User          @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
+  course    Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
   Replies   ReviewReply[]
 }
 
@@ -66,8 +66,8 @@ model ReviewReply {
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author    User     @relation(fields: [userId], references: [id])
-  review    Review   @relation(fields: [reviewId], references: [id])
+  author    User     @relation("UserReplies", fields: [userId], references: [id], onDelete: Cascade)
+  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -78,9 +78,9 @@ model Comment {
   parentCommentId String?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  parentComment   Comment?  @relation("Reply", fields: [parentCommentId], references: [id])
-  author          User      @relation(fields: [userId], references: [id])
-  video           Video     @relation(fields: [videoId], references: [id])
+  parentComment   Comment?  @relation("Reply", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  author          User      @relation("UserComments", fields: [userId], references: [id], onDelete: Cascade)
+  video           Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
   replies         Comment[] @relation("Reply")
 
   @@index([parentCommentId])
@@ -89,14 +89,14 @@ model Comment {
 model Video {
   id             String              @id @default(uuid())
   courseId       String
-  course         Course              @relation(fields: [courseId], references: [id])
+  course         Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
   videoUrl       String
   videoThumbnail String
   videoLength    Int
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
   title          String
-  userProgress   UserVideoProgress[]
+  userProgress   UserVideoProgress[] @relation("VideoProgress")
   comments       Comment[]
 }
 
@@ -105,14 +105,14 @@ model Prerequisites {
   courseId  String
   title     String
   createdAt DateTime @default(now())
-  course    Course   @relation(fields: [courseId], references: [id])
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model Demo {
   id       String  @id @default(uuid())
   courseId String  @unique
   url      String
-  course   Course? @relation(fields: [courseId], references: [id])
+  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model Category {
@@ -127,14 +127,14 @@ model CategoryOnCourses {
   id           String   @id @default(uuid())
   courseId     String
   categoryName String
-  category     Category @relation(fields: [categoryName], references: [name])
-  course       Course   @relation(fields: [courseId], references: [id])
+  category     Category @relation(fields: [categoryName], references: [name], onDelete: Cascade)
+  course       Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model Course {
   id             String               @id @default(uuid())
   publisherId    String
-  publisher      User                 @relation("Publish", fields: [publisherId], references: [id])
+  publisher      User                 @relation("Publish", fields: [publisherId], references: [id], onDelete: Cascade)
   name           String
   price          Float
   description    String
@@ -146,7 +146,7 @@ model Course {
   demo           Demo?
   categories     CategoryOnCourses[]
   prerequisites  Prerequisites[]
-  userProgress   UserCourseProgress[]
+  userProgress   UserCourseProgress[] @relation("CourseProgress")
   reviews        Review[]
   courseData     Video[]
   buyers         Order[]
@@ -160,8 +160,8 @@ model UserCourseProgress {
   createdAt           DateTime     @default(now())
   updatedAt           DateTime     @updatedAt
   completedAt         DateTime?
-  user                User         @relation(fields: [userId], references: [id])
-  course              Course       @relation(fields: [courseId], references: [id])
+  user                User         @relation("UserProgress", fields: [userId], references: [id], onDelete: Cascade)
+  course              Course       @relation("CourseProgress", fields: [courseId], references: [id], onDelete: Cascade)
   totalWatchedMinutes Int          @default(0)
 
   @@unique([userId, courseId])
@@ -174,8 +174,8 @@ model UserVideoProgress {
   watchedMinutes Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
-  user           User     @relation(fields: [userId], references: [id])
-  video          Video    @relation(fields: [videoId], references: [id])
+  user           User     @relation("UserVideoProgress", fields: [userId], references: [id], onDelete: Cascade)
+  video          Video    @relation("VideoProgress", fields: [videoId], references: [id], onDelete: Cascade)
   lastWatchedAt  DateTime @updatedAt
 
   @@unique([userId, videoId])
@@ -192,7 +192,7 @@ model Payment {
   orderId          String @unique
   customerId       String
   email            String
-  order            Order  @relation(fields: [orderId], references: [id])
+  order            Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   price            Float
   status           String
 }
@@ -203,8 +203,8 @@ model Order {
   courseId    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id])
-  course      Course   @relation(fields: [courseId], references: [id])
+  user        User     @relation("UserOrders", fields: [userId], references: [id], onDelete: Cascade)
+  course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   paymentInfo Payment?
 
   @@unique([userId, courseId])
@@ -230,8 +230,8 @@ model Notification {
   text       String
   createdAt  DateTime
   opened     Boolean
-  sender     User     @relation("sent", fields: [senderId], references: [id])
-  reciever   User     @relation("recieved", fields: [recieverId], references: [id])
+  sender     User     @relation("sent", fields: [senderId], references: [id], onDelete: Cascade)
+  reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
 }
 
 enum Roles {
