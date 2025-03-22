@@ -197,6 +197,7 @@ class OrderService {
       };
       return response;
     }
+    const numberOfOrders = await prisma.order.count();
     const query = new ApiFeatures(prisma, "order", searchQuery)
       .filter()
       .limitFields()
@@ -204,12 +205,13 @@ class OrderService {
       .paginate();
     // TODO: Fetch more data from the orders
     orders = await query.execute();
-    redis.setEx(cacheKey, 86400, JSON.stringify(orders));
     response = {
       status: "Success",
+      size: numberOfOrders,
       statusCode: 200,
       data: { orders },
     };
+    redis.setEx(cacheKey, 86400, JSON.stringify(orders));
     return response;
   }
 }
