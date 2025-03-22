@@ -49,12 +49,7 @@ class UserService {
     const cachedData = await redis.get(cacheKey);
     let response: IResponse;
     if (cachedData) {
-      response = {
-        status: "Success",
-        statusCode: 200,
-        data: { users: JSON.parse(cachedData) },
-      };
-      return response;
+      return JSON.parse(cachedData);
     }
     const query = new ApiFeatures(prisma, "user", Payload)
       .filter()
@@ -63,12 +58,14 @@ class UserService {
       .paginate();
     const users = await query.execute();
     for (let i = 0; i < users.length; i++) cleanUsersData(users[i] as IUser);
-    await redis.setEx(cacheKey, 86400, JSON.stringify(users));
+    const numberOfUsers = await prisma.user.count();
     response = {
       status: "Success",
+      size: numberOfUsers,
       statusCode: 200,
       data: { users },
     };
+    await redis.setEx(cacheKey, 86400, JSON.stringify(response));
     return response;
   }
 
@@ -91,8 +88,7 @@ class UserService {
     const cacheKey = `users:${stringify(cacheKeyObject)}`;
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
-      response.data = { users: JSON.parse(cachedData) };
-      return response;
+      return JSON.parse(cachedData);
     }
     page = page || 1;
     limit = limit || 100;
@@ -129,8 +125,8 @@ class UserService {
       ...options,
     });
     for (let i = 0; i < users.length; i++) cleanUsersData(users[i], "email");
-    redis.setEx(cacheKey, 86400, JSON.stringify(users));
     response.data = { users };
+    redis.setEx(cacheKey, 86400, JSON.stringify(response));
     return response;
   }
   async updateUser(Payload: IUpdateUserBody): Promise<IResponse> {

@@ -143,6 +143,7 @@ class CourseService {
 
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
     const { query: q, categoryId } = Payload;
+    const numberOfCourses = await prisma.course.count();
     let courses: any,
       check = false,
       cacheKey: string,
@@ -155,12 +156,7 @@ class CourseService {
 
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
-      response = {
-        status: "Success",
-        statusCode: 200,
-        data: JSON.parse(cachedData),
-      };
-      return response;
+      return JSON.parse(cachedData);
     }
     if (categoryId) {
       check = true;
@@ -210,10 +206,11 @@ class CourseService {
     const ttl = categoryId ? 86400 : 3600;
     response = {
       status: "Success",
+      size: numberOfCourses,
       statusCode: 200,
       data: check ? courses : { courses },
     };
-    await redis.setEx(cacheKey, ttl, JSON.stringify(response.data));
+    await redis.setEx(cacheKey, ttl, JSON.stringify(response));
     return response;
   }
 
