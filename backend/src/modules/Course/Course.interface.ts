@@ -35,3 +35,18 @@ export interface IDeleteCourseBody {
   id: string;
   courseId: string;
 }
+
+export interface IUpdateCourseBody {
+  id: string;
+  publisherId: string;
+  name?: string;
+  price?: string;
+  description?: string;
+  categories?: string[];
+}
+
+export interface IUpdateCourseThumbnailBody {
+  id: string;
+  publisherId: string;
+  thumbnail: string;
+}
