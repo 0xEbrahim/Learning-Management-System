@@ -64,8 +64,10 @@ class UserService {
     const users = await query.execute();
     for (let i = 0; i < users.length; i++) cleanUsersData(users[i] as IUser);
     await redis.setEx(cacheKey, 86400, JSON.stringify(users));
+    const numberOfUsers = await prisma.user.count();
     response = {
       status: "Success",
+      size: numberOfUsers,
       statusCode: 200,
       data: { users },
     };
