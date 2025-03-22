@@ -11,7 +11,7 @@ function CourseCard(props){
            try{
             const res= await api.get(`/courses/${props.id}`);
             setCourse(res.data?.data?.course);
-            // setCategories(res.data?.categories);
+            // setCategories(course.categories);
            }catch(error){
                 console.log(error);
            }
@@ -22,20 +22,23 @@ function CourseCard(props){
 
     // const courseCategories=categories.map((cat)=>{
     //     return(
-    //         <li key={cat.id} className="bg-gray-50 px-3 py-1 text-gray-600 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-800">{cat.name}</li>
+    //         <li key={cat.categoryName} className="bg-gray-50 px-2 py-1 text-gray-600 rounded-lg cursor-pointer hover:bg-gray-100 hover:text-gray-800">{cat.categoryName}</li>
     //     )
     // })
 
     return(
         <div className="bg-white border border-gray-100 rounded-lg cursor-pointer flex flex-col relative min-h-[370px]">
             <Link to="">
-                <div className="image overflow-hidden rounded-t-lg"><img className=" w-full h-[180px] object-cover" src={course.thumbnail} alt="course img" loading="lazy"/></div>
+                <div className="image overflow-hidden rounded-t-lg bg-gray-50 border-none"><img className=" w-full h-[180px] object-cover" src={course.thumbnail} alt="" loading="lazy"/></div>
             </Link>
         <div className="p-3">
             <Link to="">
                 <h5 className="mb-1 text-xl font-[600] tracking-tight text-gray-900">{course.name}</h5>
             </Link>
             <p className="text-sm mb-3 text-gray-700">{course.description}</p>
+            {/* <ul className="flex items-center gap-1">
+                {courseCategories}
+            </ul> */}
             <div className="absolute bottom-3">
             <div className="publisher-info flex items-center gap-1">
             <img className="h-[30px] w-[30px] rounded-full object-cover" src={course?.publisher?.avatar}></img>

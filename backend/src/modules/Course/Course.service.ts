@@ -17,6 +17,14 @@ import { courseIncludeOptions, searchFilterOptions } from "../../utils/options";
 import stringify from "fast-json-stable-stringify";
 import redis from "../../config/redis";
 
+interface ISearchPayload {
+  q?: string;
+  price?: number;
+  purchased?: number;
+  averageRatings?: number;
+  [key: string]: any;
+}
+
 class CourseService {
   private async validateCategories(categories: string[]): Promise<void> {
     const existingCategories = await prisma.category.findMany({
@@ -183,10 +191,17 @@ class CourseService {
           categoryName: false,
           course: {
             select: {
+              id: true,
               name: true,
               thumbnail: true,
               price: true,
               description: true,
+              publisher: {
+                select: {
+                  name: true,
+                  avatar: true,
+                },
+              },
             },
           },
         },
@@ -217,7 +232,7 @@ class CourseService {
     return response;
   }
 
-  async search(Payload: any): Promise<IResponse> {
+  async search(Payload: ISearchPayload): Promise<IResponse> {
     const { q, price, purchased, averageRatings, ...rest } = Payload;
     const cacheKey = `courses:search:${stringify({
       q: q?.toLowerCase(),
@@ -240,13 +255,13 @@ class CourseService {
         OR: [
           {
             name: {
-              contains: q,
+              contains: q || "",
               mode: "insensitive",
             },
           },
           {
             description: {
-              contains: q,
+              contains: q || "",
               mode: "insensitive",
             },
           },
