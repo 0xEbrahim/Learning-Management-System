@@ -1,14 +1,13 @@
-import useGetCourses from "../customHooks/useGetCourses";
 import { useDispatch , useSelector } from "react-redux";
 import { setPageNo } from "../rtk/slices/coursesPageNo";
 import styles from "./paginations.module.css";
+
 function Pagination(props){
-    const coursesLength=useGetCourses().length;
     let pageNo=useSelector((state)=>state.pageNo.page);
     const dispatch=useDispatch();
 
     let pages=[];
-    for(let i=1 ; i<= Math.ceil(coursesLength / props.coursesLimit ) ; ++i){
+    for(let i=1 ; i<= Math.ceil(props.totalCourses / props.coursesLimit ) ; ++i){
         pages.push(i);
     }
 

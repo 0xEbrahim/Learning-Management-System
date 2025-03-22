@@ -29,7 +29,7 @@ function CourseCard(props){
     return(
         <div className="bg-white border border-gray-100 rounded-lg cursor-pointer flex flex-col relative min-h-[370px]">
             <Link to="">
-                <div className="image overflow-hidden rounded-t-lg"><img className=" w-full h-[180px] object-cover" src={course.thumbnail} alt="course img" loading="lazy"/></div>
+                <div className="image overflow-hidden rounded-t-lg bg-gray-50 border-none"><img className=" w-full h-[180px] object-cover" src={course.thumbnail} alt="" loading="lazy"/></div>
             </Link>
         <div className="p-3">
             <Link to="">
