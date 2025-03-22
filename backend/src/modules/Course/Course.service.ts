@@ -8,6 +8,8 @@ import {
   IDeleteCourseBody,
   IGetCoursesBody,
   IGetCoursesByIdBody,
+  IUpdateCourseBody,
+  IUpdateCourseThumbnailBody,
 } from "./Course.interface";
 import logger from "../../config/logger";
 import ApiFeatures from "../../utils/APIFeatures";
@@ -302,6 +304,136 @@ class CourseService {
       status: "Success",
       statusCode: 200,
       message: "Course deleted successfully",
+    };
+    return response;
+  }
+
+  async updateCourse(Payload: IUpdateCourseBody): Promise<IResponse> {
+    const { id, publisherId, name, price, description, categories } = Payload;
+
+    const course = await prisma.course.findUnique({
+      where: { id },
+      include: { publisher: true },
+    });
+
+    if (!course) {
+      throw new APIError(`Course id: ${id} did not match any course.`, 404);
+    }
+
+    if (
+      course.publisherId !== publisherId &&
+      course.publisher?.role !== "ADMIN"
+    ) {
+      throw new APIError("You are not authorized to update this course", 401);
+    }
+
+    const updateData: any = {};
+    if (name) updateData.name = name;
+    if (description) updateData.description = description;
+    if (price) updateData.price = Number(price);
+
+    const updatedCourse = await prisma.course.update({
+      where: { id },
+      data: updateData,
+    });
+
+    if (categories) {
+      // Validate categories
+      const existingCategories = await prisma.category.findMany({
+        where: { name: { in: categories } },
+        select: { name: true },
+      });
+
+      const existingCategoryNames = existingCategories.map((c) => c.name);
+      const invalidCategories = categories.filter(
+        (c) => !existingCategoryNames.includes(c)
+      );
+
+      if (invalidCategories.length > 0) {
+        throw new APIError(
+          `Invalid categories: ${invalidCategories.join(", ")}`,
+          400
+        );
+      }
+
+      // Delete existing category associations
+      await prisma.categoryOnCourses.deleteMany({
+        where: { courseId: id },
+      });
+
+      // Create new category associations
+      for (const categoryName of categories) {
+        await prisma.categoryOnCourses.create({
+          data: {
+            courseId: id,
+            categoryName,
+          },
+        });
+      }
+    }
+
+    // Clear cache
+    const keys = await redis.keys(`courses:*`);
+    if (keys.length > 0) await redis.del(keys);
+
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        course: updatedCourse,
+      },
+    };
+    return response;
+  }
+
+  async updateCourseThumbnail(
+    Payload: IUpdateCourseThumbnailBody
+  ): Promise<IResponse> {
+    const { id, publisherId, thumbnail } = Payload;
+
+    const course = await prisma.course.findUnique({
+      where: { id },
+      include: { publisher: true },
+    });
+
+    if (!course) {
+      throw new APIError(`Course id: ${id} did not match any course.`, 404);
+    }
+
+    if (
+      course.publisherId !== publisherId &&
+      course.publisher?.role !== "ADMIN"
+    ) {
+      throw new APIError("You are not authorized to update this course", 401);
+    }
+
+    if (!thumbnail) {
+      throw new APIError("Course should have a thumbnail", 400);
+    }
+
+    // Upload new thumbnail
+    const uploaded = await cloudinary.uploader.upload(thumbnail, {
+      folder: "Course",
+    });
+    fs.unlinkSync(thumbnail);
+
+    const updatedCourse = await prisma.course.update({
+      where: { id },
+      data: {
+        thumbnail: uploaded.secure_url,
+      },
+    });
+
+    // Clear cache
+    const keys = await redis.keys(`courses:*`);
+    if (keys.length > 0) await redis.del(keys);
+
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        course: updatedCourse,
+      },
     };
     return response;
   }

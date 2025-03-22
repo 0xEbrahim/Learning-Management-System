@@ -7,6 +7,8 @@ import {
   getCourseById,
   getCourses,
   search,
+  updateCourse,
+  updateCourseThumbnail,
 } from "./Course.controller";
 import uplaoder from "../../config/multer";
 
@@ -14,6 +16,8 @@ import {
   createCourseValidation,
   deleteCourseValidation,
   getCourseByIdValidation,
+  updateCourseValidation,
+  updateCourseThumbnailValidation,
 } from "./Course.validation";
 import { validate } from "../../utils/validation";
 import { videoRouter } from "../Video/Video.routes";
@@ -43,6 +47,21 @@ router.delete(
   isAuthorized("ADMIN", "TEACHER"),
   validate(deleteCourseValidation),
   deleteCourse
+);
+router.patch(
+  "/:id",
+  isAuthenticated,
+  isAuthorized("TEACHER", "ADMIN"),
+  validate(updateCourseValidation),
+  updateCourse
+);
+router.patch(
+  "/:id/thumbnail",
+  isAuthenticated,
+  isAuthorized("TEACHER", "ADMIN"),
+  uplaoder.single("image"),
+  validate(updateCourseThumbnailValidation),
+  updateCourseThumbnail
 );
 
 export const courseRouter = router;
