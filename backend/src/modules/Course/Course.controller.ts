@@ -6,8 +6,6 @@ import {
   IDeleteCourseBody,
   IGetCoursesBody,
   IGetCoursesByIdBody,
-  IUpdateCourseBody,
-  IUpdateCourseThumbnailBody,
 } from "./Course.interface";
 import CourseService from "./Course.service";
 import sendResponse from "../../utils/sendResponse";
@@ -65,33 +63,6 @@ export const deleteCourse = asyncHandler(
       courseId: req.params.id,
     };
     const result: IResponse = await CourseService.deleteCourse(data);
-    sendResponse(result, res);
-  }
-);
-
-export const updateCourse = asyncHandler(
-  async (req: IRequest, res: Response, next: NextFunction) => {
-    const data: IUpdateCourseBody = {
-      id: req.params.id,
-      publisherId: req.User?.id as string,
-      name: req.body.name,
-      price: req.body.price,
-      description: req.body.description,
-      categories: req.body.categories,
-    };
-    const result: IResponse = await CourseService.updateCourse(data);
-    sendResponse(result, res);
-  }
-);
-
-export const updateCourseThumbnail = asyncHandler(
-  async (req: IRequest, res: Response, next: NextFunction) => {
-    const data: IUpdateCourseThumbnailBody = {
-      id: req.params.id,
-      publisherId: req.User?.id as string,
-      thumbnail: req.file?.path as string,
-    };
-    const result: IResponse = await CourseService.updateCourseThumbnail(data);
     sendResponse(result, res);
   }
 );
