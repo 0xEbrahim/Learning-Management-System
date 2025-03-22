@@ -145,7 +145,7 @@ class CourseService {
 
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
     const { query: q, categoryId } = Payload;
-    const numberOfCourses = await prisma.course.count();
+    let numberOfCourses = await prisma.course.count();
     let courses: any,
       check = false,
       cacheKey: string,
@@ -169,6 +169,14 @@ class CourseService {
       });
       if (!category)
         throw new APIError("Invalid category id: " + categoryId, 404);
+      numberOfCourses = (
+        await prisma.categoryOnCourses.findMany({
+          where: {
+            categoryName: category?.name,
+          },
+        })
+      ).length;
+      console.log(numberOfCourses)
       courses = await prisma.categoryOnCourses.findMany({
         where: {
           categoryName: category.name,
