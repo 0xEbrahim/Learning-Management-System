@@ -143,6 +143,7 @@ class CourseService {
 
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
     const { query: q, categoryId } = Payload;
+    const numberOfCourses = await prisma.course.count();
     let courses: any,
       check = false,
       cacheKey: string,
@@ -158,6 +159,7 @@ class CourseService {
       response = {
         status: "Success",
         statusCode: 200,
+        size: numberOfCourses,
         data: JSON.parse(cachedData),
       };
       return response;
@@ -210,6 +212,7 @@ class CourseService {
     const ttl = categoryId ? 86400 : 3600;
     response = {
       status: "Success",
+      size: numberOfCourses,
       statusCode: 200,
       data: check ? courses : { courses },
     };

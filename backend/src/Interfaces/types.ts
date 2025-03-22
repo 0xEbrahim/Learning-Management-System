@@ -4,6 +4,7 @@ import { IUser } from "../modules/User/User.interface";
 
 export interface IResponse {
   status: string;
+  size?:number
   statusCode: number;
   message?: string;
   data?: object;
