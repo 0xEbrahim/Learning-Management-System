@@ -174,7 +174,9 @@ class CourseService {
       : undefined;
 
     const numberOfCourses = await prisma.course.count();
-    const cacheKey = `courses:${stringify(query)}`;
+    const cacheKey = `courses:${stringify(
+      categoryId ? `${categoryId}:${stringify(query)}` : query
+    )}`;
 
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
@@ -190,38 +192,37 @@ class CourseService {
         throw new APIError("Invalid category id: " + categoryId, 404);
       }
 
-      courses = await prisma.categoryOnCourses.findMany({
-        where: { categoryName: category.name },
-        select: {
-          courseId: false,
-          categoryName: false,
-          course: {
-            select: {
-              id: true,
-              name: true,
-              thumbnail: true,
-              price: true,
-              description: true,
-              publisher: {
-                select: {
-                  name: true,
-                  avatar: true,
-                },
-              },
+      const filterWith = { price, purchased, averageRatings };
+      const Options = searchFilterOptions(filterWith, query);
+
+      courses = await prisma.course.findMany({
+        where: {
+          ...Options[0],
+          categories: {
+            some: {
+              categoryName: category.name,
             },
           },
         },
+        include: {
+          categories: {
+            select: {
+              categoryName: true,
+            },
+          },
+        },
+        ...Options[1],
       });
     } else {
       const filterWith = { price, purchased, averageRatings };
       const Options = searchFilterOptions(filterWith, query);
+
       courses = await prisma.course.findMany({
         where: {
           ...Options[0],
         },
         ...Options[1],
       });
-      console.log(courses);
       for (const course of courses) {
         const categories = await prisma.categoryOnCourses.findMany({
           where: { courseId: course.id },

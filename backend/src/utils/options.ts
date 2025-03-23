@@ -5,11 +5,6 @@ export const courseIncludeOptions = {
       avatar: true,
     },
   },
-  prerequisites: {
-    select: {
-      title: true,
-    },
-  },
   demo: {
     select: {
       url: true,
