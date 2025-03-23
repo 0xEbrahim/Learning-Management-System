@@ -204,17 +204,6 @@ class CourseService {
           },
         },
       };
-      courses = await prisma.course.findMany({
-        where: {
-          ...Options[0],
-          categories: {
-            some: {
-              categoryName: category.name,
-            },
-          },
-        },
-        ...Options[1],
-      });
     } else {
       Options = searchFilterOptions(filterWith, query);
     }
