@@ -1,0 +1,16 @@
+.active,.unactive:hover{
+    border-bottom: 2px solid #4f39f6;
+    color:#1e2939;
+    background-color: #f3f4f6;
+}
+
+.active,.unactive{
+    cursor: pointer;
+    color:#4a5565;
+    border-radius:8px;
+    padding:4px 8px;
+}
+.unactive{
+   color:#6a7282;
+   background-color:#f9fafb;
+}
