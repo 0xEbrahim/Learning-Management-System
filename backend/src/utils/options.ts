@@ -5,11 +5,6 @@ export const courseIncludeOptions = {
       avatar: true,
     },
   },
-  prerequisites: {
-    select: {
-      title: true,
-    },
-  },
   demo: {
     select: {
       url: true,
@@ -69,6 +64,7 @@ export const searchFilterOptions = (
   if (fields) {
     fields.split(",").forEach((el: any) => (selected[el] = true));
     options.select = selected;
+    options.select.id = true;
   }
   if (sort) {
     sort = sort.split(",");
@@ -79,5 +75,6 @@ export const searchFilterOptions = (
     }
     options.orderBy = orderBy;
   }
+
   return [filterWith, options];
 };

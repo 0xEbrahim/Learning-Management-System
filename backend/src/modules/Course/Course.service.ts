@@ -166,9 +166,17 @@ class CourseService {
   }
 
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
-    const { query: q, categoryId } = Payload;
+    const { query, categoryId } = Payload;
+    const price = query.price ? Number(query.price) : undefined;
+    const purchased = query.purchased ? Number(query.purchased) : undefined;
+    const averageRatings = query.averageRatings
+      ? Number(query.averageRatings)
+      : undefined;
+
     const numberOfCourses = await prisma.course.count();
-    const cacheKey = `courses:${stringify(categoryId || q)}`;
+    const cacheKey = `courses:${stringify(
+      categoryId ? `${categoryId}:${stringify(query)}` : query
+    )}`;
 
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
@@ -184,36 +192,37 @@ class CourseService {
         throw new APIError("Invalid category id: " + categoryId, 404);
       }
 
-      courses = await prisma.categoryOnCourses.findMany({
-        where: { categoryName: category.name },
-        select: {
-          courseId: false,
-          categoryName: false,
-          course: {
-            select: {
-              id: true,
-              name: true,
-              thumbnail: true,
-              price: true,
-              description: true,
-              publisher: {
-                select: {
-                  name: true,
-                  avatar: true,
-                },
-              },
+      const filterWith = { price, purchased, averageRatings };
+      const Options = searchFilterOptions(filterWith, query);
+
+      courses = await prisma.course.findMany({
+        where: {
+          ...Options[0],
+          categories: {
+            some: {
+              categoryName: category.name,
             },
           },
         },
+        include: {
+          categories: {
+            select: {
+              categoryName: true,
+            },
+          },
+        },
+        ...Options[1],
       });
     } else {
-      const query = new ApiFeatures(prisma, "course", q)
-        .filter()
-        .limitFields()
-        .sort()
-        .paginate();
-      courses = await query.execute();
+      const filterWith = { price, purchased, averageRatings };
+      const Options = searchFilterOptions(filterWith, query);
 
+      courses = await prisma.course.findMany({
+        where: {
+          ...Options[0],
+        },
+        ...Options[1],
+      });
       for (const course of courses) {
         const categories = await prisma.categoryOnCourses.findMany({
           where: { courseId: course.id },
