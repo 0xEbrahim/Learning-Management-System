@@ -11,7 +11,6 @@ function Pagination(props){
         pages.push(i);
     }
 
-
     const paginationList=pages.map((page)=>{
         return(
             <button key={page} onClick={()=>{dispatch(setPageNo(page))}} className={pageNo === page ? `${styles.active}` : `${styles.unactive}`}>{page}</button>
