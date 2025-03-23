@@ -166,9 +166,15 @@ class CourseService {
   }
 
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
-    const { query: q, categoryId } = Payload;
+    const { query, categoryId } = Payload;
+    const price = query.price ? Number(query.price) : undefined;
+    const purchased = query.purchased ? Number(query.purchased) : undefined;
+    const averageRatings = query.averageRatings
+      ? Number(query.averageRatings)
+      : undefined;
+
     const numberOfCourses = await prisma.course.count();
-    const cacheKey = `courses:${stringify(categoryId || q)}`;
+    const cacheKey = `courses:${stringify(query)}`;
 
     const cachedData = await redis.get(cacheKey);
     if (cachedData) {
@@ -207,13 +213,15 @@ class CourseService {
         },
       });
     } else {
-      const query = new ApiFeatures(prisma, "course", q)
-        .filter()
-        .limitFields()
-        .sort()
-        .paginate();
-      courses = await query.execute();
-
+      const filterWith = { price, purchased, averageRatings };
+      const Options = searchFilterOptions(filterWith, query);
+      courses = await prisma.course.findMany({
+        where: {
+          ...Options[0],
+        },
+        ...Options[1],
+      });
+      console.log(courses);
       for (const course of courses) {
         const categories = await prisma.categoryOnCourses.findMany({
           where: { courseId: course.id },
