@@ -88,7 +88,7 @@ function CoursePage(){
                                 </NavLink>
                             </li>
                         </ul>
-                        <div className="bg-white p-2 rounded-lg border-1 border-gray-200">
+                        <div className="bg-white p-4 rounded-lg border-1 border-gray-200">
                             <Outlet/>
                         </div>
                     </div>
