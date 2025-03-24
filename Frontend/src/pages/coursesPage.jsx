@@ -1,5 +1,4 @@
 import { FaPlus } from "react-icons/fa6";
-import { FaCheckSquare } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector , useDispatch } from "react-redux";
 import { setPageNo } from "../rtk/slices/coursesPageNo";
@@ -54,8 +53,7 @@ function CoursesPage(){
         try{
             const res= await api.get(`/categories/${categoryId}/courses/?limit=${coursesLimit}&page=${currentPageNo}`);
             setCourses(res.data.data.courses);
-            setTotalCourses(11);
-            // setTotalCourses(res.data.data.size);
+            setTotalCourses(res.data.data.size);
         }catch(error){
             console.log(error);
         }finally{
@@ -76,7 +74,8 @@ function CoursesPage(){
     }
 
     const getCourseByName=async()=>{
-        setLoading(true);
+        if(courseName || maxPrice){
+            setLoading(true);
         setCategoryName("");
         try{
             const res = await api.get(`/courses/search?q=${courseName}&price=${maxPrice}`);
@@ -87,6 +86,7 @@ function CoursesPage(){
             console.log(error);
         }finally{
             setLoading(false);
+        }
         }
     }
 
@@ -123,7 +123,7 @@ function CoursesPage(){
                                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                                 </svg>
                             </div>
-                            <input type="search" id="default-search" className="block w-full p-3 ps-10 text-sm text-gray-900 rounded-lg bg-gray-50 focus:ring-indigo-500 focus:outline-none " placeholder="Search course by name" onChange={(e)=>{handleCourseNameChange(e.target.value)}} />
+                            <input type="search" id="default-search" className="block w-full p-3 ps-10 text-sm text-gray-900 rounded-lg bg-gray-50 focus:ring-indigo-500 focus:outline-none " placeholder="Search courses" onChange={(e)=>{handleCourseNameChange(e.target.value)}} />
                         </div>
                     </form>
                     <div className="flex items-center gap-3">

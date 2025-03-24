@@ -5,6 +5,7 @@ import VerifyEmail from "./components/verifyEmail.jsx";
 import HomePage from "./pages/homePage.jsx";
 import ForgotPassword from "./pages/forgotPassword.jsx";
 import ResetPassword from "./pages/resetPassword.jsx";
+import Home from "./pages/home.jsx";
 import CoursesPage from "./pages/coursesPage.jsx";
 import SettingsPage from "./pages/settingsPage.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
@@ -17,6 +18,7 @@ function App() {
     <>
       <Routes>
         <Route path="/homePage" element={<HomePage />}>
+          <Route index element={<Home/>}/>
           <Route path="/homePage/courses" element={<CoursesPage />} />
           <Route path="/homePage/newCourse" element={<NewCourse />} />
           <Route path="/homePage/dashboard" element={<DashboardPage />} />
