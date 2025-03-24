@@ -12,6 +12,10 @@ import DashboardPage from "./pages/dashboard.jsx";
 import NewCourse from "./pages/newCoursePage.jsx";
 import ProfilePage from "./pages/profilePage.jsx";
 import CoursePage from "./pages/coursePage.jsx";
+import OverView from "./subPages/overView.jsx";
+import Author from "./subPages/author.jsx";
+import Reviews from "./subPages/reviews.jsx";
+import FAQ from "./subPages/FAQ.jsx";
 // import { io } from "socket.io-client";
 // const socket = io.connect("http://localhost:3000");
 function App() {
@@ -20,12 +24,17 @@ function App() {
       <Routes>
         <Route path="/homePage" element={<HomePage />}>
           <Route index element={<Home/>}/>
-          <Route path="/homePage/courses" element={<CoursesPage />} />
-          <Route path="/homePage/newCourse" element={<NewCourse />} />
-          <Route path="/homePage/courses/course/:courseId" element={<CoursePage/>}/>
-          <Route path="/homePage/dashboard" element={<DashboardPage />} />
-          <Route path="/homePage/settings" element={<SettingsPage />} />
-          <Route path="/homePage/Profile" element={<ProfilePage />} />
+          <Route path="courses" element={<CoursesPage />} />
+          <Route path="newCourse" element={<NewCourse />} />
+          <Route path="/homePage/courses/course/:courseId" element={<CoursePage/>}>
+            <Route path="overview" element={<OverView/>}/>
+            <Route path="author" element={< Author/>}/>
+            <Route path="reviews" element={< Reviews/>}/>
+            <Route path="FAQ" element={< FAQ/>}/>
+          </Route>
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+          <Route path="Profile" element={<ProfilePage />} />
         </Route>
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />

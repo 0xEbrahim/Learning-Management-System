@@ -10,6 +10,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosLock } from "react-icons/io";
 import { NavLink , Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
+import styles from "./coursePage.module.css";
 
 function CoursePage(){
     const {courseId}=useParams();
@@ -58,12 +59,36 @@ function CoursePage(){
                             <img className="w-full h-auto object-cover" src={course.thumbnail} alt="chosen video"/>
                         </div>
                         <ul className="flex items-center gap-3 mb-3">
-                            <li><Link to="" className="text-indigo-600 px-3 py-1 rounded-lg bg-[#E5D1FA] font-[600]">OverView</Link></li>
-                            <li><Link to="" className="text-black px-3 py-1 rounded-lg">Author</Link></li>
-                            <li><Link to="" className="text-black px-3 py-1 rounded-lg">FAQ</Link></li>
-                            <li><Link to="" className="text-black px-3 py-1 rounded-lg">Reviews</Link></li>
+                        <li><NavLink to="overview" className={({ isActive }) =>
+                                                        isActive
+                                                            ? `${styles.active}`
+                                                            : `${styles.unactive}`
+                                                        }>Overview                
+                                </NavLink>
+                            </li>
+                            <li><NavLink to="author" className={({ isActive }) =>
+                                                        isActive
+                                                            ?`${styles.active}`
+                                                            : `${styles.unactive}`
+                                                        }>Author                
+                                </NavLink>
+                            </li>
+                            <li><NavLink to="reviews" className={({ isActive }) =>
+                                                        isActive
+                                                            ? `${styles.active}`
+                                                            : `${styles.unactive}`
+                                                        }>Reviews               
+                                </NavLink>
+                            </li>
+                            <li><NavLink to="FAQ" className={({ isActive }) =>
+                                                        isActive
+                                                            ? `${styles.active}`
+                                                            : `${styles.unactive}`
+                                                        }>FAQ                
+                                </NavLink>
+                            </li>
                         </ul>
-                        <div className="bg-white p-2 rounded-lg">
+                        <div className="bg-white p-2 rounded-lg border-1 border-gray-200">
                             <Outlet/>
                         </div>
                     </div>
