@@ -173,7 +173,7 @@ class CourseService {
     const averageRatings = query.averageRatings
       ? Number(query.averageRatings)
       : undefined;
-    const numberOfCourses = await prisma.course.count();
+    let numberOfCourses = await prisma.course.count();
     const cacheKey = `courses:${stringify(
       categoryId ? `${categoryId}:${stringify(query)}` : query
     )}`;
@@ -186,6 +186,11 @@ class CourseService {
     if (categoryId) {
       const category = await prisma.category.findUnique({
         where: { id: categoryId },
+      });
+      numberOfCourses = await prisma.categoryOnCourses.count({
+        where: {
+          categoryName: category?.name,
+        },
       });
       if (!category) {
         throw new APIError("Invalid category id: " + categoryId, 404);
