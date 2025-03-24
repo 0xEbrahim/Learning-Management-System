@@ -116,7 +116,7 @@ class CourseService {
 
     logger.info(`Teacher: ${publisherId} created a new course: ${course.id}`);
     await this.createCategoryAssociations(course.id, categories);
-
+    await this.clearCourseCache();
     return this.formatResponse({ course }, 201);
   }
 

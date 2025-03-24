@@ -22,7 +22,7 @@ import { courseRouter } from "./modules/Course/Course.routes";
 import { categoryRouter } from "./modules/Category/Category.routes";
 import { videoRouter } from "./modules/Video/Video.routes";
 import { orderRouter } from "./modules/Order/Order.routes";
-
+import redis from "./config/redis";
 dotenv.config();
 const app = express();
 const server = createServer(app);
@@ -69,7 +69,8 @@ app.use(
 app.use(helmet());
 app.use(passport.initialize());
 app.use(passport.session());
-app.get("/", (req, res, next) => {
+app.get("/", async (req, res, next) => {
+  await redis.flushAll();
   res.json({
     message: "Hello to LMS API",
   });
