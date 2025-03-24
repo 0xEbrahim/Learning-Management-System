@@ -27,7 +27,7 @@ function App() {
           <Route path="courses" element={<CoursesPage />} />
           <Route path="newCourse" element={<NewCourse />} />
           <Route path="/homePage/courses/course/:courseId" element={<CoursePage/>}>
-            <Route path="overview" element={<OverView/>}/>
+            <Route index element={<OverView/>}/>
             <Route path="author" element={< Author/>}/>
             <Route path="reviews" element={< Reviews/>}/>
             <Route path="FAQ" element={< FAQ/>}/>

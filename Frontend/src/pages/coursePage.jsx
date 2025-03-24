@@ -42,24 +42,24 @@ function CoursePage(){
                     <h2 className="font-[600] text-xl flex items-center gap-2"><span className="block p-1.5 border-1 border-gray-300 text-sm text-gray-500 bg-white rounded-sm"><Link to="../courses"><IoIosArrowBack/></Link></span>{course.name}</h2>
                     <p className=" rounded-2xl px-4 py-0.5 bg-gray-100 border-1 border-gray-400 text-[12px] text-gray-600 font-[500]">category</p>
                 </div>
-                <div className="flex items-center justify-between mb-3">
+                <div className="flex md:items-center md:justify-between md:flex-row flex-col gap-2 mb-3">
                 <div className=" course-info flex items-center gap-2">
                     <div className="lessons flex items-center gap-1"><FaRegCirclePlay className="text-indigo-600"/><p className="text-gray-500 text-sm">Lessons</p></div>
                     <div className="lessons flex items-center gap-1"><TbClockHour4 className="text-indigo-600"/><p className="text-gray-500 text-sm">Duration</p></div>
                     <div className="lessons flex items-center gap-1"><CiStar className="text-indigo-600"/><p className="text-gray-500 text-sm">Rating-Reviews</p></div>
                 </div>
                 <div>
-                    <button className="cursor-pointer text-white text-md px-2 py-1 bg-indigo-600 hover:bg-indigo-700 rounded-md  flex items-center gap-1"><IoIosLock/>Enroll Now</button>
+                    <button className="md:w-fit w-full cursor-pointer text-white text-md px-2 py-1 bg-indigo-600 hover:bg-indigo-700 rounded-md  flex items-center gap-1 justify-center"><IoIosLock/>Enroll Now</button>
                 </div>
                 </div>
-                <div className="layout grid grid-cols-4 gap-2">
-                    <div className="col-span-3">
+                <div className="layout grid xl:grid-cols-4 grid-cols-1 gap-2">
+                    <div className="xl:col-span-3 col-span-1">
                         <div className="video overflow-hidden rounded-xl mb-3">
                             {/* add chosen video */}
                             <img className="w-full h-auto object-cover" src={course.thumbnail} alt="chosen video"/>
                         </div>
                         <ul className="flex items-center gap-3 mb-3">
-                        <li><NavLink to="overview" className={({ isActive }) =>
+                        <li><NavLink to="" end className={({ isActive }) =>
                                                         isActive
                                                             ? `${styles.active}`
                                                             : `${styles.unactive}`
