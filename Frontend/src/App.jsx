@@ -11,6 +11,7 @@ import SettingsPage from "./pages/settingsPage.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
 import NewCourse from "./pages/newCoursePage.jsx";
 import ProfilePage from "./pages/profilePage.jsx";
+import CoursePage from "./pages/coursePage.jsx";
 // import { io } from "socket.io-client";
 // const socket = io.connect("http://localhost:3000");
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route index element={<Home/>}/>
           <Route path="/homePage/courses" element={<CoursesPage />} />
           <Route path="/homePage/newCourse" element={<NewCourse />} />
+          <Route path="/homePage/courses/course/:courseId" element={<CoursePage/>}/>
           <Route path="/homePage/dashboard" element={<DashboardPage />} />
           <Route path="/homePage/settings" element={<SettingsPage />} />
           <Route path="/homePage/Profile" element={<ProfilePage />} />
