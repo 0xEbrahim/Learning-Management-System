@@ -3,20 +3,30 @@ import asyncHandler from "../../utils/asyncHandler";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import UserService from "./User.service";
 import sendResponse from "../../utils/sendResponse";
-import { IUpdateProfilePicBody, IUpdateUserBody } from "./User.interface";
+import {
+  IGetUserByIdBody,
+  IUpdateProfilePicBody,
+  IUpdateUserBody,
+} from "./User.interface";
 
 export const getUserById = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    const { id } = req.params;
-    const result: IResponse = await UserService.getUserById(id);
+    const data: IGetUserByIdBody = {
+      courseId: req.params.courseId,
+      userId: req.params.id,
+    };
+    const result: IResponse = await UserService.getUserById(data);
     sendResponse(result, res);
   }
 );
 
 export const getUserProfile = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
-    const id = req.User?.id as string;
-    const result: IResponse = await UserService.getUserById(id);
+    const data: IGetUserByIdBody = {
+      courseId: req.params.courseId,
+      userId: req.params.id,
+    };
+    const result: IResponse = await UserService.getUserById(data);
     sendResponse(result, res);
   }
 );

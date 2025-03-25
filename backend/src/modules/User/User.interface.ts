@@ -33,3 +33,8 @@ export interface IUpdateProfilePicBody {
   avatar?: string;
   remove?: true;
 }
+
+export interface IGetUserByIdBody {
+  courseId?: string,
+  userId: string
+}
