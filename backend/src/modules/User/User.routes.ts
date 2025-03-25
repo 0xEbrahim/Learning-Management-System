@@ -12,7 +12,7 @@ import { validate } from "../../utils/validation";
 import { getUserByIdValidation, updateUserValidation } from "./User.validation";
 import uplaoder from "../../config/multer";
 import { orderRouter } from "../Order/Order.routes";
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.use("/:userId/orders", orderRouter);
 

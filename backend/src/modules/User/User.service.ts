@@ -5,6 +5,7 @@ import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { cleanUsersData } from "../../utils/Functions/functions";
 import {
+  IGetUserByIdBody,
   IUpdateProfilePicBody,
   IUpdateUserBody,
   IUser,
@@ -16,31 +17,90 @@ import cloudinary from "../../config/cloudinary";
 import logger from "../../config/logger";
 import redis from "../../config/redis";
 class UserService {
-  async getUserById(Payload: string): Promise<IResponse> {
+  async getUserById(Payload: IGetUserByIdBody): Promise<IResponse> {
+    const { userId, courseId } = Payload;
+    let options: any;
+    if (courseId) {
+      const course = await prisma.course.findUnique({
+        where: {
+          id: courseId,
+        },
+      });
+      if (!course) throw new APIError("Invalid vcourse id : " + course, 404);
+      if (course.publisherId !== userId)
+        throw new APIError("Eligable course's author id: " + userId, 401);
+      options = {
+        where: {
+          id: userId,
+        },
+        include: {
+          publishedCourses: {
+            select: {
+              id: true,
+              name: true,
+              thumbnail: true,
+              description: true,
+              price: true,
+              averageRatings: true,
+            },
+          },
+        },
+      };
+    } else {
+      options = {
+        where: {
+          id: userId,
+        },
+        include: {
+          courses: {
+            select: {
+              courseId: true,
+            },
+          },
+          publishedCourses: {
+            select: {
+              id: true,
+              name: true,
+              thumbnail: true,
+              description: true,
+              price: true,
+              averageRatings: true,
+            },
+          },
+        },
+      };
+    }
+
+    const user: any = await prisma.user.findUnique(options);
+    if (!user) throw new APIError("Invalid user id", 404);
+    if (user.courses) {
+      const courses = await Promise.all(
+        user.courses.map(async (el: any) => {
+          return await prisma.course.findUnique({
+            where: {
+              id: el.courseId,
+            },
+            select: {
+              id: true,
+              name: true,
+              thumbnail: true,
+              description: true,
+              price: true,
+              averageRatings: true,
+            },
+          });
+        })
+      );
+      user.courses = courses;
+    }
+    cleanUsersData(user);
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
+      data: {
+        user,
+      },
     };
-    const user: IUser | null = await prisma.user.findUnique({
-      where: {
-        id: Payload,
-      },
-      include: {
-        courses: {
-          select: {
-            id: true,
-          },
-        },
-        publishedCourses: {
-          select: {
-            id: true,
-          },
-        },
-      },
-    });
-    if (!user) throw new APIError("Invalid user id", 404);
-    cleanUsersData(user);
-    response.data = { user };
     return response;
   }
 

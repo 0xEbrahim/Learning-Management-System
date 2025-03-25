@@ -71,6 +71,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.get("/", async (req, res, next) => {
   await redis.flushAll();
+  console.log("Cache DB cleared");
   res.json({
     message: "Hello to LMS API",
   });
