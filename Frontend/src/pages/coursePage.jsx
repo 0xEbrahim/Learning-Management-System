@@ -11,8 +11,11 @@ import { IoIosLock } from "react-icons/io";
 import { NavLink , Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import styles from "./coursePage.module.css";
+import { useDispatch } from "react-redux";
+import { setAuthorId } from "../rtk/slices/courseAuthorID";
 
 function CoursePage(){
+    const dispatch=useDispatch();
     const {courseId}=useParams();
     const [ course , setCourse ]=useState({});
     const [ loading , setLoading]=useState(true);
@@ -22,6 +25,7 @@ function CoursePage(){
             try{
                 const res= await api.get(`/courses/${courseId}`);
                 setCourse(res.data.data.course);
+                dispatch(setAuthorId(res.data.data.course.publisherId));
             }catch(error){
                 return;
             }finally{
