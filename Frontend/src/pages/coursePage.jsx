@@ -33,7 +33,7 @@ function CoursePage(){
             }
         }
         getCourseData();
-    },[])
+    },[courseId])
 
     return(
         <div>
