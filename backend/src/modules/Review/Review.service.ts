@@ -1,6 +1,7 @@
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
+import { updateCourseRating } from "../../utils/Functions/functions";
 import { ICreateReviewBody } from "./Review.interface";
 
 class ReviewService {
@@ -28,6 +29,7 @@ class ReviewService {
         review,
       },
     };
+    updateCourseRating(courseId)
     return response;
   }
 }
