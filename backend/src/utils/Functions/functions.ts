@@ -78,10 +78,31 @@ export const createResetPasswordToken = async (user: IUser) => {
   });
 };
 
-export const cleanVideoData= (video: any) => {
+export const cleanVideoData = (video: any) => {
   const deleted = ["videoUrl"];
-  deleted.forEach(el => delete video[el])
-}
+  deleted.forEach((el) => delete video[el]);
+};
+
+export const updateCourseRating = async (courseId: string) => {
+  const averageRatePerCourse = await prisma.review.aggregate({
+    where: {
+      courseId: courseId,
+    },
+    _avg: {
+      rating: true,
+    },
+  });
+  const { _avg } = averageRatePerCourse;
+  const { rating } = _avg;
+  await prisma.course.update({
+    where: {
+      id: courseId,
+    },
+    data: {
+      averageRatings: rating ?? 0,
+    },
+  });
+};
 
 export const cleanUsersData = (user: any, ...props: any) => {
   const deleted = [
