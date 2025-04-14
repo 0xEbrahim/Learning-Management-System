@@ -29,7 +29,11 @@ class ReviewService {
         review,
       },
     };
-    updateCourseRating(courseId)
+    try {
+      await updateCourseRating(courseId);
+    } catch (error: any) {
+      throw new APIError(error.message, 400);
+    }
     return response;
   }
 }
