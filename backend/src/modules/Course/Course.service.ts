@@ -12,7 +12,6 @@ import {
   IUpdateCourseThumbnailBody,
 } from "./Course.interface";
 import logger from "../../config/logger";
-import ApiFeatures from "../../utils/APIFeatures";
 import { courseIncludeOptions, searchFilterOptions } from "../../utils/options";
 import stringify from "fast-json-stable-stringify";
 import redis from "../../config/redis";
