@@ -24,10 +24,7 @@ export default asyncHandler(
       next();
     else {
       return next(
-        new APIError(
-          "You are need to purchase the course to view the video",
-          403
-        )
+        new APIError("You need to purchase the course to view the video", 403)
       );
     }
   }
