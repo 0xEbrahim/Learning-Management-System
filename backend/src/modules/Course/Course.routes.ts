@@ -22,10 +22,12 @@ import {
 import { validate } from "../../utils/validation";
 import { videoRouter } from "../Video/Video.routes";
 import { userRouter } from "../User/User.routes";
+import { reviewRouter } from "../Review/Review.routes";
 const router = express.Router({ mergeParams: true });
 
 router.use("/:courseId/videos", videoRouter);
 router.use("/:courseId/users", userRouter)
+router.use("/:courseId/reviews", reviewRouter)
 router.post(
   "/",
   isAuthenticated,
