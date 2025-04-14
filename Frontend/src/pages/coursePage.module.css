@@ -1,0 +1,14 @@
+.active , .unactive:hover{
+    color:#4f39f6;
+    background-color: #E5D1FA;
+
+}
+
+.active , .unactive{
+    padding:4px 8px;
+    border-radius: 8px;
+}
+
+.unactive{
+    color:#000;
+}
