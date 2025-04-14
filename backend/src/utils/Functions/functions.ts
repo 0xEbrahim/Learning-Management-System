@@ -99,7 +99,7 @@ export const updateCourseRating = async (courseId: string) => {
       id: courseId,
     },
     data: {
-      averageRatings: rating as number,
+      averageRatings: rating ?? 0,
     },
   });
 };
