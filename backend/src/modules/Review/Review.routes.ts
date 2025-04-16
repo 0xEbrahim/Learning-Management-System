@@ -1,10 +1,15 @@
 import express from "express";
 import isAuthenticated from "../../middlewares/isAuthenticated";
-import { createReview, getReviewById } from "./Review.controller";
+import {
+  createReview,
+  getReviewById,
+  getReviewsOnCourse,
+} from "./Review.controller";
 import isBuyer from "../../middlewares/isBuyer";
 import {
   createReviewValidation,
   getReviewByIdValidation,
+  getReviewsOnCourseValidation,
 } from "./Review.validation";
 import { validate } from "../../utils/validation";
 
@@ -16,6 +21,12 @@ router.post(
   isBuyer,
   validate(createReviewValidation),
   createReview
+);
+router.get(
+  "/",
+  isAuthenticated,
+  validate(getReviewsOnCourseValidation),
+  getReviewsOnCourse
 );
 router.get(
   "/:id",

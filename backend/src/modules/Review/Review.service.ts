@@ -2,7 +2,12 @@ import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { updateCourseRating } from "../../utils/Functions/functions";
-import { ICreateReviewBody, IGetReviewByIdBody } from "./Review.interface";
+import { searchFilterOptions } from "../../utils/options";
+import {
+  ICreateReviewBody,
+  IGetReviewByIdBody,
+  IGetReviewsOnCourseBody,
+} from "./Review.interface";
 
 class ReviewService {
   async createReview(Payload: ICreateReviewBody): Promise<IResponse> {
@@ -44,23 +49,57 @@ class ReviewService {
         id: courseId,
       },
     });
-    if(!course)
-      throw new APIError("Invalid course id", 404)
+    if (!course) throw new APIError("Invalid course id", 404);
     const review = await prisma.review.findFirst({
       where: {
         id: reviewId,
         courseId: courseId,
       },
+      include: {
+        author: {
+          select: {
+            name: true,
+            avatar: true,
+          },
+        },
+      },
     });
     if (!review) throw new APIError("Invalid review Id", 404);
-    const resposnse : IResponse = {
-      status:"Success",
+    const resposnse: IResponse = {
+      status: "Success",
       statusCode: 200,
-      data:{
-        review
-      }
-    }
-    return resposnse
+      data: {
+        review,
+      },
+    };
+    return resposnse;
+  }
+  async getReviewsOnCourse(
+    Payload: IGetReviewsOnCourseBody
+  ): Promise<IResponse> {
+    const { courseId, query } = Payload;
+    const course = await prisma.course.findUnique({
+      where: {
+        id: courseId,
+      },
+    });
+    if (!course) throw new APIError("Invalid course ID", 404);
+    const options = searchFilterOptions({}, query);
+    const reviews = await prisma.review.findMany({
+      where: {
+        courseId: courseId,
+        ...options[0],
+      },
+      ...options[1],
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        reviews,
+      },
+    };
+    return response;
   }
 }
 

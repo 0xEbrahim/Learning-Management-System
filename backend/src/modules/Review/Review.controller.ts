@@ -1,7 +1,11 @@
 import { NextFunction, Response } from "express";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import asyncHandler from "../../utils/asyncHandler";
-import { ICreateReviewBody, IGetReviewByIdBody } from "./Review.interface";
+import {
+  ICreateReviewBody,
+  IGetReviewByIdBody,
+  IGetReviewsOnCourseBody,
+} from "./Review.interface";
 import ReviewService from "./Review.service";
 import sendResponse from "../../utils/sendResponse";
 
@@ -25,6 +29,17 @@ export const getReviewById = asyncHandler(
       reviewId: req.params.id,
     };
     const result: IResponse = await ReviewService.getReviewById(data);
+    sendResponse(result, res);
+  }
+);
+
+export const getReviewsOnCourse = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IGetReviewsOnCourseBody = {
+      courseId: req.params.courseId,
+      query: req.query,
+    };
+    const result = await ReviewService.getReviewsOnCourse(data);
     sendResponse(result, res);
   }
 );

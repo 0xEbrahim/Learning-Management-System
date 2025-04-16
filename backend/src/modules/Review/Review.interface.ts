@@ -10,3 +10,8 @@ export interface IGetReviewByIdBody {
   courseId: string
   reviewId: string
 }
+
+export interface IGetReviewsOnCourseBody {
+  courseId : string,
+  query: object
+}

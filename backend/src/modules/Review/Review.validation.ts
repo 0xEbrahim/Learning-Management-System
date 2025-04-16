@@ -16,3 +16,9 @@ export const getReviewByIdValidation = z.object({
     id: z.string()
   })
 })
+
+export const getReviewsOnCourseValidation = z.object({
+  params:z.object({
+    courseId: z.string(),
+  })
+})
