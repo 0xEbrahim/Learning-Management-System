@@ -4,3 +4,9 @@ export interface ICreateReviewBody {
   courseId: string;
   userId: string;
 }
+
+
+export interface IGetReviewByIdBody {
+  courseId: string
+  reviewId: string
+}

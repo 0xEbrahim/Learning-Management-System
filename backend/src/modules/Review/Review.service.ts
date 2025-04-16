@@ -2,7 +2,7 @@ import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { updateCourseRating } from "../../utils/Functions/functions";
-import { ICreateReviewBody } from "./Review.interface";
+import { ICreateReviewBody, IGetReviewByIdBody } from "./Review.interface";
 
 class ReviewService {
   async createReview(Payload: ICreateReviewBody): Promise<IResponse> {
@@ -35,6 +35,32 @@ class ReviewService {
       throw new APIError(error.message, 400);
     }
     return response;
+  }
+
+  async getReviewById(Payload: IGetReviewByIdBody): Promise<IResponse> {
+    const { courseId, reviewId } = Payload;
+    const course = await prisma.course.findUnique({
+      where: {
+        id: courseId,
+      },
+    });
+    if(!course)
+      throw new APIError("Invalid course id", 404)
+    const review = await prisma.review.findFirst({
+      where: {
+        id: reviewId,
+        courseId: courseId,
+      },
+    });
+    if (!review) throw new APIError("Invalid review Id", 404);
+    const resposnse : IResponse = {
+      status:"Success",
+      statusCode: 200,
+      data:{
+        review
+      }
+    }
+    return resposnse
   }
 }
 
