@@ -65,14 +65,14 @@ class ReviewService {
       },
     });
     if (!review) throw new APIError("Invalid review Id", 404);
-    const resposnse: IResponse = {
+    const response: IResponse = {
       status: "Success",
       statusCode: 200,
       data: {
         review,
       },
     };
-    return resposnse;
+    return response;
   }
   async getReviewsOnCourse(
     Payload: IGetReviewsOnCourseBody
