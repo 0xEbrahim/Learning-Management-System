@@ -35,7 +35,7 @@ function Author(){
                 <div className="course-img w-full mb-1 overflow-hidden"><Link to={`../../courses/course/${course.id}`}><img className="w-full h-[160px] object-cover rounded-t-md cursor-pointer" src={course.thumbnail}/></Link></div>
                 <div className="course-info flex items-center justify-between p-2">
                     <p className="lg:text-lg font-[500]">{course.name}</p>
-                    <p className="flex items-center gap-1 mb-2"><CiStar className="text-amber-400 text-lg"/><span className="block">{course.averageRatings}</span></p>
+                    <p className="flex items-center gap-1 mb-2"><CiStar className="text-amber-400 text-lg"/><span className="block">{course.averageRatings.toFixed(2)}</span></p>
                 </div>
                 <span className="text-indigo-600 block text-sm font-[600] p-2 mb-2">${course.price}</span>
             </div>

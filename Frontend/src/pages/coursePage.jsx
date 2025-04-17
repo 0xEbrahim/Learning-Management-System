@@ -56,9 +56,9 @@ function CoursePage(){
                     <button className="md:w-fit w-full cursor-pointer text-white text-md px-2 py-1 bg-indigo-600 hover:bg-indigo-700 rounded-md  flex items-center gap-1 justify-center"><IoIosLock/>Enroll Now</button>
                 </div>
                 </div>
-                <div className="layout grid xl:grid-cols-4 grid-cols-1 gap-2">
+                <div className="layout grid xl:grid-cols-4 grid-cols-1">
                     <div className="xl:col-span-3 col-span-1">
-                        <div className="video overflow-hidden rounded-xl mb-3">
+                        <div className="video overflow-hidden mb-3">
                             {/* add chosen video */}
                             <img className="w-full h-auto object-cover" src={course.thumbnail} alt="chosen video"/>
                         </div>
@@ -92,11 +92,11 @@ function CoursePage(){
                                 </NavLink>
                             </li>
                         </ul>
-                        <div className="bg-white p-4 rounded-lg border-1 border-gray-200">
+                        <div className="bg-white p-4 border-1 border-gray-200">
                             <Outlet/>
                         </div>
                     </div>
-                    <div className="col-span-1 bg-white p-2 rounded-xl h-fit">
+                    <div className="col-span-1 bg-white p-2 h-fit">
                         course content
                     </div>
                 </div>
