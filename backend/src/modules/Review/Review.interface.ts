@@ -15,3 +15,11 @@ export interface IGetReviewsOnCourseBody {
   courseId : string,
   query: object
 }
+
+export interface IUpdateReviewBody {
+  rating: any;
+  review: string;
+  reviewId: string
+  courseId: string;
+  userId: string;
+}

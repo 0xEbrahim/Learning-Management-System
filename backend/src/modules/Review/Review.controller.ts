@@ -5,6 +5,7 @@ import {
   ICreateReviewBody,
   IGetReviewByIdBody,
   IGetReviewsOnCourseBody,
+  IUpdateReviewBody,
 } from "./Review.interface";
 import ReviewService from "./Review.service";
 import sendResponse from "../../utils/sendResponse";
@@ -40,6 +41,22 @@ export const getReviewsOnCourse = asyncHandler(
       query: req.query,
     };
     const result = await ReviewService.getReviewsOnCourse(data);
+    sendResponse(result, res);
+  }
+);
+
+export const updateReview = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IUpdateReviewBody = {
+      courseId: req.params.courseId,
+      rating: Number.isNaN(parseFloat(req.body.rating))
+        ? undefined
+        : parseFloat(req.body.rating),
+      review: req.body.review,
+      reviewId: req.params.id,
+      userId: req.User?.id ?? "",
+    };
+    const result: IResponse = await ReviewService.updateReview(data);
     sendResponse(result, res);
   }
 );
