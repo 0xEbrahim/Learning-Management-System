@@ -152,7 +152,11 @@ class ReviewService {
         id: reviewId,
       },
     });
-    updateCourseRating(courseId);
+    try {
+      await updateCourseRating(courseId);
+    } catch (error: any) {
+      throw new APIError(error.message, 400);
+    }
     const response: IResponse = {
       status: "Success",
       message: "Review deleted successfully",
