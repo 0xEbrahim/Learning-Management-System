@@ -16,8 +16,11 @@ import {
   updateReviewValidation,
 } from "./Review.validation";
 import { validate } from "../../utils/validation";
+import { replyRouter } from "../Reply/Reply.routes";
 
 const router = express.Router({ mergeParams: true });
+
+router.use("/:id/replies", replyRouter);
 
 router.post(
   "/",
