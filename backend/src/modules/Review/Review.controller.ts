@@ -3,6 +3,7 @@ import { IRequest, IResponse } from "../../Interfaces/types";
 import asyncHandler from "../../utils/asyncHandler";
 import {
   ICreateReviewBody,
+  IDeleteReviewBody,
   IGetReviewByIdBody,
   IGetReviewsOnCourseBody,
   IUpdateReviewBody,
@@ -57,6 +58,18 @@ export const updateReview = asyncHandler(
       userId: req.User?.id ?? "",
     };
     const result: IResponse = await ReviewService.updateReview(data);
+    sendResponse(result, res);
+  }
+);
+
+export const deleteReview = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IDeleteReviewBody = {
+      courseId: req.params.courseId,
+      reviewId: req.params.id,
+      userId: req.User?.id ?? "",
+    };
+    const result: IResponse = await ReviewService.deleteReview(data);
     sendResponse(result, res);
   }
 );

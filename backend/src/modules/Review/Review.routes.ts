@@ -2,6 +2,7 @@ import express from "express";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import {
   createReview,
+  deleteReview,
   getReviewById,
   getReviewsOnCourse,
   updateReview,
@@ -9,6 +10,7 @@ import {
 import isBuyer from "../../middlewares/isBuyer";
 import {
   createReviewValidation,
+  deleteReviewValidation,
   getReviewByIdValidation,
   getReviewsOnCourseValidation,
   updateReviewValidation,
@@ -35,6 +37,12 @@ router.get(
   isAuthenticated,
   validate(getReviewByIdValidation),
   getReviewById
+);
+router.delete(
+  "/:id",
+  isAuthenticated,
+  validate(deleteReviewValidation),
+  deleteReview
 );
 router.patch(
   "/:id",

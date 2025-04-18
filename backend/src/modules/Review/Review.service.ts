@@ -8,6 +8,7 @@ import {
 import { searchFilterOptions } from "../../utils/options";
 import {
   ICreateReviewBody,
+  IDeleteReviewBody,
   IGetReviewByIdBody,
   IGetReviewsOnCourseBody,
   IUpdateReviewBody,
@@ -132,6 +133,32 @@ class ReviewService {
       throw new APIError(error.message, 400);
     }
     return response;
+  }
+
+  async deleteReview(Payload: IDeleteReviewBody): Promise<IResponse> {
+    const { courseId, reviewId, userId } = Payload;
+    if (!(await CourseExists(courseId)))
+      throw new APIError("Course id did not match any course", 404);
+    const review = await prisma.review.findFirst({
+      where: {
+        userId: userId,
+        id: reviewId,
+        courseId: courseId,
+      },
+    });
+    if (!review) throw new APIError("Invalid review id", 404);
+    await prisma.review.delete({
+      where: {
+        id: reviewId,
+      },
+    });
+    updateCourseRating(courseId);
+    const response: IResponse = {
+      status: "Success",
+      message: "Review deleted successfully",
+      statusCode: 200,
+    };
+    return response
   }
 }
 

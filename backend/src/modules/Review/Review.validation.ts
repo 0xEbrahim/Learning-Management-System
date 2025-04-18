@@ -32,3 +32,10 @@ export const getReviewsOnCourseValidation = z.object({
     courseId: z.string(),
   }),
 });
+
+export const deleteReviewValidation = z.object({
+  params: z.object({
+    courseId: z.string(),
+    id: z.string(),
+  }),
+});

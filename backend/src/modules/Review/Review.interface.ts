@@ -5,21 +5,26 @@ export interface ICreateReviewBody {
   userId: string;
 }
 
-
 export interface IGetReviewByIdBody {
-  courseId: string
-  reviewId: string
+  courseId: string;
+  reviewId: string;
 }
 
 export interface IGetReviewsOnCourseBody {
-  courseId : string,
-  query: object
+  courseId: string;
+  query: object;
 }
 
 export interface IUpdateReviewBody {
   rating: any;
   review: string;
-  reviewId: string
+  reviewId: string;
+  courseId: string;
+  userId: string;
+}
+
+export interface IDeleteReviewBody {
+  reviewId: string;
   courseId: string;
   userId: string;
 }
