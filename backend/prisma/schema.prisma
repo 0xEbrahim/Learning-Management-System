@@ -39,7 +39,6 @@ model User {
   publishedCourses                Course[]             @relation("Publish")
   userCourseProgress              UserCourseProgress[] @relation("UserProgress")
   userVideoProgress               UserVideoProgress[]  @relation("UserVideoProgress")
-  notificationsSent               Notification[]       @relation("sent")
   notifications                   Notification[]       @relation("recieved")
 
   @@index([email])
@@ -225,12 +224,10 @@ model Email {
 
 model Notification {
   id         String   @id @default(uuid())
-  senderId   String
   recieverId String
   text       String
-  createdAt  DateTime
-  opened     Boolean
-  sender     User     @relation("sent", fields: [senderId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  opened     Boolean  @default(false)
   reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
 }
 
