@@ -27,3 +27,9 @@ export interface IToken extends JwtPayload {
   loggedIn?: boolean;
   iat: number;
 }
+
+export interface IAddReviewNotificanData {
+  authorId: string
+  reviewId: string
+  courseName: string
+}

@@ -25,13 +25,14 @@ import { orderRouter } from "./modules/Order/Order.routes";
 import redis from "./config/redis";
 import { reviewRouter } from "./modules/Review/Review.routes";
 import { replyRouter } from "./modules/Reply/Reply.routes";
+import connectSocket from "./Sockets/connect.socket";
 dotenv.config();
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
   cors: { origin: "*", methods: ["GET", "POST"] },
 });
-initSocket(io);
+connectSocket(io);
 const swaggerDoc = YAML.load(path.join(__dirname, "./swagger/swagger.yaml"));
 app.use("/api/v1/api-docs", SwaggerUI.serve, SwaggerUI.setup(swaggerDoc));
 const limiter = rateLimit({
