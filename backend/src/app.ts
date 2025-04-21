@@ -26,6 +26,7 @@ import redis from "./config/redis";
 import { reviewRouter } from "./modules/Review/Review.routes";
 import { replyRouter } from "./modules/Reply/Reply.routes";
 import connectSocket from "./Sockets/connect.socket";
+import prisma from "./config/prisma";
 dotenv.config();
 const app = express();
 const server = createServer(app);
