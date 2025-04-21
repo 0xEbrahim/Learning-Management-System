@@ -1,10 +1,21 @@
 import Loading from "../components/loading";
 import { useState , useEffect } from "react";
+import { useSelector } from "react-redux";
 import { FaPlus } from "react-icons/fa";
 import { CiStar } from "react-icons/ci";
 import api from "../axiosInstance";
 import { useParams } from "react-router-dom";
 import Swal from 'sweetalert2'
+import { initFlowbite } from "flowbite";
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "../components/ui/dialog"
 
 function Reviews(){
     const [addReview,setAddReview]=useState(false);
@@ -13,15 +24,15 @@ function Reviews(){
     const [hover, setHover] = useState(0);     // Selected rating  
     const {courseId}=useParams();
     const [reviews,setReviews] = useState([]);
-    const [reviewerId,setReviewerId]=useState();
+    const userId=useSelector((state)=>state.user.userData.id);
     const [reviewDate,setReviewDate]=useState("");
-    useEffect(()=>{
 
+    useEffect(()=>{
         const getReview=async()=>{
             try{
                 const res=await api.get(`courses/${courseId}/reviews`);
                 setReviews(res.data.data.reviews);
-                setReviewerId(res.data.data.userId);
+
             }catch(error){
                 console.log(error)
             }
@@ -61,12 +72,16 @@ function Reviews(){
 
     }
 
-    const reviewsList=reviews.map((review)=>{
+    const reviewsList=reviews.map((review,index)=>{
         return(
             <div className="review-box p-4 max-w-[600px] mb-3 border-b-1 border-gray-200" key={review.id}>
                 <div className="review-info flex justify-between items-center">
-                    <ReviewerData reviewerId={review.userId} reviewDate={review.createdAt.slice(0,10)}/>
-                    <div className="rating flex items-center gap-1"><CiStar className="text-yellow-400"/><span className="block text-sm">{review.rating}</span></div>
+                    <ReviewerData reviewerId={review.userId} userId={userId} reviewDate={review.createdAt.slice(0,10)} id={index}/>
+                    <div className="flex items-center gap-2">
+                    <div className="rating flex items-center gap-1"><CiStar className="text-yellow-400"/><span className="block text-[14px] font-[500]">{review.rating}</span></div>
+                   
+                    </div>
+                    
                 </div>
                 
                 <p className="review text-md text-gray-600 mb-5 mt-3">
@@ -139,11 +154,14 @@ function Reviews(){
 }
 
 
-function ReviewerData({reviewerId , reviewDate}){
+function ReviewerData({reviewerId , userId , reviewDate , id}){
     const [avatar,setAvatar]=useState();
     const [userName,setUserName]=useState("");
-    const currentDate=new Date;
-    
+
+    useEffect(() => {
+        initFlowbite();
+      }, []);
+      
     useEffect(()=>{
         const getReviewerData=async()=>{
             try{
@@ -161,10 +179,53 @@ function ReviewerData({reviewerId , reviewDate}){
         <div className="flex items-center gap-2">
             <img src={avatar} alt="userAvatar" className="rounded-full w-8 h-8 object-cover"/>
             <div>
-                <p className="font-bold">{userName}</p>
-                <p className="text-gray-500 text-sm">{reviewDate}</p>
+                <div className="flex items-center gap-2">
+                    <p className="font-bold text-sm">{userName}</p>
+                    {userId === reviewerId ? <EditReviewDropDown id={id}/>:null}
+                </div>
+                <p className="text-gray-500 text-[12px]">{reviewDate}</p>
             </div>
         </div>
     )
 }
+
+
+
+function EditReviewDropDown({id}){
+
+
+    return(
+        <div>
+            <button id={`dropdownMenuIconButton-${id+1}`} data-dropdown-toggle={`dropdownDots-${id+1}`} className="cursor-pointer inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 " type="button">
+            <svg className="w-2.5 h-2.5 cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 4 15">
+            <path d="M3.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 6.041a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Zm0 5.959a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/>
+            </svg>
+            </button>
+            
+            <div id={`dropdownDots-${id+1}`} className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 ">
+                <ul className="py-2 text-sm text-gray-700" aria-labelledby="dropdownMenuIconButton">
+                <li className="cursor-pointer">
+                <Dialog>
+                <DialogTrigger>Update</DialogTrigger>
+                <DialogContent>
+                    <DialogHeader>
+                    <DialogTitle>Update your Review</DialogTitle>
+                    <DialogDescription>
+                        <form>
+                            <input className="w-full outline-none" type="text" placeholder="good"/>
+                        </form>
+                    </DialogDescription>
+                    </DialogHeader>
+                </DialogContent>
+                </Dialog>
+                </li>
+                <li>
+                    <button  className="px-4 py-2 hover:bg-gray-50 w-full flex flex-star cursor-pointer text-red-600">Delete</button>
+                </li>
+                </ul>
+            </div>
+        </div>
+    )
+}
+
 export default Reviews;
