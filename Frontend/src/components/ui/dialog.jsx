@@ -1,8 +1,13 @@
 import * as React from "react"
 import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { XIcon } from "lucide-react"
-
+import { useState , useEffect } from "react"
+import api from "../../axiosInstance"
+import { useParams } from "react-router-dom"
 import { cn } from "../../lib/utils"
+import { CiStar } from "react-icons/ci"
+import Swal from "sweetalert2"
+import Loading from "../loading"
 
 function Dialog({
   ...props
@@ -108,13 +113,88 @@ function DialogTitle({
 
 function DialogDescription({
   className,
-  ...props
+  reviewId
 }) {
+  const {courseId}=useParams();
+  const [rating,setRating]=useState("");
+  const[review,setReview]=useState("");
+  const [hover,setHover]=useState();
+
+  useEffect(()=>{
+
+    const getReviewById=async()=>{
+      try{
+        const res=await api.get(`courses/${courseId}/reviews/${reviewId}`);
+        setRating(res.data.data.review.rating);
+        setReview(res.data.data.review.review);
+      }catch(error){
+        return;
+      }
+    }
+
+    getReviewById();
+  },[])
+  
+  const handleReviewChange=(value)=>{
+    setReview(value);
+  }
+  
+  const updateReview=async()=>{
+
+    try{
+      const res= await api.patch(`courses/${courseId}/reviews/${reviewId}`,{
+        rating:rating,
+        review:review
+      });
+
+      if(res.status === 200){
+        Swal.fire({
+          title: "review has been updated successfully",
+          icon: "success",
+        }).then(()=>{
+          window.location.reload();
+        });
+      }
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   return (
-    <DialogPrimitive.Description
-      data-slot="dialog-description"
-      className={cn("text-muted-foreground text-sm", className)}
-      {...props} />
+      <>
+        {!rating ? <Loading/> :<>
+                                    <DialogPrimitive.Description
+                                    data-slot="dialog-description"
+                                    className={cn("text-muted-foreground text-sm", className)}
+                                    />
+                                <p className="text-gray-600 text-start">score:</p>
+                                <div className="rating flex items-center mb-3 text-start">
+                                {[...Array(5)].map((_, index) => {
+                                    const value = index + 1;
+                                    return (
+                                        <button
+                                          key={value}
+                                          onClick={() => setRating(value)}
+                                          onMouseEnter={() => setHover(value)}
+                                          onMouseLeave={() => setHover(0)}
+                                          className="focus:outline-none"
+                                        >
+                                          <CiStar
+                                            className={`text-3xl transition-colors ${
+                                              value <= (hover || rating) ? 'text-yellow-400' : 'text-gray-300'
+                                            }`}
+                                          />
+                                        </button>
+                                      );
+                                })}
+                                </div>
+                                <form onSubmit={(e)=>{e.preventDefault()}} className="text-start">
+                                    <label className="block text-gray-600 mb-1">review:</label>
+                                    <input value={review} className="outline-none caret-indigo-600 mb-4" onChange={(e)=>{handleReviewChange(e.target.value)}} />
+                                    <button onClick={()=>{updateReview()}} className=" text-center block w-full text-white bg-indigo-600 rounded-sm px-1.5 py-1 text-sm font-[500] cursor-pointer">Update</button>
+                                </form>
+                              </> }
+      </>
   );
 }
 

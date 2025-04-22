@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState , useEffect } from "react";
+import { useState , useEffect, useLayoutEffect } from "react";
 import api from "../axiosInstance";
 import Loading from "../components/loading";
 import { FiShoppingBag } from "react-icons/fi";
@@ -13,13 +13,16 @@ import { Outlet } from "react-router-dom";
 import styles from "./coursePage.module.css";
 import { useDispatch } from "react-redux";
 import { setAuthorId } from "../rtk/slices/courseAuthorID";
+import { useSelector } from "react-redux";
 
 function CoursePage(){
     const dispatch=useDispatch();
     const {courseId}=useParams();
     const [ course , setCourse ]=useState({});
     const [ loading , setLoading]=useState(true);
-
+    
+    //re-render when refresh
+    const userData=useSelector((state)=>state.user.userData);
     useEffect(()=>{
         const getCourseData=async()=>{
             try{
@@ -33,7 +36,7 @@ function CoursePage(){
             }
         }
         getCourseData();
-    },[courseId])
+    },[courseId , userData])
 
     return(
         <div>
