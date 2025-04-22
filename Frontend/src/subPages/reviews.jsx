@@ -192,7 +192,23 @@ function ReviewerData({reviewerId , userId , reviewDate , id , reviewId}){
 
 
 function EditReviewDropDown({id , reviewId}){
+    const {courseId}=useParams();
 
+    const deleteReview=async()=>{
+        try{
+            const res=await api.delete(`courses/${courseId}/reviews/${reviewId}`);
+            if(res.status === 200){
+                Swal.fire({
+                  title: "review has been deleted successfully",
+                  icon: "success",
+                }).then(()=>{
+                  window.location.reload();
+                });
+              }
+        }catch(error){
+            return;
+        }
+    }
 
     return(
         <div>
@@ -217,7 +233,7 @@ function EditReviewDropDown({id , reviewId}){
                 </Dialog>
                 </li>
                 <li>
-                    <button  className="px-4 py-2 hover:bg-gray-50 w-full flex flex-star cursor-pointer text-red-600">Delete</button>
+                    <button onClick={()=>{deleteReview()}} className="px-4 py-2 hover:bg-gray-50 w-full flex flex-star cursor-pointer text-red-600">Delete</button>
                 </li>
                 </ul>
             </div>
