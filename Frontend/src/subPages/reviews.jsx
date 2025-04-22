@@ -24,7 +24,7 @@ function Reviews(){
     const [hover, setHover] = useState(0);     // Selected rating  
     const {courseId}=useParams();
     const [reviews,setReviews] = useState([]);
-    const userId=useSelector((state)=>state.user.userData.id);
+    const userId=useSelector((state)=>state.user?.userData?.id);
     const [reviewDate,setReviewDate]=useState("");
 
     useEffect(()=>{
@@ -40,7 +40,7 @@ function Reviews(){
 
         getReview();
 
-    },[]);
+    },[userId]);
 
     const handleReviewChange=(value)=>{
         setReview(value);
@@ -76,7 +76,7 @@ function Reviews(){
         return(
             <div className="review-box p-4 max-w-[600px] mb-3 border-b-1 border-gray-200" key={review.id}>
                 <div className="review-info flex justify-between items-center">
-                    <ReviewerData reviewerId={review.userId} userId={userId} reviewDate={review.createdAt.slice(0,10)} id={index}/>
+                    <ReviewerData reviewerId={review.userId} userId={userId} reviewDate={review.createdAt.slice(0,10)} id={index} reviewId={review.id}/>
                     <div className="flex items-center gap-2">
                     <div className="rating flex items-center gap-1"><CiStar className="text-yellow-400"/><span className="block text-[14px] font-[500]">{review.rating}</span></div>
                    
@@ -154,7 +154,7 @@ function Reviews(){
 }
 
 
-function ReviewerData({reviewerId , userId , reviewDate , id}){
+function ReviewerData({reviewerId , userId , reviewDate , id , reviewId}){
     const [avatar,setAvatar]=useState();
     const [userName,setUserName]=useState("");
 
@@ -181,7 +181,7 @@ function ReviewerData({reviewerId , userId , reviewDate , id}){
             <div>
                 <div className="flex items-center gap-2">
                     <p className="font-bold text-sm">{userName}</p>
-                    {userId === reviewerId ? <EditReviewDropDown id={id}/>:null}
+                    {userId === reviewerId ? <EditReviewDropDown id={id} reviewId={reviewId}/>:null}
                 </div>
                 <p className="text-gray-500 text-[12px]">{reviewDate}</p>
             </div>
@@ -191,7 +191,7 @@ function ReviewerData({reviewerId , userId , reviewDate , id}){
 
 
 
-function EditReviewDropDown({id}){
+function EditReviewDropDown({id , reviewId}){
 
 
     return(
@@ -210,10 +210,7 @@ function EditReviewDropDown({id}){
                 <DialogContent>
                     <DialogHeader>
                     <DialogTitle>Update your Review</DialogTitle>
-                    <DialogDescription>
-                        <form>
-                            <input className="w-full outline-none" type="text" placeholder="good"/>
-                        </form>
+                    <DialogDescription reviewId={reviewId}>
                     </DialogDescription>
                     </DialogHeader>
                 </DialogContent>
