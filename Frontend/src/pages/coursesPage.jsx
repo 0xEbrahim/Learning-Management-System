@@ -143,7 +143,7 @@ function CoursesPage(){
                         </ul>
                     </div>
                     {loading?<>
-                        <Loading/>
+                        <Loading fullWidth={65} loadingWidth={17} topMargin={30}/>
                             </>:
                             <>
                             <div className="mt-6 grid 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1  gap-3">

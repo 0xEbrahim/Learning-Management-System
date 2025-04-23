@@ -162,7 +162,7 @@ function DialogDescription({
 
   return (
       <>
-        {!rating ? <Loading/> :<>
+        {!rating ? <Loading fullWidth={65} loadingWidth={12} topMargin={0}/> :<>
                                     <DialogPrimitive.Description
                                     data-slot="dialog-description"
                                     className={cn("text-muted-foreground text-sm", className)}
