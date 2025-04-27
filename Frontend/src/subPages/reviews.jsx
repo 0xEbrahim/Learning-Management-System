@@ -7,6 +7,8 @@ import api from "../axiosInstance";
 import { useParams } from "react-router-dom";
 import Swal from 'sweetalert2'
 import { initFlowbite } from "flowbite";
+import { io } from "socket.io-client";
+import { socket } from "../pages/homePage";
 
 import {
     Dialog,
@@ -17,12 +19,15 @@ import {
     DialogTrigger,
   } from "../components/ui/dialog"
 
+
 function Reviews(){
     const [addReview,setAddReview]=useState(false);
     const [review,setReview]=useState("");
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);     // Selected rating  
     const {courseId}=useParams();
+    const [courseName,setCourseName]=useState("");
+    const [authorId,setAuthorId]=useState("");
     const [reviews,setReviews] = useState([]);
     const userId=useSelector((state)=>state.user?.userData?.id);
     const [reviewDate,setReviewDate]=useState("");
@@ -42,6 +47,19 @@ function Reviews(){
 
     },[userId]);
 
+    useEffect(()=>{
+        const getCourseData=async()=>{
+           const res=await api.get(`courses/${courseId}`);
+            setCourseName(res.data.data.course.name);
+            setAuthorId(res.data.data.publisherId);
+        }
+
+        if(courseId){
+            getCourseData();
+        }
+        
+    },[courseId])
+
     const handleReviewChange=(value)=>{
         setReview(value);
     }
@@ -53,14 +71,23 @@ function Reviews(){
                 review:review,
                 rating:rating
             })
-
+            console.log(res);
             if(res.status === 201 || res.status === 200){
                 setAddReview(false);
                 Swal.fire({
                     title: "review posted successfully",
                     icon: "success",
+                  }).then(()=>{
+                    socket.emit("addReviewNotification",{
+                        authorId:authorId,
+                        courseName:courseName,
+                        reviewId:res.data.data.review.id
+                    })
                   });
+
+                 
             }
+
 
        }catch(error){
 
