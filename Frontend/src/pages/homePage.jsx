@@ -4,11 +4,12 @@ import AppNavBar from "../components/appnavbar";
 import SideBar from "../components/sidebar";
 import { initFlowbite } from "flowbite";
 import "./homePage.css";
-// import { refreshAccessToken } from "../rtk/slices/authSlice";
 import { Outlet , useNavigate } from "react-router";
 import api from "../axiosInstance";
 import { storeUserData } from "../rtk/slices/userSlice";
-// import { getUserDataById } from "../rtk/slices/userSlice";
+import { io } from "socket.io-client";
+export const socket = io.connect("http://localhost:3000");
+
 function HomePage() {
   const accessToken = useSelector((state) => state.auth.token);
   const userId = useSelector((state) => state.auth.userId);
@@ -19,12 +20,21 @@ function HomePage() {
     initFlowbite();
   }, []);
 
+  useEffect(()=>{
+    socket.on("notificationSent",(data)=>{
+        const { notification , reviewId } = data;
+        console.log(notification.text);
+    })
+  },[socket]);
+
   useLayoutEffect(()=>{
     const getUserDataById=async()=>{
       try{
         const response = await api.get(`/users/${userId}`);
-        // console.log(response.data.data.user);
         dispatch(storeUserData(response.data.data.user));
+        //initailize socket notifications
+        socket.emit("init",{ currentAuthenticatedUserId:userId});
+
       }catch(error){
         // console.log(error.message);
         return;
