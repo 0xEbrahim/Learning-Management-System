@@ -7,6 +7,7 @@ function AppNavBar(){
   const userName=useSelector((state)=>state.user.userData?.name);
   const userEmail=useSelector((state)=>state.user.userData?.email);
   const userAvatar=useSelector((state)=>state.user.userData?.avatar||"../../assets/images/unknown.jpg");
+  const notifications=useSelector((state)=>state.notifications);
   const dispatch=useDispatch();
   const accessToken=useSelector((state)=>state.auth.token);
   
@@ -28,7 +29,7 @@ function AppNavBar(){
           <div className="flex items-center">
               <div className="flex items-center ms-3">
                 <div className="flex items-center gap-6">
-                <button type="button" className="cursor-pointer relative inline-flex items-center p-2 rounded-full text-sm text-center text-black hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100">
+                <Link to="/homePage" className="cursor-pointer relative inline-flex items-center p-2 rounded-full text-sm text-center text-black hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-7 w-7"
@@ -43,8 +44,8 @@ function AppNavBar(){
                   </svg>
                   <span className="sr-only">Notifications</span>
                   {/* add number of notifications */}
-                    <div className="absolute inline-flex items-center justify-center w-3.5 h-3.5 text-sm font-bold text-white bg-indigo-600 border-2 border-white rounded-full -top-[-4px] -end-[-4px]"></div>
-                  </button>
+                  {notifications.unreadNotifications ? <div className="absolute flex items-center justify-center w-5 h-5 text-white bg-indigo-600 border-2 border-white rounded-full -top-[0px] -end-[2px]"><div className="text-[11px] font-[600]">{notifications.unreadNotifications}</div></div> : null}
+                  </Link>
                   <button type="button" className="cursor-pointer flex text-sm rounded-full" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span className="sr-only">Open user menu</span>
                     <img className="w-12 h-12 rounded-full object-cover" src={userAvatar} alt="user photo"/>

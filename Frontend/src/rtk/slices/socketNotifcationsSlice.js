@@ -16,6 +16,8 @@ const notificationsSlice=createSlice({
                 ...action.payload,
                 read:false
             })
+
+            state.unreadNotifications+=1;
         },
 
         //make notification as read reducer
