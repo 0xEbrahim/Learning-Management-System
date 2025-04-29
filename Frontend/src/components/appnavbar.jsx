@@ -29,7 +29,7 @@ function AppNavBar(){
           <div className="flex items-center">
               <div className="flex items-center ms-3">
                 <div className="flex items-center gap-6">
-                <Link to="/homePage" className="cursor-pointer relative inline-flex items-center p-2 rounded-full text-sm text-center text-black hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100">
+                <Link to="notifications" className="cursor-pointer relative inline-flex items-center p-2 rounded-full text-sm text-center text-black hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-7 w-7"
