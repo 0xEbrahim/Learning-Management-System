@@ -12,26 +12,26 @@ const notificationsSlice=createSlice({
         addNotification: ( state , action )=>{
             state.messages.push({
                 //action returns Notification reviewText && reviewId
-                id:Date.now(),
                 ...action.payload,
-                read:false
             })
 
             state.unreadNotifications+=1;
         },
 
         //make notification as read reducer
-        makeAsRead:( state , action )=>{
-            const notification=state.messages.find((n)=>n.id === action.payload.id)
+        markAsRead:( state , action )=>{
+            const notification=state.messages.find((n)=>n.notification.id === action.payload)
             if(notification){
-                notification.read=true;
-                state.unreadNotifications-=1;
+                notification.notification.opened=true;
+                if( state.unreadNotifications !== 0){
+                    state.unreadNotifications-=1;
+                }
             }
         },
 
         removeNotification:( state , action )=>{
                 //remove this notification
-                state.messages.filter((n)=>n.id !== action.payload.id);
+                state.messages.filter((n)=>n.notification.id !== action.payload.notification.id);
                 state.unreadNotifications-=1;
 
         },
