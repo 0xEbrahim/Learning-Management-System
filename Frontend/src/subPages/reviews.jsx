@@ -9,7 +9,8 @@ import Swal from 'sweetalert2'
 import { initFlowbite } from "flowbite";
 import { io } from "socket.io-client";
 import { socket } from "../pages/homePage";
-
+import { useLocation } from "react-router-dom";
+import { useRef } from "react";
 import {
     Dialog,
     DialogContent,
@@ -21,20 +22,20 @@ import {
 
 
 function Reviews(){
+    const location = useLocation();
     const [addReview,setAddReview]=useState(false);
     const [review,setReview]=useState("");
     const [rating, setRating] = useState(0);
     const [hover, setHover] = useState(0);     // Selected rating  
     const {courseId}=useParams();
-    // const [courseName,setCourseName]=useState("");
-    // const [authorId,setAuthorId]=useState("");
     const [reviews,setReviews] = useState([]);
     const userId=useSelector((state)=>state.user?.userData?.id);
     const [reviewDate,setReviewDate]=useState("");
     const [reviewId,setReviewId]=useState("");
+    const reviewRefs = useRef({});
 
     useEffect(()=>{
-        const getReview=async()=>{
+        const getReviews=async()=>{
             try{
                 const res=await api.get(`courses/${courseId}/reviews`);
                 setReviews(res.data.data.reviews);
@@ -44,10 +45,29 @@ function Reviews(){
             }
         }
 
-        getReview();
+        getReviews();
 
-    },[userId]);
 
+
+    },[ userId ]);
+
+    useEffect(()=>{
+        setReviewId(location.state?.scrollToReview)
+        if(reviewId && reviewRefs.current[reviewId]){
+            reviewRefs.current[reviewId].scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+              });
+
+              reviewRefs.current[reviewId].classList.add('bg-indigo-100/30');
+              reviewRefs.current[reviewId].classList.add('shadow-sm');
+              setTimeout(() => {
+                reviewRefs.current[reviewId].classList.remove('bg-indigo-100/30');
+                reviewRefs.current[reviewId].classList.remove('shadow-sm');
+              }, 3000);
+        }
+
+    },[ reviews , location.state ])
 
     const handleReviewChange=(value)=>{
         setReview(value);
@@ -67,9 +87,10 @@ function Reviews(){
                     socket.emit("addReviewNotification",{
                         authorId:response.data.data.course.publisherId,
                         courseName:response.data.data.course.name,
+                        courseId:courseId,
                         reviewId:res.data.data.review.id
                     })
-                    console.log(response.data.data.course.name,response.data.data.course.publisherId,res.data.data.review.id);
+
                  }
 
                 getCourseData();
@@ -96,7 +117,7 @@ function Reviews(){
 
     const reviewsList=reviews.map((review,index)=>{
         return(
-            <div className="review-box p-4 max-w-[600px] mb-3 border-b-1 border-gray-200" key={review.id}>
+            <div className="review-box p-4 max-w-[600px] mb-3 border-b-1 border-gray-200" key={review.id} ref={ (el) => reviewRefs.current[review.id] = el}>
                 <div className="review-info flex justify-between items-center">
                     <ReviewerData reviewerId={review.userId} userId={userId} reviewDate={review.createdAt.slice(0,10)} id={index} reviewId={review.id}/>
                     <div className="flex items-center gap-2">
