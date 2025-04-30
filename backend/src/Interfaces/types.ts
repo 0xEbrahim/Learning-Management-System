@@ -29,7 +29,8 @@ export interface IToken extends JwtPayload {
 }
 
 export interface IAddReviewNotificationData {
-  authorId: string
-  reviewId: string
-  courseName: string
+  authorId: string;
+  reviewId: string;
+  courseName: string;
+  courseId: string;
 }

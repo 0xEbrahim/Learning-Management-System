@@ -8,15 +8,16 @@ export default (
   socket.on(
     "addReviewNotification",
     async (data: IAddReviewNotificationData) => {
-      const { authorId, courseName, reviewId } = data;
+      const { authorId, courseName, reviewId, courseId } = data;
       const text = `You have a new Review at ${courseName} course`;
+      console.log("Author: ", data);
       const notification = await prisma.notification.create({
         data: {
           recieverId: authorId,
           text: text,
         },
       });
-      socket.to(authorId).emit("notificationSent", { notification, reviewId });
+      socket.to(authorId).emit("notificationSent", { notification, reviewId, courseId });
     }
   );
 };
