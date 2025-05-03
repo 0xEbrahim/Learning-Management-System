@@ -27,7 +27,7 @@ export const CourseExists = async (courseId: string) => {
 export const isCourseAuthor = async (
   courseId: string,
   userId: string
-): Promise<Boolean> => {
+): Promise<boolean> => {
   const course = await CourseExists(courseId);
   if (!course) throw new APIError("Invalid course ID", 404);
   if (course.publisherId.toString() === userId.toString()) return true;
