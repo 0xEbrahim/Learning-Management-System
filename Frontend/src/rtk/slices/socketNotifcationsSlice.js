@@ -1,4 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../../axiosInstance";
+
+
+export const getNotifications=createAsyncThunk('notifications/fetchNotifications', async ()=>{
+    const res=await api.get(`notifications`);
+    return res.data?.data?.notification;
+})
 
 const notificationsSlice=createSlice({
     name:"notificationsSlice",
@@ -40,6 +48,12 @@ const notificationsSlice=createSlice({
             state.messages=[];
             state.unreadNotifications=0;
         }
+    },
+
+    extraReducers:(builder)=>{
+        builder.addCase(getNotifications.fulfilled, ( state , action )=>{
+            state.messages.push(action.payload);
+        })
     }
 })
 
@@ -47,7 +61,7 @@ export const {
     addNotification, 
     markAsRead, 
     removeNotification, 
-    clearAll 
+    clearAll,
   } = notificationsSlice.actions;
 
   export default notificationsSlice.reducer;
