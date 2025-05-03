@@ -1,6 +1,6 @@
 import { DefaultEventsMap, Socket } from "socket.io";
-import prisma from "../config/prisma";
 import { IAddReviewNotificationData } from "../Interfaces/types";
+import NotificationsService from "../modules/Notification/Notifications.service";
 
 export default (
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
@@ -8,15 +8,8 @@ export default (
   socket.on(
     "addReviewNotification",
     async (data: IAddReviewNotificationData) => {
-      const { authorId, courseName, reviewId, courseId } = data;
-      const text = `You have a new Review at ${courseName} course`;
-      console.log("Author: ", data);
-      const notification = await prisma.notification.create({
-        data: {
-          recieverId: authorId,
-          text: text,
-        },
-      });
+      const { authorId, reviewId, courseId } = data;
+      const notification = await NotificationsService.createNotification(data)
       socket.to(authorId).emit("notificationSent", { notification, reviewId, courseId });
     }
   );

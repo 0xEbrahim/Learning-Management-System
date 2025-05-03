@@ -33,4 +33,5 @@ export interface IAddReviewNotificationData {
   reviewId: string;
   courseName: string;
   courseId: string;
+  
 }

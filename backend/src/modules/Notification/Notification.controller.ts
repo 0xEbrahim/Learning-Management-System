@@ -13,3 +13,4 @@ export const getNotifications = asyncHandler(
     res.json(notifications);
   }
 );
+

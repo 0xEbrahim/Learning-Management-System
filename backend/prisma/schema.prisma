@@ -56,6 +56,8 @@ model Review {
   author    User          @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
   course    Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
   Replies   ReviewReply[]
+
+  Notification Notification[]
 }
 
 model ReviewReply {
@@ -149,6 +151,8 @@ model Course {
   reviews        Review[]
   courseData     Video[]
   buyers         Order[]
+
+  Notification Notification[]
 }
 
 model UserCourseProgress {
@@ -225,9 +229,13 @@ model Email {
 model Notification {
   id         String   @id @default(uuid())
   recieverId String
+  courseId  String
+  reviewId String
   text       String
   createdAt  DateTime @default(now())
   opened     Boolean  @default(false)
+  course  Course @relation(fields: [courseId], references: [id])
+  review  Review @relation(fields: [reviewId], references: [id])
   reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
 }
 
