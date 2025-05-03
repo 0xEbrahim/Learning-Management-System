@@ -31,7 +31,7 @@ import { videoRouter } from "./modules/Video/Video.routes";
 import { orderRouter } from "./modules/Order/Order.routes";
 import { reviewRouter } from "./modules/Review/Review.routes";
 import { replyRouter } from "./modules/Reply/Reply.routes";
-import { sectionRouter } from "./modules/Section/Section.routes";
+import { sectionRouter } from "./modules/Sections/Section.routes";
 import { notificationRouter } from "./modules/Notification/Notifications.routes";
 
 dotenv.config();
@@ -46,8 +46,11 @@ const io = new Server(server, {
 connectSocket(io);
 
 // Swagger setup
-const swaggerDoc = YAML.load(path.join(__dirname, "./swagger/swagger.yaml"));
-app.use("/api/v1/api-docs", SwaggerUI.serve, SwaggerUI.setup(swaggerDoc));
+import swaggerUi from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
+import { swaggerOptions } from "./config/swagger";
+const swaggerSpec = swaggerJsDoc(swaggerOptions);
+app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Rate Limiting
 const limiter = rateLimit({
@@ -64,26 +67,31 @@ app.use(ExpressMongoSanitize());
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({
-  origin: config.NODE_ENV === "development"
-    ? "http://localhost:5173"
-    : "https://learning-management-system-frontend-5rpd.onrender.com",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin:
+      config.NODE_ENV === "development"
+        ? "http://localhost:5173"
+        : "https://learning-management-system-frontend-5rpd.onrender.com",
+    credentials: true,
+  })
+);
 app.use(limiter);
 app.use(morgan(config.NODE_ENV === "development" ? "dev" : "combined"));
 app.use(helmet());
 
 // Session & Passport
-app.use(session({
-  secret: config.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: config.NODE_ENV === "production",
-    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-  },
-}));
+app.use(
+  session({
+    secret: config.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: config.NODE_ENV === "production",
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    },
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
