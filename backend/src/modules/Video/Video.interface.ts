@@ -4,6 +4,7 @@ export interface uploadVideoBody {
   videoThumbnail: string;
   videoLength: number;
   courseId: string;
+  sectionId: string;
 }
 
 export interface VideoByIdBody {

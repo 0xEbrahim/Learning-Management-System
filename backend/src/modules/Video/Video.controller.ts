@@ -32,6 +32,7 @@ export const uploadVideo = asyncHandler(
       videoThumbnail: videoThumbnail[0].path,
       courseId: req.params.courseId,
       video: video[0].path,
+      sectionId: req.body.sectionId,
     };
     const result: IResponse = await VideoService.uploadVideo(data);
     sendResponse(result, res);
@@ -112,7 +113,7 @@ export const getVideosOnCourse = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
     const data: IGetVideosOnCourseBody = {
       courseId: req.params.courseId,
-      userId: req.User?.id as string
+      userId: req.User?.id as string,
     };
     const result: IResponse = await VideoService.getVideosOnCourse(data);
     sendResponse(result, res);

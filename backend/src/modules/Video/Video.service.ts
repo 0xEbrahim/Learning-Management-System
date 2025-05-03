@@ -15,7 +15,8 @@ import { cleanVideoData } from "../../utils/Functions/functions";
 
 class VideoService {
   async uploadVideo(Payload: uploadVideoBody): Promise<IResponse> {
-    const { video, videoLength, videoThumbnail, title, courseId } = Payload;
+    const { video, videoLength, videoThumbnail, title, courseId, sectionId } =
+      Payload;
     let videoThumbnailUpload: any = await cloudinary.uploader.upload(
       videoThumbnail,
       {
@@ -51,6 +52,7 @@ class VideoService {
         videoThumbnail: videoThumbnailUpload,
         videoUrl: videoUpload,
         courseId: courseId,
+        sectionId: sectionId,
       },
     });
     const response: IResponse = {
