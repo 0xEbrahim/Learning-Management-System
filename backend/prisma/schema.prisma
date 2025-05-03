@@ -85,12 +85,14 @@ model Comment {
 model Video {
   id             String              @id @default(uuid())
   courseId       String
+  sectionId      String
   videoUrl       String
   videoThumbnail String
   videoLength    Int
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
   title          String
+  section        CourseSections      @relation(fields: [sectionId], references: [id])
   comments       Comment[]
   userProgress   UserVideoProgress[] @relation("VideoProgress")
   course         Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -147,6 +149,8 @@ model Course {
   reviews        Review[]
   userProgress   UserCourseProgress[] @relation("CourseProgress")
   courseData     Video[]
+
+  CourseSections CourseSections[]
 }
 
 model UserCourseProgress {
@@ -218,14 +222,14 @@ model Email {
 model Notification {
   id         String   @id @default(uuid())
   recieverId String
+  courseId   String
+  reviewId   String
   text       String
   createdAt  DateTime @default(now())
   opened     Boolean  @default(false)
-  courseId   String
-  reviewId   String
   course     Course   @relation(fields: [courseId], references: [id])
-  reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
   review     Review   @relation(fields: [reviewId], references: [id])
+  reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
 }
 
 enum crdb_internal_region {
@@ -235,6 +239,16 @@ enum crdb_internal_region {
 enum CourseStatus {
   ONGOING
   COMPLETED
+}
+
+model CourseSections {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
+
+  Video Video[]
 }
 
 enum Roles {
