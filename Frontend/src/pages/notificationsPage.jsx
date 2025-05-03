@@ -14,24 +14,26 @@ function NotificationsPage(){
     const navigate=useNavigate();
 
     const notificationList=notifications.map((n)=>{
-        const { id , opened , text , createdAt } = n.notification;
+        const { id , opened , text , createdAt , reviewId , courseId} = n;
         return(
             <div onClick={()=>{
                                 dispatch(markAsRead(id));
                                 socket.emit("openedNotification" , { notificationId: id });
-                                navigate(`../courses/course/${n.courseId}/reviews` , { state: { scrollToReview: n.reviewId }});
+                                navigate(`../courses/course/${courseId}/reviews` , { state: { scrollToReview: reviewId }});
                                 
-             }} className={`p-3 cursor-pointer ${ opened ? "bg-gray-50" : "bg-white" }`} key={ n.reviewId }>
+             }} className={`p-3 cursor-pointer ${ opened ? "bg-gray-50" : "bg-white" }`} key={ reviewId }>
                 <div  className="flex items-center gap-3">
                     { !opened ? <div className="w-2 h-2 rounded-full bg-indigo-600"></div> : null }
                   <div>
                   <p className={`${ opened ? "font-normal" : "font-[500]" }`}>{text}</p>
-                  <span className="block text-gray-400 text-sm">{createdAt.slice(0,10)}</span>
+                  <span className="block text-gray-400 text-sm">{createdAt?.slice(0,10)}</span>
                   </div>
                 </div>
             </div>
         )
     })
+
+
     return(
         <div>
             <h1 className="text-2xl font-bold mb-1">Notifications</h1>

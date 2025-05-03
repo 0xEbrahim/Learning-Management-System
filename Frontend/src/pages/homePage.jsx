@@ -8,7 +8,7 @@ import { Outlet , useNavigate } from "react-router";
 import api from "../axiosInstance";
 import { storeUserData } from "../rtk/slices/userSlice";
 import { io } from "socket.io-client";
-import { addNotification } from "../rtk/slices/socketNotifcationsSlice";
+import { addNotification , getNotifications } from "../rtk/slices/socketNotifcationsSlice";
 import { Toaster , toast}  from "react-hot-toast";
 import { AiFillNotification } from "react-icons/ai";
 
@@ -23,11 +23,14 @@ function HomePage() {
   useEffect(() => {
     initFlowbite();
   }, []);
+  
+  useEffect(()=>{
+    dispatch(getNotifications());
+},[ userId ]);
 
   useEffect(()=>{
     socket.on("notificationSent",(data)=>{
         // const { notification , reviewId } = data;
-        // console.log(notification.text);
 
         toast.custom((t) => (
           <div
@@ -66,7 +69,7 @@ function HomePage() {
           duration: 5000,
         })
         //add notification
-        dispatch(addNotification(data));
+        dispatch(addNotification(data.notification));
     })
   },[socket]);
 
