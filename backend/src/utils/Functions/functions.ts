@@ -8,20 +8,31 @@ import sendEmail from "../../config/email";
 import { IUser } from "../../modules/User/User.interface";
 import { generatePasswordResetTemplate } from "../../views/passwordResetTemplate";
 import { generateAccountReactiveTemplate } from "../../views/accountReactive";
+import APIError from "../APIError";
 
 export const hashPassword = async (password: string) => {
   const hashed = await bcrypt.hash(password, 10);
   return hashed;
 };
 
-export const CourseExists = async(courseId: string) => {
+export const CourseExists = async (courseId: string) => {
   const course = await prisma.course.findUnique({
-    where:{
-      id: courseId
-    }
-  })
+    where: {
+      id: courseId,
+    },
+  });
   return course;
-}
+};
+
+export const isCourseAuthor = async (
+  courseId: string,
+  userId: string
+): Promise<Boolean> => {
+  const course = await CourseExists(courseId);
+  if (!course) throw new APIError("Invalid course ID", 404);
+  if (course.publisherId.toString() === userId.toString()) return true;
+  else return false;
+};
 
 export const comparePassword = async (password: string, hashed: string) => {
   return await bcrypt.compare(password, hashed);
