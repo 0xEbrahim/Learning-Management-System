@@ -229,11 +229,7 @@ model Notification {
   opened     Boolean  @default(false)
   course     Course   @relation(fields: [courseId], references: [id])
   review     Review   @relation(fields: [reviewId], references: [id])
-  courseId   String
-  reviewId   String
-  course     Course   @relation(fields: [courseId], references: [id])
   reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
-  review     Review   @relation(fields: [reviewId], references: [id])
 }
 
 enum crdb_internal_region {
