@@ -90,6 +90,7 @@ model Comment {
 model Video {
   id             String              @id @default(uuid())
   courseId       String
+  sectionId      String
   course         Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
   videoUrl       String
   videoThumbnail String
@@ -97,6 +98,7 @@ model Video {
   createdAt      DateTime            @default(now())
   updatedAt      DateTime            @updatedAt
   title          String
+  section        CourseSections      @relation(fields: [sectionId], references: [id])
   userProgress   UserVideoProgress[] @relation("VideoProgress")
   comments       Comment[]
 }
@@ -153,6 +155,8 @@ model Course {
   buyers         Order[]
 
   Notification Notification[]
+
+  CourseSections CourseSections[]
 }
 
 model UserCourseProgress {
@@ -229,14 +233,24 @@ model Email {
 model Notification {
   id         String   @id @default(uuid())
   recieverId String
-  courseId  String
-  reviewId String
+  courseId   String
+  reviewId   String
   text       String
   createdAt  DateTime @default(now())
   opened     Boolean  @default(false)
-  course  Course @relation(fields: [courseId], references: [id])
-  review  Review @relation(fields: [reviewId], references: [id])
+  course     Course   @relation(fields: [courseId], references: [id])
+  review     Review   @relation(fields: [reviewId], references: [id])
   reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
+}
+
+model CourseSections {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  courseId  String
+  course    Course   @relation(fields: [courseId], references: [id])
+
+  Video Video[]
 }
 
 enum Roles {

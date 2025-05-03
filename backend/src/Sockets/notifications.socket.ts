@@ -13,7 +13,7 @@ export default (
       const notification = await NotificationsService.createNotification(data);
       socket
         .to(authorId)
-        .emit("notificationSent", { notification, reviewId, courseId });
+        .emit("notificationSent", { notification });
     }
   );
   socket.on("openedNotification", async (data) => {
