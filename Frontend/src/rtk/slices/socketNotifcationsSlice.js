@@ -28,9 +28,9 @@ const notificationsSlice=createSlice({
 
         //make notification as read reducer
         markAsRead:( state , action )=>{
-            const notification=state.messages.find((n)=>n.notification.id === action.payload)
+            const notification=state.messages.find((n)=>n.id === action.payload)
             if(notification){
-                notification.notification.opened=true;
+                notification.opened=true;
                 if( state.unreadNotifications !== 0){
                     state.unreadNotifications-=1;
                 }
@@ -39,7 +39,7 @@ const notificationsSlice=createSlice({
 
         removeNotification:( state , action )=>{
                 //remove this notification
-                state.messages.filter((n)=>n.notification.id !== action.payload.notification.id);
+                state.messages.filter((n)=>n.id !== action.payload.id);
                 state.unreadNotifications-=1;
 
         },
@@ -52,7 +52,11 @@ const notificationsSlice=createSlice({
 
     extraReducers:(builder)=>{
         builder.addCase(getNotifications.fulfilled, ( state , action )=>{
-            state.messages.push(action.payload);
+            state.messages=action.payload;
+            action.payload.forEach(message => {
+                const {opened}=message;
+                if(!opened) {state.unreadNotifications+=1};
+            })
         })
     }
 })
