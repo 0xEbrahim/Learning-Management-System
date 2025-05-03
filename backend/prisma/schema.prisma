@@ -7,10 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum crdb_internal_region {
-  aws_eu_central_1 @map("aws-eu-central-1")
-}
-
 model User {
   id                              String               @id @default(uuid())
   googleId                        String?              @unique
@@ -32,32 +28,31 @@ model User {
   createdAt                       DateTime             @default(now())
   updatedAt                       DateTime             @updatedAt
   deleteAt                        DateTime?
+  comments                        Comment[]            @relation("UserComments")
+  publishedCourses                Course[]             @relation("Publish")
+  notifications                   Notification[]       @relation("recieved")
+  courses                         Order[]              @relation("UserOrders")
   reviews                         Review[]             @relation("UserReviews")
   replies                         ReviewReply[]        @relation("UserReplies")
-  comments                        Comment[]            @relation("UserComments")
-  courses                         Order[]              @relation("UserOrders")
-  publishedCourses                Course[]             @relation("Publish")
   userCourseProgress              UserCourseProgress[] @relation("UserProgress")
   userVideoProgress               UserVideoProgress[]  @relation("UserVideoProgress")
-  notifications                   Notification[]       @relation("recieved")
 
   @@index([email])
   @@index([googleId])
 }
 
 model Review {
-  id        String        @id @default(uuid())
-  userId    String
-  courseId  String
-  rating    Int
-  review    String
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  author    User          @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
-  course    Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  Replies   ReviewReply[]
-
+  id           String         @id @default(uuid())
+  userId       String
+  courseId     String
+  rating       Int
+  review       String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
   Notification Notification[]
+  course       Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  author       User           @relation("UserReviews", fields: [userId], references: [id], onDelete: Cascade)
+  Replies      ReviewReply[]
 }
 
 model ReviewReply {
@@ -67,8 +62,8 @@ model ReviewReply {
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  author    User     @relation("UserReplies", fields: [userId], references: [id], onDelete: Cascade)
   review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  author    User     @relation("UserReplies", fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Comment {
@@ -80,9 +75,9 @@ model Comment {
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   parentComment   Comment?  @relation("Reply", fields: [parentCommentId], references: [id], onDelete: Cascade)
+  replies         Comment[] @relation("Reply")
   author          User      @relation("UserComments", fields: [userId], references: [id], onDelete: Cascade)
   video           Video     @relation(fields: [videoId], references: [id], onDelete: Cascade)
-  replies         Comment[] @relation("Reply")
 
   @@index([parentCommentId])
 }
@@ -91,7 +86,6 @@ model Video {
   id             String              @id @default(uuid())
   courseId       String
   sectionId      String
-  course         Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
   videoUrl       String
   videoThumbnail String
   videoLength    Int
@@ -99,8 +93,9 @@ model Video {
   updatedAt      DateTime            @updatedAt
   title          String
   section        CourseSections      @relation(fields: [sectionId], references: [id])
-  userProgress   UserVideoProgress[] @relation("VideoProgress")
   comments       Comment[]
+  userProgress   UserVideoProgress[] @relation("VideoProgress")
+  course         Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model Prerequisites {
@@ -112,10 +107,10 @@ model Prerequisites {
 }
 
 model Demo {
-  id       String  @id @default(uuid())
-  courseId String  @unique
+  id       String @id @default(uuid())
+  courseId String @unique
   url      String
-  course   Course? @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 model Category {
@@ -137,24 +132,23 @@ model CategoryOnCourses {
 model Course {
   id             String               @id @default(uuid())
   publisherId    String
-  publisher      User                 @relation("Publish", fields: [publisherId], references: [id], onDelete: Cascade)
   name           String
   price          Float
   description    String
-  averageRatings Float                @default(0)
+  averageRatings Float                @default(0.0)
   thumbnail      String
   purchased      Int                  @default(0)
   createdAt      DateTime             @default(now())
   updatedAt      DateTime             @updatedAt
-  demo           Demo?
   categories     CategoryOnCourses[]
-  prerequisites  Prerequisites[]
-  userProgress   UserCourseProgress[] @relation("CourseProgress")
-  reviews        Review[]
-  courseData     Video[]
+  publisher      User                 @relation("Publish", fields: [publisherId], references: [id], onDelete: Cascade)
+  demo           Demo?
+  Notification   Notification[]
   buyers         Order[]
-
-  Notification Notification[]
+  prerequisites  Prerequisites[]
+  reviews        Review[]
+  userProgress   UserCourseProgress[] @relation("CourseProgress")
+  courseData     Video[]
 
   CourseSections CourseSections[]
 }
@@ -167,9 +161,9 @@ model UserCourseProgress {
   createdAt           DateTime     @default(now())
   updatedAt           DateTime     @updatedAt
   completedAt         DateTime?
-  user                User         @relation("UserProgress", fields: [userId], references: [id], onDelete: Cascade)
-  course              Course       @relation("CourseProgress", fields: [courseId], references: [id], onDelete: Cascade)
   totalWatchedMinutes Int          @default(0)
+  course              Course       @relation("CourseProgress", fields: [courseId], references: [id], onDelete: Cascade)
+  user                User         @relation("UserProgress", fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
 }
@@ -181,16 +175,11 @@ model UserVideoProgress {
   watchedMinutes Int      @default(0)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  lastWatchedAt  DateTime @updatedAt
   user           User     @relation("UserVideoProgress", fields: [userId], references: [id], onDelete: Cascade)
   video          Video    @relation("VideoProgress", fields: [videoId], references: [id], onDelete: Cascade)
-  lastWatchedAt  DateTime @updatedAt
 
   @@unique([userId, videoId])
-}
-
-enum CourseStatus {
-  ONGOING
-  COMPLETED
 }
 
 model Payment {
@@ -199,9 +188,9 @@ model Payment {
   orderId          String @unique
   customerId       String
   email            String
-  order            Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
   price            Float
   status           String
+  order            Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
 }
 
 model Order {
@@ -210,8 +199,8 @@ model Order {
   courseId    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  user        User     @relation("UserOrders", fields: [userId], references: [id], onDelete: Cascade)
   course      Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user        User     @relation("UserOrders", fields: [userId], references: [id], onDelete: Cascade)
   paymentInfo Payment?
 
   @@unique([userId, courseId])
@@ -240,7 +229,20 @@ model Notification {
   opened     Boolean  @default(false)
   course     Course   @relation(fields: [courseId], references: [id])
   review     Review   @relation(fields: [reviewId], references: [id])
+  courseId   String
+  reviewId   String
+  course     Course   @relation(fields: [courseId], references: [id])
   reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
+  review     Review   @relation(fields: [reviewId], references: [id])
+}
+
+enum crdb_internal_region {
+  aws_eu_central_1 @map("aws-eu-central-1")
+}
+
+enum CourseStatus {
+  ONGOING
+  COMPLETED
 }
 
 model CourseSections {
