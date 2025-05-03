@@ -1,13 +1,14 @@
+import { response } from "express";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
-import { isCourseAuthor } from "../../utils/Functions/functions";
-import { ICreateSectionBody } from "./Section.interface";
+import { CourseExists, isCourseAuthor } from "../../utils/Functions/functions";
+import { ICreateSectionBody, IGetSectionsBody } from "./Section.interface";
 
 class SectionService {
   async createSection(Payload: ICreateSectionBody): Promise<IResponse> {
     const { courseId, name, userId } = Payload;
-    const check = isCourseAuthor(courseId, userId);
+    const check = await isCourseAuthor(courseId, userId);
     if (!check)
       throw new APIError("You are not authorized on this course", 401);
     const section = await prisma.courseSections.create({
@@ -21,6 +22,25 @@ class SectionService {
       statusCode: 201,
       data: {
         section,
+      },
+    };
+    return response;
+  }
+
+  async getSections(Payload: IGetSectionsBody): Promise<IResponse> {
+    const { courseId } = Payload;
+    if (!(await CourseExists(courseId)))
+      throw new APIError("Invalid course ID", 404);
+    const sections = await prisma.courseSections.findMany({
+      where: {
+        courseId: courseId,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        sections,
       },
     };
     return response;
