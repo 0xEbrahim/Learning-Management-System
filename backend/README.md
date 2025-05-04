@@ -165,7 +165,7 @@ DEFAULT_PROF_PIC=DEFAULT PFP LINK
 │   │   ├── isAuthorized.ts
 │   │   ├── isAuthenticated.ts
 │   │   ├── isBuyer.ts
-│   │   └── isOwner.ts
+│   │   └── isCourseAuthor.ts
 │   ├── modules/
 │   │   ├── Auth/
 │   │   │   ├── Auth.Controller.ts
