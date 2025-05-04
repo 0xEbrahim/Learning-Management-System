@@ -4,11 +4,13 @@ import isAuthorized from "../../middlewares/isAuthorized";
 import { validate } from "../../utils/validation";
 import {
   createSectionValidation,
+  deleteSectionByIdValidation,
   getSectionByIdValidation,
   getSectionsValidation,
 } from "./Section.validation";
 import {
   createSection,
+  deleteSection,
   getSectionById,
   getSections,
 } from "./Section.controller";
@@ -21,12 +23,18 @@ router.post(
   validate(createSectionValidation),
   createSection
 );
-
 router.get("/", isAuthenticated, validate(getSectionsValidation), getSections);
 router.get(
   "/:id",
   isAuthenticated,
   validate(getSectionByIdValidation),
   getSectionById
+);
+router.delete(
+  "/:id",
+  isAuthenticated,
+  isAuthorized("TEACHER", "ADMIN"),
+  validate(deleteSectionByIdValidation),
+  deleteSection
 );
 export const sectionRouter = router;

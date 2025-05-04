@@ -12,3 +12,9 @@ export interface IGetSectionByIdBody {
   courseId: string;
   sectionId: string;
 }
+
+export interface IDeleteSectionBody {
+  courseId: string;
+  sectionId: string;
+  userId: string;
+}
