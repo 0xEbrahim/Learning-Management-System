@@ -13,9 +13,6 @@ import {
 class SectionService {
   async createSection(Payload: ICreateSectionBody): Promise<IResponse> {
     const { courseId, name, userId } = Payload;
-    const check = await isCourseAuthor(courseId, userId);
-    if (!check)
-      throw new APIError("You are not authorized on this course", 401);
     const section = await prisma.courseSections.create({
       data: {
         courseId: courseId,
@@ -77,9 +74,6 @@ class SectionService {
 
   async deleteSection(Payload: IDeleteSectionBody): Promise<IResponse> {
     const { courseId, sectionId, userId } = Payload;
-    const check = await isCourseAuthor(courseId, userId);
-    if (!check)
-      throw new APIError("You are not authorized on this course", 401);
     const section = await prisma.courseSections.findFirst({
       where: {
         courseId: courseId,

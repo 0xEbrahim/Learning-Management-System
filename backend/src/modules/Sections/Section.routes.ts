@@ -14,6 +14,7 @@ import {
   getSectionById,
   getSections,
 } from "./Section.controller";
+import isCourseAuthor from "../../middlewares/isCourseAuthor";
 const router = express.Router();
 
 router.post(
@@ -21,6 +22,7 @@ router.post(
   isAuthenticated,
   isAuthorized("TEACHER", "ADMIN"),
   validate(createSectionValidation),
+  isCourseAuthor,
   createSection
 );
 router.get("/", isAuthenticated, validate(getSectionsValidation), getSections);
@@ -35,6 +37,7 @@ router.delete(
   isAuthenticated,
   isAuthorized("TEACHER", "ADMIN"),
   validate(deleteSectionByIdValidation),
+  isCourseAuthor,
   deleteSection
 );
 export const sectionRouter = router;

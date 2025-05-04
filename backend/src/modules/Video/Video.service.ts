@@ -27,9 +27,6 @@ class VideoService {
       sectionId,
       userId,
     } = Payload;
-    const check = await isCourseAuthor(courseId, userId);
-    if (!check)
-      throw new APIError("You are not authorized on this course", 401);
     let videoThumbnailUpload: any = await cloudinary.uploader.upload(
       videoThumbnail,
       {
