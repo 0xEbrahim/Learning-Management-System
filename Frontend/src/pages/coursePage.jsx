@@ -48,7 +48,6 @@ function CoursePage(){
             const currentWidth=window.innerWidth;
             setShowContentRoute(currentWidth<=breakPoint)
         }
-        console.log(window.innerWidth);
         checkWidth();
         window.addEventListener('resize', checkWidth);
 
