@@ -164,7 +164,7 @@ DEFAULT_PROF_PIC=DEFAULT PFP LINK
 │   │   ├── globalError.ts
 │   │   ├── isAuthorized.ts
 │   │   ├── isAuthenticated.ts
-│   │   ├── isBuyer.ts
+│   │   ├── hasAccess.ts
 │   │   └── isCourseAuthor.ts
 │   ├── modules/
 │   │   ├── Auth/
