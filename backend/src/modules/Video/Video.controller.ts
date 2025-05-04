@@ -27,6 +27,7 @@ export const uploadVideo = asyncHandler(
     if (!video) return next(new APIError("You need to provide a video", 400));
 
     const data: uploadVideoBody = {
+      userId: req.User?.id ?? "",
       videoLength: req.body.videoLength,
       title: req.body.title,
       videoThumbnail: videoThumbnail[0].path,
