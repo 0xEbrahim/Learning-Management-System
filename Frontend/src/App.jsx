@@ -17,8 +17,8 @@ import OverView from "./subPages/overView.jsx";
 import Author from "./subPages/author.jsx";
 import Reviews from "./subPages/reviews.jsx";
 import FAQ from "./subPages/FAQ.jsx";
-// import { io } from "socket.io-client";
-// const socket = io.connect("http://localhost:3000");
+import CourseContent from "./subPages/courseContentPage.jsx";
+
 function App() {
   return (
     <>
@@ -32,6 +32,7 @@ function App() {
             <Route path="author" element={< Author/>}/>
             <Route path="reviews" element={< Reviews/>}/>
             <Route path="FAQ" element={< FAQ/>}/>
+            <Route path="content" element={< CourseContent/>}/>
           </Route>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="settings" element={<SettingsPage />} />

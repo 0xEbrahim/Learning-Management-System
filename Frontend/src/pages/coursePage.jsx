@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState , useEffect, useLayoutEffect } from "react";
+import { useState , useEffect  , useRef } from "react";
 import api from "../axiosInstance";
 import Loading from "../components/loading";
 import { FiShoppingBag } from "react-icons/fi";
@@ -23,9 +23,11 @@ function CoursePage(){
     const [showForm,setShowForm]=useState(false);
     const [ loading , setLoading]=useState(true);
     const [sectionNameInput,setSectionNameInput]=useState("");
-
+    // const pageRef=useRef(null);
+    const [showContentRoute,setShowContentRoute]=useState(false);
     //re-render when refresh
     const userData=useSelector((state)=>state.user.userData);
+    const breakPoint=1279;
     useEffect(()=>{
         const getCourseData=async()=>{
             try{
@@ -41,12 +43,25 @@ function CoursePage(){
         getCourseData();
     },[courseId , userData])
 
+    useEffect(()=>{
+        const checkWidth=()=>{
+            const currentWidth=window.innerWidth;
+            setShowContentRoute(currentWidth<=breakPoint)
+        }
+        console.log(window.innerWidth);
+        checkWidth();
+        window.addEventListener('resize', checkWidth);
+
+        return () => window.removeEventListener('resize', checkWidth);
+    },[])
+
     const addSection=async()=>{
         const res=await api.post(`/sections` ,{
             courseId:courseId,
             name:sectionNameInput
         })
     }
+
     return(
         <div>
             {/* add loading effect using conditional rendering */}
@@ -103,12 +118,19 @@ function CoursePage(){
                                                         }>FAQ                
                                 </NavLink>
                             </li>
+                            {showContentRoute ?  <li><NavLink to="content" className={({ isActive }) =>
+                                                        isActive
+                                                            ? `${styles.active}`
+                                                            : `${styles.unactive}`
+                                                        }>Content                
+                                </NavLink>
+                            </li> : null}
                         </ul>
                         <div className="bg-white p-4 border-1 border-gray-200">
                             <Outlet/>
                         </div>
                     </div>
-                    <div className=" course-content col-span-1 bg-white p-2 h-fit">
+                    <div className=" course-content col-span-1 bg-white p-2 h-fit xl:block hidden">
                        <div className="flex justify-between items-center">
                             <h2 className="font-[600]">Course Content</h2>
                             <MdAddBox onClick={()=>{setShowForm(true)}} className=" add-section cursor-pointer text-2xl text-indigo-600"/>
