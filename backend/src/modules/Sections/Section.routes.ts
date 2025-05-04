@@ -4,9 +4,14 @@ import isAuthorized from "../../middlewares/isAuthorized";
 import { validate } from "../../utils/validation";
 import {
   createSectionValidation,
+  getSectionByIdValidation,
   getSectionsValidation,
 } from "./Section.validation";
-import { createSection, getSections } from "./Section.controller";
+import {
+  createSection,
+  getSectionById,
+  getSections,
+} from "./Section.controller";
 const router = express.Router();
 
 router.post(
@@ -18,5 +23,10 @@ router.post(
 );
 
 router.get("/", isAuthenticated, validate(getSectionsValidation), getSections);
-
+router.get(
+  "/:id",
+  isAuthenticated,
+  validate(getSectionByIdValidation),
+  getSectionById
+);
 export const sectionRouter = router;

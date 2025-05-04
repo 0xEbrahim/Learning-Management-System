@@ -3,7 +3,11 @@ import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { CourseExists, isCourseAuthor } from "../../utils/Functions/functions";
-import { ICreateSectionBody, IGetSectionsBody } from "./Section.interface";
+import {
+  ICreateSectionBody,
+  IGetSectionByIdBody,
+  IGetSectionsBody,
+} from "./Section.interface";
 
 class SectionService {
   async createSection(Payload: ICreateSectionBody): Promise<IResponse> {
@@ -41,6 +45,27 @@ class SectionService {
       statusCode: 200,
       data: {
         sections,
+      },
+    };
+    return response;
+  }
+
+  async getSectionById(Payload: IGetSectionByIdBody): Promise<IResponse> {
+    const { courseId, sectionId } = Payload;
+    if (!(await CourseExists(courseId)))
+      throw new APIError("Invalid Course ID", 404);
+    const section = await prisma.courseSections.findFirst({
+      where: {
+        courseId: courseId,
+        id: sectionId,
+      },
+    });
+    if (!section) throw new APIError("Invalid section ID", 404);
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        section,
       },
     };
     return response;

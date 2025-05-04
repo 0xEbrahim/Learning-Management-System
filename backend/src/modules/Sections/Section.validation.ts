@@ -12,3 +12,12 @@ export const getSectionsValidation = z.object({
     courseId: z.string(),
   }),
 });
+
+export const getSectionByIdValidation = z.object({
+  body: z.object({
+    courseId: z.string(),
+  }),
+  params: z.object({
+    id: z.string(),
+  }),
+});

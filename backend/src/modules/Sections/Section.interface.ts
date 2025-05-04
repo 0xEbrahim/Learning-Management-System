@@ -7,3 +7,8 @@ export interface ICreateSectionBody {
 export interface IGetSectionsBody {
   courseId: string;
 }
+
+export interface IGetSectionByIdBody {
+  courseId: string;
+  sectionId: string;
+}
