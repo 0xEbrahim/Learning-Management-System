@@ -14,13 +14,16 @@ import styles from "./coursePage.module.css";
 import { useDispatch } from "react-redux";
 import { setAuthorId } from "../rtk/slices/courseAuthorID";
 import { useSelector } from "react-redux";
+import { MdAddBox } from "react-icons/md";
 
 function CoursePage(){
     const dispatch=useDispatch();
     const {courseId}=useParams();
     const [ course , setCourse ]=useState({});
+    const [showForm,setShowForm]=useState(false);
     const [ loading , setLoading]=useState(true);
-    
+    const [sectionNameInput,setSectionNameInput]=useState("");
+
     //re-render when refresh
     const userData=useSelector((state)=>state.user.userData);
     useEffect(()=>{
@@ -38,6 +41,12 @@ function CoursePage(){
         getCourseData();
     },[courseId , userData])
 
+    const addSection=async()=>{
+        const res=await api.post(`/sections` ,{
+            courseId:courseId,
+            name:sectionNameInput
+        })
+    }
     return(
         <div>
             {/* add loading effect using conditional rendering */}
@@ -99,8 +108,16 @@ function CoursePage(){
                             <Outlet/>
                         </div>
                     </div>
-                    <div className="col-span-1 bg-white p-2 h-fit">
-                        course content
+                    <div className=" course-content col-span-1 bg-white p-2 h-fit">
+                       <div className="flex justify-between items-center">
+                            <h2 className="font-[600]">Course Content</h2>
+                            <MdAddBox onClick={()=>{setShowForm(true)}} className=" add-section cursor-pointer text-2xl text-indigo-600"/>
+                       </div>
+                        {showForm ? <div className="add-section-form mt-3">
+                                        <input className="bg-gray-50 border-1 border-gray-300 rounded-sm outline-none mt-2 px-2 py-1 text-sm" placeholder="add section" value={sectionNameInput} onChange={(e)=>{setSectionNameInput(e.target.value)}}/>
+                                        <button onClick={()=>{addSection()}} className="w-full px-2 py-1 bg-indigo-600 text-white mt-2 rounded-sm text-[12px] font-[500] cursor-pointer">add</button>
+                                        <button onClick={()=>{setShowForm(false)}} className="w-full px-2 py-1 bg-gray-200 text-indigo-600 mt-1 rounded-sm text-[12px] font-[500] cursor-pointer">cancel</button>
+                                    </div> : null}
                     </div>
                 </div>
             </div>
