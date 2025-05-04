@@ -26,7 +26,7 @@ function HomePage() {
   
   useEffect(()=>{
     dispatch(getNotifications());
-},[ userId ]);
+},[ accessToken ]);
 
   useEffect(()=>{
     socket.on("notificationSent",(data)=>{

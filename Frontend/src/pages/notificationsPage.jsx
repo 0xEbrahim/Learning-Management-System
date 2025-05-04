@@ -17,7 +17,7 @@ function NotificationsPage(){
         const { id , opened , text , createdAt , reviewId , courseId} = n;
         return(
             <div onClick={()=>{
-                                dispatch(markAsRead(id));
+                                if (!opened) {dispatch(markAsRead(id))};
                                 socket.emit("openedNotification" , { notificationId: id });
                                 navigate(`../courses/course/${courseId}/reviews` , { state: { scrollToReview: reviewId }});
                                 
