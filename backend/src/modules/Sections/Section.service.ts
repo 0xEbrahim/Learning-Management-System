@@ -59,6 +59,9 @@ class SectionService {
         courseId: courseId,
         id: sectionId,
       },
+      include: {
+        Video: true,
+      },
     });
     if (!section) throw new APIError("Invalid section ID", 404);
     const response: IResponse = {
