@@ -18,8 +18,8 @@ import {
   updateVideo,
   uploadVideo,
 } from "./Video.controller";
-import isBuyer from "../../middlewares/isBuyer";
 import isCourseAuthor from "../../middlewares/isCourseAuthor";
+import hasAccess from "../../middlewares/hasAccess";
 const router = express.Router({ mergeParams: true });
 
 router.post(
@@ -44,7 +44,7 @@ router.get(
   "/:videoId",
   isAuthenticated,
   validate(VideoValidation),
-  isBuyer,
+  hasAccess,
   getVideoById
 );
 router.patch(

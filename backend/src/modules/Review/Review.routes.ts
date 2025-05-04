@@ -7,7 +7,6 @@ import {
   getReviewsOnCourse,
   updateReview,
 } from "./Review.controller";
-import isBuyer from "../../middlewares/isBuyer";
 import {
   createReviewValidation,
   deleteReviewValidation,
@@ -17,6 +16,7 @@ import {
 } from "./Review.validation";
 import { validate } from "../../utils/validation";
 import { replyRouter } from "../Reply/Reply.routes";
+import hasAccess from "../../middlewares/hasAccess";
 
 const router = express.Router({ mergeParams: true });
 
@@ -25,8 +25,8 @@ router.use("/:id/replies", replyRouter);
 router.post(
   "/",
   isAuthenticated,
-  isBuyer,
   validate(createReviewValidation),
+  hasAccess,
   createReview
 );
 router.get(
@@ -45,12 +45,14 @@ router.delete(
   "/:id",
   isAuthenticated,
   validate(deleteReviewValidation),
+  hasAccess,
   deleteReview
 );
 router.patch(
   "/:id",
   isAuthenticated,
   validate(updateReviewValidation),
+  hasAccess,
   updateReview
 );
 export const reviewRouter = router;

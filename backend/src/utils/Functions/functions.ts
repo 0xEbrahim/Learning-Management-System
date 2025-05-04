@@ -20,6 +20,9 @@ export const CourseExists = async (courseId: string) => {
     where: {
       id: courseId,
     },
+    include: {
+      buyers: true,
+    },
   });
   return course;
 };
@@ -32,6 +35,28 @@ export const isCourseAuthor = async (
   if (!course) throw new APIError("Invalid course ID", 404);
   if (course.publisherId.toString() === userId.toString()) return true;
   else return false;
+};
+
+export const isCourseBuyer = async (
+  courseId: string,
+  userId: string
+): Promise<boolean> => {
+  const course = await CourseExists(courseId);
+  if (!course) throw new APIError("Invalid course ID", 404);
+  const buyersOfCourse = course.buyers;
+  const isBuyer = buyersOfCourse.some(
+    (el) => el.userId.toString() === userId.toString()
+  );
+  return isBuyer;
+};
+
+export const isCourseBuyerOrAuthor = async (
+  courseId: string,
+  userId: string
+): Promise<boolean> => {
+  const isAuthor = await isCourseAuthor(courseId, userId);
+  const isBuyer = isCourseBuyer(courseId, userId);
+  return isAuthor || isBuyer;
 };
 
 export const comparePassword = async (password: string, hashed: string) => {
