@@ -35,8 +35,8 @@ app.listen(PORT, async () => {
       const banner: string = kleur.cyan(data);
       const info: string = `
   ${kleur.green("🚀 Server is running at:")}
-  ${kleur.cyan(`📍 http://${HOST}`)}
-  ${kleur.cyan(`📍 http://${HOST}/api-docs`)}
+  ${kleur.cyan(`📍 ${HOST}`)}
+  ${kleur.cyan(`📍 ${HOST}/api-docs`)}
   ${kleur.yellow("=====================================")}
   ${kleur.magenta("Press CTRL+C to stop the server.")}
   ${kleur.yellow("=====================================")}

@@ -6,6 +6,13 @@
  *   schemas:
  *     Video:
  *       type: object
+ *       required:
+ *         - title
+ *         - videoUrl
+ *         - videoThumbnail
+ *         - videoLength
+ *         - courseId
+ *         - sectionId
  *       properties:
  *         id:
  *           type: string
@@ -21,6 +28,7 @@
  *           example: "https://res.cloudinary.com/.../image/upload/v1..."
  *         videoLength:
  *           type: number
+ *           description: "Video length in seconds"
  *           example: 3600
  *         courseId:
  *           type: string
@@ -44,6 +52,9 @@
  *         statusCode:
  *           type: integer
  *           example: 200
+ *         message:
+ *           type: string
+ *           example: "Video updated successfully"
  *         data:
  *           type: object
  *           properties:
@@ -81,6 +92,7 @@
  *           example: "Introduction to Node.js"
  *         videoLength:
  *           type: string
+ *           description: "Video length in minutes"
  *           example: "60"
  *         sectionId:
  *           type: string
@@ -104,6 +116,7 @@
  *       properties:
  *         videoLength:
  *           type: string
+ *           description: "Video length in minutes"
  *           example: "60"
  *
  *   parameters:
@@ -122,6 +135,12 @@
  *       schema:
  *         type: string
  *       description: The video ID
+ *
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  */
 
 /**
@@ -147,20 +166,29 @@
  *         multipart/form-data:
  *           schema:
  *             type: object
+ *             required:
+ *               - image
+ *               - video
+ *               - title
+ *               - videoLength
+ *               - sectionId
  *             properties:
  *               image:
  *                 type: string
  *                 format: binary
- *                 description: Video thumbnail image
+ *                 description: Video thumbnail image (max 1 file)
  *               video:
  *                 type: string
  *                 format: binary
- *                 description: Video file
+ *                 description: Video file (max 1 file)
  *               title:
  *                 type: string
+ *                 minLength: 6
+ *                 maxLength: 300
  *                 example: "Introduction to Node.js"
  *               videoLength:
  *                 type: string
+ *                 description: "Video length in minutes"
  *                 example: "60"
  *               sectionId:
  *                 type: string
@@ -173,11 +201,17 @@
  *             schema:
  *               $ref: '#/components/schemas/VideoResponse'
  *       400:
- *         description: Missing thumbnail or video file
+ *         description: |
+ *           Bad Request:
+ *           - Missing thumbnail or video file
+ *           - Invalid request body
+ *           - Video title too short or too long
  *       401:
- *         description: Unauthorized or not owner
+ *         description: Unauthorized - User not authenticated
  *       403:
- *         description: Forbidden (not admin/teacher)
+ *         description: Forbidden - User is not admin/teacher or not course author
+ *       404:
+ *         description: Course not found
  */
 
 /**
@@ -185,6 +219,7 @@
  * /api/v1/courses/{courseId}/videos:
  *   get:
  *     summary: Get all videos for a course
+ *     description: Returns full video details for course owners, limited data for others
  *     tags: [Videos]
  *     security:
  *       - bearerAuth: []
@@ -198,7 +233,7 @@
  *             schema:
  *               $ref: '#/components/schemas/VideosListResponse'
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - User not authenticated
  *       404:
  *         description: Course not found
  */
@@ -207,7 +242,8 @@
  * @swagger
  * /api/v1/courses/{courseId}/videos/{videoId}:
  *   get:
- *     summary: Get video by ID (Buyer only)
+ *     summary: Get video by ID
+ *     description: Returns full video details for course owners/buyers, limited data for others
  *     tags: [Videos]
  *     security:
  *       - bearerAuth: []
@@ -222,9 +258,9 @@
  *             schema:
  *               $ref: '#/components/schemas/VideoResponse'
  *       401:
- *         description: Unauthorized
+ *         description: Unauthorized - User not authenticated
  *       403:
- *         description: Forbidden (not buyer)
+ *         description: Forbidden - User doesn't have access to this video
  *       404:
  *         description: Video not found
  */
@@ -254,11 +290,14 @@
  *             schema:
  *               $ref: '#/components/schemas/VideoResponse'
  *       400:
- *         description: Validation error
+ *         description: |
+ *           Bad Request:
+ *           - Invalid request body
+ *           - Video title too short or too long
  *       401:
- *         description: Unauthorized or not owner
+ *         description: Unauthorized - User not authenticated
  *       403:
- *         description: Forbidden (not admin/teacher)
+ *         description: Forbidden - User is not admin/teacher or not course author
  *       404:
  *         description: Video not found
  */
@@ -292,9 +331,9 @@
  *                   type: string
  *                   example: "Video deleted successfully"
  *       401:
- *         description: Unauthorized or not owner
+ *         description: Unauthorized - User not authenticated
  *       403:
- *         description: Forbidden (not admin/teacher)
+ *         description: Forbidden - User is not admin/teacher or not course author
  *       404:
  *         description: Video not found
  */
@@ -316,13 +355,17 @@
  *         multipart/form-data:
  *           schema:
  *             type: object
+ *             required:
+ *               - video
+ *               - videoLength
  *             properties:
  *               video:
  *                 type: string
  *                 format: binary
- *                 description: New video file
+ *                 description: New video file (max 1 file)
  *               videoLength:
  *                 type: string
+ *                 description: "Video length in minutes"
  *                 example: "60"
  *     responses:
  *       200:
@@ -332,11 +375,14 @@
  *             schema:
  *               $ref: '#/components/schemas/VideoResponse'
  *       400:
- *         description: No video file provided
+ *         description: |
+ *           Bad Request:
+ *           - No video file provided
+ *           - Missing videoLength
  *       401:
- *         description: Unauthorized or not owner
+ *         description: Unauthorized - User not authenticated
  *       403:
- *         description: Forbidden (not admin/teacher)
+ *         description: Forbidden - User is not admin/teacher or not course author
  *       404:
  *         description: Video not found
  */
@@ -358,11 +404,13 @@
  *         multipart/form-data:
  *           schema:
  *             type: object
+ *             required:
+ *               - image
  *             properties:
  *               image:
  *                 type: string
  *                 format: binary
- *                 description: New thumbnail image
+ *                 description: New thumbnail image (max 1 file)
  *     responses:
  *       200:
  *         description: Thumbnail updated successfully
@@ -373,9 +421,9 @@
  *       400:
  *         description: No thumbnail image provided
  *       401:
- *         description: Unauthorized or not owner
+ *         description: Unauthorized - User not authenticated
  *       403:
- *         description: Forbidden (not admin/teacher)
+ *         description: Forbidden - User is not admin/teacher or not course author
  *       404:
  *         description: Video not found
  */
