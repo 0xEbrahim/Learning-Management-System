@@ -15,6 +15,7 @@ import logger from "../../config/logger";
 import { courseIncludeOptions, searchFilterOptions } from "../../utils/options";
 import stringify from "fast-json-stable-stringify";
 import redis from "../../config/redis";
+import ResponseFormatter from "../../utils/responseFormatter";
 
 interface ISearchPayload {
   q?: string;
@@ -25,27 +26,54 @@ interface ISearchPayload {
 }
 
 class CourseService {
+  private readonly CACHE_TTL = {
+    COURSE: 3600,
+    COURSES: 3600,
+    CATEGORY_COURSES: 86400,
+    SEARCH: 1800,
+  };
+
   private async validateCategories(categories: string[]): Promise<void> {
-    const existingCategories = await prisma.category.findMany({
-      where: { name: { in: categories } },
-      select: { name: true },
-    });
-
-    const existingCategoryNames = existingCategories.map((c) => c.name);
-    const invalidCategories = categories.filter(
-      (c) => !existingCategoryNames.includes(c)
-    );
-
-    if (invalidCategories.length > 0) {
-      throw new APIError(
-        `Invalid categories: ${invalidCategories.join(", ")}`,
-        400
-      );
+    for (const category of categories) {
+      const exists = await prisma.category.findUnique({
+        where: { name: category },
+      });
+      if (!exists) {
+        ResponseFormatter.notFound(`Category with id: ${category} not found`);
+      }
     }
   }
 
+  private async createCategoryAssociations(
+    courseId: string,
+    categories: string[]
+  ): Promise<void> {
+    const categoryNames = await Promise.all(
+      categories.map(async (id) => {
+        const category = await prisma.category.findUnique({
+          where: { id },
+        });
+        return category?.name;
+      })
+    );
+
+    await Promise.all(
+      categoryNames.map(async (name) => {
+        if (name) {
+          await prisma.categoryOnCourses.create({
+            data: {
+              courseId,
+              categoryName: name,
+            },
+          });
+        }
+      })
+    );
+  }
+
   private async uploadThumbnail(thumbnail: string): Promise<string> {
-    if (!thumbnail) throw new APIError("Course should have a thumbnail", 400);
+    if (!thumbnail)
+      ResponseFormatter.badRequest("Course should have a thumbnail");
     const uploaded = await cloudinary.uploader.upload(thumbnail, {
       folder: "Course",
     });
@@ -58,31 +86,17 @@ class CourseService {
     if (keys.length > 0) await redis.del(keys);
   }
 
-  private async createCategoryAssociations(
-    courseId: string,
-    categories: string[]
-  ): Promise<void> {
-    for (const categoryName of categories) {
-      await prisma.categoryOnCourses.create({
-        data: {
-          courseId,
-          categoryName,
-        },
-      });
-    }
+  private async getCachedData<T>(key: string): Promise<T | null> {
+    const cachedData = await redis.get(key);
+    return cachedData ? JSON.parse(cachedData) : null;
   }
 
-  private formatResponse<T extends object | null>(
+  private async setCachedData<T>(
+    key: string,
     data: T,
-    statusCode: number = 200,
-    message?: string
-  ): IResponse {
-    return {
-      status: "Success",
-      statusCode,
-      message,
-      data: data === null ? undefined : data,
-    };
+    ttl: number
+  ): Promise<void> {
+    await redis.setEx(key, ttl, JSON.stringify(data));
   }
 
   async createCourse(Payload: ICreateCourseBody): Promise<IResponse> {
@@ -107,20 +121,32 @@ class CourseService {
     });
 
     if (!course) {
-      throw new APIError(
-        "Error while creating a course, please try again",
-        500
+      ResponseFormatter.badRequest(
+        "Error while creating a course, please try again"
       );
     }
 
     logger.info(`Teacher: ${publisherId} created a new course: ${course.id}`);
     await this.createCategoryAssociations(course.id, categories);
     await this.clearCourseCache();
-    return this.formatResponse({ course }, 201);
+    return ResponseFormatter.created({ course });
   }
 
   async getCourseById(Payload: IGetCoursesByIdBody): Promise<IResponse> {
     const { id, categoryId } = Payload;
+    const cacheKey = `course:${id}${
+      categoryId ? `:category:${categoryId}` : ""
+    }`;
+
+    const cachedData = await this.getCachedData<IResponse>(cacheKey);
+    if (cachedData) {
+      return ResponseFormatter.ok(
+        cachedData.data,
+        "Course retrieved from cache",
+        { fromCache: true }
+      );
+    }
+
     let course: any;
 
     if (categoryId) {
@@ -128,7 +154,7 @@ class CourseService {
         where: { id: categoryId },
       });
       if (!category) {
-        throw new APIError("Invalid category ID: " + categoryId, 404);
+        ResponseFormatter.notFound("Invalid category ID: " + categoryId);
       }
 
       course = await prisma.categoryOnCourses.findFirst({
@@ -152,7 +178,7 @@ class CourseService {
     }
 
     if (!course) {
-      throw new APIError(`Course id: ${id} did not match any course.`, 404);
+      ResponseFormatter.notFound(`Course id: ${id} did not match any course.`);
     }
 
     const categories = await prisma.categoryOnCourses.findMany({
@@ -161,40 +187,42 @@ class CourseService {
     });
 
     course.categories = categories;
-    return this.formatResponse(categoryId ? course : { course });
+    const response = ResponseFormatter.ok(categoryId ? course : { course });
+    await this.setCachedData(cacheKey, response, this.CACHE_TTL.COURSE);
+    return response;
   }
 
   async getCourses(Payload: IGetCoursesBody): Promise<IResponse> {
     const { query, categoryId } = Payload;
-    let Options: any;
-    const price = query.price ? Number(query.price) : undefined;
-    const purchased = query.purchased ? Number(query.purchased) : undefined;
-    const averageRatings = query.averageRatings
-      ? Number(query.averageRatings)
-      : undefined;
-    let numberOfCourses = await prisma.course.count();
     const cacheKey = `courses:${stringify(
       categoryId ? `${categoryId}:${stringify(query)}` : query
     )}`;
-    const filterWith = { price, purchased, averageRatings };
-    const cachedData = await redis.get(cacheKey);
+
+    const filterWith = {
+      price: query.price ? Number(query.price) : undefined,
+      purchased: query.purchased ? Number(query.purchased) : undefined,
+      averageRatings: query.averageRatings
+        ? Number(query.averageRatings)
+        : undefined,
+    };
+    const cachedData = await this.getCachedData<IResponse>(cacheKey);
     if (cachedData) {
-      return JSON.parse(cachedData);
+      return ResponseFormatter.ok(
+        cachedData.data,
+        "Courses retrieved from cache",
+        { fromCache: true }
+      );
     }
+
     let courses: any;
+    let Options: any;
     if (categoryId) {
       const category = await prisma.category.findUnique({
         where: { id: categoryId },
       });
-      numberOfCourses = await prisma.categoryOnCourses.count({
-        where: {
-          categoryName: category?.name,
-        },
-      });
       if (!category) {
-        throw new APIError("Invalid category id: " + categoryId, 404);
+        ResponseFormatter.notFound("Invalid category id: " + categoryId);
       }
-      const filterWith = { price, purchased, averageRatings };
       Options = searchFilterOptions(filterWith, query);
       Options[0].categories = {
         some: {
@@ -224,11 +252,20 @@ class CourseService {
       });
       course.categories = categories;
     }
-    const response = this.formatResponse({ courses, size: numberOfCourses });
-    await redis.setEx(
+    const response = ResponseFormatter.ok(
+      { courses, size: courses.length },
+      "Courses retrieved successfully",
+      {
+        fromCache: false,
+        cacheTTL: categoryId
+          ? this.CACHE_TTL.CATEGORY_COURSES
+          : this.CACHE_TTL.COURSES,
+      }
+    );
+    await this.setCachedData(
       cacheKey,
-      categoryId ? 86400 : 3600,
-      JSON.stringify(response)
+      response,
+      categoryId ? this.CACHE_TTL.CATEGORY_COURSES : this.CACHE_TTL.COURSES
     );
     return response;
   }
@@ -243,9 +280,13 @@ class CourseService {
       ...rest,
     })}`;
 
-    const cachedData = await redis.get(cacheKey);
+    const cachedData = await this.getCachedData<IResponse>(cacheKey);
     if (cachedData) {
-      return this.formatResponse({ courses: JSON.parse(cachedData) });
+      return ResponseFormatter.ok(
+        cachedData.data,
+        "Search results retrieved from cache",
+        { fromCache: true }
+      );
     }
 
     const filterWith = { price, purchased, averageRatings };
@@ -272,7 +313,9 @@ class CourseService {
       ...Options[1],
     });
 
-    return this.formatResponse({ courses });
+    const response = ResponseFormatter.ok({ courses });
+    await this.setCachedData(cacheKey, response, this.CACHE_TTL.SEARCH);
+    return response;
   }
 
   async deleteCourse(Payload: IDeleteCourseBody): Promise<IResponse> {
@@ -286,9 +329,8 @@ class CourseService {
     });
 
     if (!course) {
-      throw new APIError(
-        `Course id: ${courseId} did not match any course.`,
-        404
+      ResponseFormatter.notFound(
+        `Course id: ${courseId} did not match any course.`
       );
     }
 
@@ -298,10 +340,15 @@ class CourseService {
       });
       await this.clearCourseCache();
     } else {
-      throw new APIError("You are not authorized to delete this course", 401);
+      ResponseFormatter.unauthorized(
+        "You are not authorized to delete this course"
+      );
     }
 
-    return this.formatResponse(null, 200, "Course deleted successfully");
+    return ResponseFormatter.ok(
+      { message: "Course deleted successfully" },
+      "Course deleted successfully"
+    );
   }
 
   async updateCourse(Payload: IUpdateCourseBody): Promise<IResponse> {
@@ -313,14 +360,16 @@ class CourseService {
     });
 
     if (!course) {
-      throw new APIError(`Course id: ${id} did not match any course.`, 404);
+      ResponseFormatter.notFound(`Course id: ${id} did not match any course.`);
     }
 
     if (
       course.publisherId !== publisherId &&
       course.publisher?.role !== "ADMIN"
     ) {
-      throw new APIError("You are not authorized to update this course", 401);
+      ResponseFormatter.unauthorized(
+        "You are not authorized to update this course"
+      );
     }
 
     const updateData: any = {};
@@ -342,7 +391,10 @@ class CourseService {
     }
 
     await this.clearCourseCache();
-    return this.formatResponse({ course: updatedCourse });
+    return ResponseFormatter.ok(
+      { course: updatedCourse },
+      "Course updated successfully"
+    );
   }
 
   async updateCourseThumbnail(
@@ -356,14 +408,16 @@ class CourseService {
     });
 
     if (!course) {
-      throw new APIError(`Course id: ${id} did not match any course.`, 404);
+      ResponseFormatter.notFound(`Course id: ${id} did not match any course.`);
     }
 
     if (
       course.publisherId !== publisherId &&
       course.publisher?.role !== "ADMIN"
     ) {
-      throw new APIError("You are not authorized to update this course", 401);
+      ResponseFormatter.unauthorized(
+        "You are not authorized to update this course"
+      );
     }
 
     const thumbnailUrl = await this.uploadThumbnail(thumbnail);
@@ -374,7 +428,10 @@ class CourseService {
     });
 
     await this.clearCourseCache();
-    return this.formatResponse({ course: updatedCourse });
+    return ResponseFormatter.ok(
+      { course: updatedCourse },
+      "Course thumbnail updated successfully"
+    );
   }
 }
 
