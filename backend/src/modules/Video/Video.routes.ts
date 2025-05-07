@@ -4,8 +4,10 @@ import { validate } from "../../utils/validation";
 import isAuthenticated from "../../middlewares/isAuthenticated";
 import isAuthorized from "../../middlewares/isAuthorized";
 import {
-  VideoValidation,
-  getVideoOnCourseValidation,
+  deleteVideoValidation,
+  editVideoValidation,
+  getVideoByIdValidation,
+  getVideosOnCourseValidation,
   updateVideoValidation,
   uploadVideoValidation,
 } from "./Video.validation";
@@ -20,7 +22,9 @@ import {
 } from "./Video.controller";
 import isCourseAuthor from "../../middlewares/isCourseAuthor";
 import hasAccess from "../../middlewares/hasAccess";
+
 const router = express.Router({ mergeParams: true });
+
 
 router.post(
   "/",
@@ -34,19 +38,26 @@ router.post(
   isCourseAuthor,
   uploadVideo
 );
-router.get(
-  "/",
-  isAuthenticated,
-  validate(getVideoOnCourseValidation),
-  getVideosOnCourse
-);
+
+
 router.get(
   "/:videoId",
   isAuthenticated,
-  validate(VideoValidation),
+  validate(getVideoByIdValidation),
   hasAccess,
   getVideoById
 );
+
+
+router.get(
+  "/",
+  isAuthenticated,
+  validate(getVideosOnCourseValidation),
+  hasAccess,
+  getVideosOnCourse
+);
+
+
 router.patch(
   "/:videoId",
   isAuthenticated,
@@ -55,30 +66,37 @@ router.patch(
   isCourseAuthor,
   updateVideo
 );
+
+
+router.put(
+  "/:videoId/edit",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  uplaoder.single("video"),
+  validate(editVideoValidation),
+  isCourseAuthor,
+  editVideoCtrl
+);
+
+
+router.put(
+  "/:videoId/thumbnail",
+  isAuthenticated,
+  isAuthorized("ADMIN", "TEACHER"),
+  uplaoder.single("image"),
+  validate(getVideoByIdValidation),
+  isCourseAuthor,
+  editThumbnail
+);
+
+
 router.delete(
   "/:videoId",
   isAuthenticated,
   isAuthorized("ADMIN", "TEACHER"),
-  validate(VideoValidation),
+  validate(deleteVideoValidation),
   isCourseAuthor,
   deleteVideo
 );
-router.patch(
-  "/:videoId/video",
-  isAuthenticated,
-  isAuthorized("ADMIN", "TEACHER"),
-  uplaoder.fields([{ name: "video", maxCount: 1 }]),
-  validate(VideoValidation),
-  isCourseAuthor,
-  editVideoCtrl
-);
-router.patch(
-  "/:videoId/thumbnail",
-  isAuthenticated,
-  isAuthorized("ADMIN", "TEACHER"),
-  uplaoder.fields([{ name: "image", maxCount: 1 }]),
-  validate(VideoValidation),
-  isCourseAuthor,
-  editThumbnail
-);
+
 export const videoRouter = router;
