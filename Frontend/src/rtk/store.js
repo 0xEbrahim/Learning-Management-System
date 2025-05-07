@@ -4,6 +4,7 @@ import userDataReducer from "./slices/userSlice";
 import coursesPageReducer from "./slices/coursesPageNo";
 import courseAuthorIdReducer from "./slices/courseAuthorID";
 import notificationsReducer from "./slices/socketNotifcationsSlice"
+import courseSectionsReducer from "./slices/courseSections"
 
 const store = configureStore({
   reducer:{
@@ -11,7 +12,8 @@ const store = configureStore({
     user:userDataReducer,
     pageNo:coursesPageReducer,
     authorId:courseAuthorIdReducer,
-    notifications:notificationsReducer
+    notifications:notificationsReducer,
+    sections:courseSectionsReducer
   },
 });
 

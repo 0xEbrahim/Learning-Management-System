@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
-import { useState , useEffect  , useRef } from "react";
+import { useState , useEffect  } from "react";
+import { useDispatch } from "react-redux";
 import api from "../axiosInstance";
 import Loading from "../components/loading";
 import { FiShoppingBag } from "react-icons/fi";
@@ -11,19 +12,21 @@ import { IoIosLock } from "react-icons/io";
 import { NavLink , Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import styles from "./coursePage.module.css";
-import { useDispatch } from "react-redux";
 import { setAuthorId } from "../rtk/slices/courseAuthorID";
 import { useSelector } from "react-redux";
 import { MdAddBox } from "react-icons/md";
-
+import useGetSections from "../customHooks/useGetSections";
+import CourseSection from "../components/courseSections";
+import { setSections } from "../rtk/slices/courseSections";
 function CoursePage(){
     const dispatch=useDispatch();
     const {courseId}=useParams();
     const [ course , setCourse ]=useState({});
     const [showForm,setShowForm]=useState(false);
     const [ loading , setLoading]=useState(true);
+    const sections=useGetSections(courseId);
+    dispatch(setSections(sections));
     const [sectionNameInput,setSectionNameInput]=useState("");
-    // const pageRef=useRef(null);
     const [showContentRoute,setShowContentRoute]=useState(false);
     //re-render when refresh
     const userData=useSelector((state)=>state.user.userData);
@@ -129,16 +132,19 @@ function CoursePage(){
                             <Outlet/>
                         </div>
                     </div>
-                    <div className=" course-content col-span-1 bg-white p-2 h-fit xl:block hidden">
-                       <div className="flex justify-between items-center">
+                    <div className=" course-content col-span-1 bg-white  h-fit xl:block hidden border-1 border-gray-200 shadow-sm">
+                       <div className="flex justify-between items-center p-3">
                             <h2 className="font-[600]">Course Content</h2>
                             <MdAddBox onClick={()=>{setShowForm(true)}} className=" add-section cursor-pointer text-2xl text-indigo-600"/>
                        </div>
-                        {showForm ? <div className="add-section-form mt-3">
+                        {showForm ? <div className="add-section-form mb-3 px-3">
                                         <input className="bg-gray-50 border-1 border-gray-300 rounded-sm outline-none mt-2 px-2 py-1 text-sm" placeholder="add section" value={sectionNameInput} onChange={(e)=>{setSectionNameInput(e.target.value)}}/>
                                         <button onClick={()=>{addSection()}} className="w-full px-2 py-1 bg-indigo-600 text-white mt-2 rounded-sm text-[12px] font-[500] cursor-pointer">add</button>
                                         <button onClick={()=>{setShowForm(false)}} className="w-full px-2 py-1 bg-gray-200 text-indigo-600 mt-1 rounded-sm text-[12px] font-[500] cursor-pointer">cancel</button>
                                     </div> : null}
+                        <div className="sections w-full">
+                            <CourseSection />
+                        </div>
                     </div>
                 </div>
             </div>
