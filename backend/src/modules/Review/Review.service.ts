@@ -1,6 +1,8 @@
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
+import ResponseFormatter from "../../utils/responseFormatter";
+import redis from "../../config/redis";
 import {
   CourseExists,
   updateCourseRating,
@@ -15,6 +17,16 @@ import {
 } from "./Review.interface";
 
 class ReviewService {
+  private readonly CACHE_TTL = 3600;
+
+  private REVIEW_CACHE_KEY(reviewId: string, courseId: string): string {
+    return `review:${courseId}:${reviewId}`;
+  }
+
+  private REVIEWS_COURSE_CACHE_KEY(courseId: string): string {
+    return `reviews:course:${courseId}`;
+  }
+
   async createReview(Payload: ICreateReviewBody): Promise<IResponse> {
     const { courseId, rating, review: rev, userId } = Payload;
     if (!(await CourseExists(courseId)))
@@ -28,19 +40,13 @@ class ReviewService {
       },
     });
     if (!review) throw new APIError("Error while creating the review", 500);
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 201,
-      data: {
-        review,
-      },
-    };
     try {
       await updateCourseRating(courseId);
+      await redis.del(this.REVIEWS_COURSE_CACHE_KEY(courseId));
     } catch (error: any) {
       throw new APIError(error.message, 400);
     }
-    return response;
+    return ResponseFormatter.created({ review });
   }
 
   async getReviewById(Payload: IGetReviewByIdBody): Promise<IResponse> {
@@ -51,6 +57,18 @@ class ReviewService {
       },
     });
     if (!course) throw new APIError("Invalid course id", 404);
+
+    const cachedReview = await redis.get(
+      this.REVIEW_CACHE_KEY(reviewId, courseId)
+    );
+    if (cachedReview) {
+      return ResponseFormatter.ok(
+        { review: JSON.parse(cachedReview) },
+        "Review retrieved from cache",
+        { fromCache: true }
+      );
+    }
+
     const review = await prisma.review.findFirst({
       where: {
         id: reviewId,
@@ -66,21 +84,37 @@ class ReviewService {
       },
     });
     if (!review) throw new APIError("Invalid review Id", 404);
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        review,
-      },
-    };
-    return response;
+
+    await redis.setEx(
+      this.REVIEW_CACHE_KEY(reviewId, courseId),
+      this.CACHE_TTL,
+      JSON.stringify(review)
+    );
+
+    return ResponseFormatter.ok({ review }, "Review retrieved successfully", {
+      fromCache: false,
+      cacheTTL: this.CACHE_TTL,
+    });
   }
+
   async getReviewsOnCourse(
     Payload: IGetReviewsOnCourseBody
   ): Promise<IResponse> {
     const { courseId, query } = Payload;
     if (!(await CourseExists(courseId)))
       throw new APIError("Course id did not match any course", 404);
+
+    const cachedReviews = await redis.get(
+      this.REVIEWS_COURSE_CACHE_KEY(courseId)
+    );
+    if (cachedReviews) {
+      return ResponseFormatter.ok(
+        { reviews: JSON.parse(cachedReviews) },
+        "Reviews retrieved from cache",
+        { fromCache: true }
+      );
+    }
+
     const options = searchFilterOptions({}, query);
     const reviews = await prisma.review.findMany({
       where: {
@@ -89,14 +123,17 @@ class ReviewService {
       },
       ...options[1],
     });
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        reviews,
-      },
-    };
-    return response;
+
+    await redis.setEx(
+      this.REVIEWS_COURSE_CACHE_KEY(courseId),
+      this.CACHE_TTL,
+      JSON.stringify(reviews)
+    );
+
+    return ResponseFormatter.ok({ reviews }, "Reviews retrieved successfully", {
+      fromCache: false,
+      cacheTTL: this.CACHE_TTL,
+    });
   }
 
   async updateReview(Payload: IUpdateReviewBody): Promise<IResponse> {
@@ -120,19 +157,16 @@ class ReviewService {
         rating: rating,
       },
     });
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        review,
-      },
-    };
     try {
       await updateCourseRating(courseId);
+      await Promise.all([
+        redis.del(this.REVIEW_CACHE_KEY(reviewId, courseId)),
+        redis.del(this.REVIEWS_COURSE_CACHE_KEY(courseId)),
+      ]);
     } catch (error: any) {
       throw new APIError(error.message, 400);
     }
-    return response;
+    return ResponseFormatter.ok({ review });
   }
 
   async deleteReview(Payload: IDeleteReviewBody): Promise<IResponse> {
@@ -154,15 +188,14 @@ class ReviewService {
     });
     try {
       await updateCourseRating(courseId);
+      await Promise.all([
+        redis.del(this.REVIEW_CACHE_KEY(reviewId, courseId)),
+        redis.del(this.REVIEWS_COURSE_CACHE_KEY(courseId)),
+      ]);
     } catch (error: any) {
       throw new APIError(error.message, 400);
     }
-    const response: IResponse = {
-      status: "Success",
-      message: "Review deleted successfully",
-      statusCode: 200,
-    };
-    return response
+    return ResponseFormatter.ok(undefined, "Review deleted successfully");
   }
 }
 
