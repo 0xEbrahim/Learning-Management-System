@@ -10,13 +10,23 @@ import {
   updateVideoBody,
   uploadVideoBody,
 } from "./Video.interface";
-import APIError from "../../utils/APIError";
 import {
   cleanVideoData,
-  isCourseAuthor,
 } from "../../utils/Functions/functions";
+import ResponseFormatter from "../../utils/responseFormatter";
+import redis from "../../config/redis";
 
 class VideoService {
+  private readonly CACHE_TTL = 3600;
+
+  private VIDEO_CACHE_KEY(videoId: string, courseId: string): string {
+    return `video:${courseId}:${videoId}`;
+  }
+
+  private VIDEOS_COURSE_CACHE_KEY(courseId: string): string {
+    return `videos:course:${courseId}`;
+  }
+
   async uploadVideo(Payload: uploadVideoBody): Promise<IResponse> {
     const {
       video,
@@ -25,7 +35,6 @@ class VideoService {
       title,
       courseId,
       sectionId,
-      userId,
     } = Payload;
     let videoThumbnailUpload: any = await cloudinary.uploader.upload(
       videoThumbnail,
@@ -65,33 +74,44 @@ class VideoService {
         sectionId: sectionId,
       },
     });
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 201,
-      data: {
-        Video,
-      },
-    };
-    return response;
+
+    await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
+
+    return ResponseFormatter.created({ Video });
   }
 
   async getVideoById(Payload: VideoByIdBody): Promise<IResponse> {
     const { courseId, videoId } = Payload;
+
+    const cachedVideo = await redis.get(
+      this.VIDEO_CACHE_KEY(videoId, courseId)
+    );
+    if (cachedVideo) {
+      return ResponseFormatter.ok(
+        { video: JSON.parse(cachedVideo) },
+        "Video retrieved from cache",
+        { fromCache: true }
+      );
+    }
+
     const video = await prisma.video.findFirst({
       where: {
         id: videoId,
         courseId: courseId,
       },
     });
-    if (!video) throw new APIError("Invalid video ID", 404);
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        video,
-      },
-    };
-    return response;
+    if (!video) ResponseFormatter.notFound("Invalid video ID");
+
+    await redis.setEx(
+      this.VIDEO_CACHE_KEY(videoId, courseId),
+      this.CACHE_TTL,
+      JSON.stringify(video)
+    );
+
+    return ResponseFormatter.ok({ video }, "Video retrieved successfully", {
+      fromCache: false,
+      cacheTTL: this.CACHE_TTL,
+    });
   }
 
   async deleteVideo(Payload: VideoByIdBody): Promise<IResponse> {
@@ -102,18 +122,22 @@ class VideoService {
         courseId: courseId,
       },
     });
-    if (!video) throw new APIError("Invalid video ID", 404);
+    if (!video) ResponseFormatter.notFound("Invalid video ID");
     await prisma.video.delete({
       where: {
         id: videoId,
       },
     });
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      message: "Video deleted successfully",
-    };
-    return response;
+
+    await Promise.all([
+      redis.del(this.VIDEO_CACHE_KEY(videoId, courseId)),
+      redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId)),
+    ]);
+
+    return ResponseFormatter.ok(
+      { message: "Video deleted successfully" },
+      "Video deleted successfully"
+    );
   }
 
   async updateVideo(Payload: updateVideoBody): Promise<IResponse> {
@@ -124,7 +148,7 @@ class VideoService {
         courseId: courseId,
       },
     });
-    if (!video) throw new APIError("Invalid video ID", 404);
+    if (!video) ResponseFormatter.notFound("Invalid video ID");
     video = await prisma.video.update({
       where: {
         id: videoId,
@@ -134,16 +158,15 @@ class VideoService {
         title: title,
       },
     });
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      message: "Video updated successfully",
-      data: {
-        video,
-      },
-    };
-    return response;
+
+    await Promise.all([
+      redis.del(this.VIDEO_CACHE_KEY(videoId, courseId)),
+      redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId)),
+    ]);
+
+    return ResponseFormatter.ok({ video }, "Video updated successfully");
   }
+
   async editVideo(Payload: editVideo): Promise<IResponse> {
     const { courseId, videoId, video, videoLength } = Payload;
     let Video = await prisma.video.findFirst({
@@ -152,7 +175,7 @@ class VideoService {
         courseId: courseId,
       },
     });
-    if (!Video) throw new APIError("Invalid video ID", 404);
+    if (!Video) ResponseFormatter.notFound("Invalid video ID");
     let videoUpload: any = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_large(
         video,
@@ -182,14 +205,13 @@ class VideoService {
         videoLength: Number(videoLength) * 60,
       },
     });
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        Video,
-      },
-    };
-    return response;
+
+    await Promise.all([
+      redis.del(this.VIDEO_CACHE_KEY(videoId, courseId)),
+      redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId)),
+    ]);
+
+    return ResponseFormatter.ok({ Video });
   }
 
   async editThumbnail(Payload: editThumbnailBody): Promise<IResponse> {
@@ -200,7 +222,7 @@ class VideoService {
         courseId: courseId,
       },
     });
-    if (!video) throw new APIError("Invalid video ID", 404);
+    if (!video) ResponseFormatter.notFound("Invalid video ID");
     let videoThumbnailUpload: any = await cloudinary.uploader.upload(
       thumbnail,
       {
@@ -219,18 +241,29 @@ class VideoService {
         videoThumbnail: videoThumbnailUpload,
       },
     });
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        video,
-      },
-    };
-    return response;
+
+    // Invalidate caches
+    await Promise.all([
+      redis.del(this.VIDEO_CACHE_KEY(videoId, courseId)),
+      redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId)),
+    ]);
+
+    return ResponseFormatter.ok({ video });
   }
 
   async getVideosOnCourse(Payload: IGetVideosOnCourseBody): Promise<IResponse> {
     const { courseId, userId } = Payload;
+
+    const cachedVideos = await redis.get(
+      this.VIDEOS_COURSE_CACHE_KEY(courseId)
+    );
+    if (cachedVideos) {
+      const videos = JSON.parse(cachedVideos);
+      return ResponseFormatter.ok({ videos }, "Videos retrieved from cache", {
+        fromCache: true,
+      });
+    }
+
     const course = await prisma.course.findUnique({
       where: {
         id: courseId,
@@ -239,7 +272,7 @@ class VideoService {
         courseData: true,
       },
     });
-    if (!course) throw new APIError("Invalid course ID: " + courseId, 404);
+    if (!course) ResponseFormatter.notFound("Invalid course ID: " + courseId);
     const videos = course.courseData;
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -255,14 +288,17 @@ class VideoService {
     if (!purchasedOrOwned) {
       for (let i = 0; i < videos.length; i++) cleanVideoData(videos[i]);
     }
-    const response: IResponse = {
-      status: "Success",
-      statusCode: 200,
-      data: {
-        videos,
-      },
-    };
-    return response;
+
+    await redis.setEx(
+      this.VIDEOS_COURSE_CACHE_KEY(courseId),
+      this.CACHE_TTL,
+      JSON.stringify(videos)
+    );
+
+    return ResponseFormatter.ok({ videos }, "Videos retrieved successfully", {
+      fromCache: false,
+      cacheTTL: this.CACHE_TTL,
+    });
   }
 }
 
