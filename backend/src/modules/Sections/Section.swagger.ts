@@ -22,6 +22,10 @@
  *         updatedAt:
  *           type: string
  *           format: date-time
+ *         Video:
+ *           type: array
+ *           items:
+ *             $ref: '#/components/schemas/Video'
  *
  *     SectionResponse:
  *       type: object
@@ -58,24 +62,11 @@
  *     CreateSectionRequest:
  *       type: object
  *       required:
- *         - courseId
  *         - name
  *       properties:
- *         courseId:
- *           type: string
- *           example: "60f8d1f9a9b8c71f3c3e3e3e"
  *         name:
  *           type: string
  *           example: "Advanced Concepts"
- *
- *     GetSectionsRequest:
- *       type: object
- *       required:
- *         - courseId
- *       properties:
- *         courseId:
- *           type: string
- *           example: "60f8d1f9a9b8c71f3c3e3e3e"
  */
 
 /**
@@ -87,12 +78,19 @@
 
 /**
  * @swagger
- * /api/v1/sections:
+ * /api/v1/courses/{courseId}/sections:
  *   post:
  *     summary: Create a new course section (Teacher/Admin only)
  *     tags: [Sections]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the course
  *     requestBody:
  *       required: true
  *       content:
@@ -118,18 +116,19 @@
 
 /**
  * @swagger
- * /api/v1/sections:
+ * /api/v1/courses/{courseId}/sections:
  *   get:
  *     summary: Get all sections for a course
  *     tags: [Sections]
  *     security:
  *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/GetSectionsRequest'
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the course
  *     responses:
  *       200:
  *         description: List of sections
@@ -143,4 +142,88 @@
  *         description: Unauthorized
  *       404:
  *         description: Course not found
+ */
+
+/**
+ * @swagger
+ * /api/v1/courses/{courseId}/sections/{id}:
+ *   get:
+ *     summary: Get a section by ID
+ *     tags: [Sections]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the course
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the section
+ *     responses:
+ *       200:
+ *         description: Section details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/SectionResponse'
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: Course or section not found
+ */
+
+/**
+ * @swagger
+ * /api/v1/courses/{courseId}/sections/{id}:
+ *   delete:
+ *     summary: Delete a section (Teacher/Admin only)
+ *     tags: [Sections]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the course
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the section to delete
+ *     responses:
+ *       200:
+ *         description: Section and its videos deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "Success"
+ *                 statusCode:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: "Section and its videos deleted successfully"
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized or not course author
+ *       403:
+ *         description: Forbidden (not teacher/admin)
+ *       404:
+ *         description: Course or section not found
  */
