@@ -2,6 +2,8 @@ import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import APIError from "../../utils/APIError";
 import { CourseExists } from "../../utils/Functions/functions";
+import redis from "../../config/redis";
+import ResponseFormatter from "../../utils/responseFormatter";
 import {
   ICreateSectionBody,
   IDeleteSectionBody,
@@ -10,11 +12,17 @@ import {
 } from "./Section.interface";
 
 class SectionService {
+  private readonly CACHE_TTL = 3600;
+  private readonly SECTIONS_CACHE_KEY = (courseId: string) =>
+    `sections:${courseId}`;
+  private readonly SECTION_CACHE_KEY = (courseId: string, sectionId: string) =>
+    `section:${courseId}:${sectionId}`;
+
   async createSection(Payload: ICreateSectionBody): Promise<IResponse> {
     const { courseId, name, userId } = Payload;
 
     if (!(await CourseExists(courseId))) {
-      throw new APIError("Course not found", 404);
+      ResponseFormatter.notFound("Course not found");
     }
 
     const existingSection = await prisma.courseSections.findFirst({
@@ -28,9 +36,8 @@ class SectionService {
     });
 
     if (existingSection) {
-      throw new APIError(
-        "A section with this name already exists in the course",
-        409
+      ResponseFormatter.conflict(
+        "A section with this name already exists in the course"
       );
     }
 
@@ -54,18 +61,40 @@ class SectionService {
       },
     });
 
-    return {
-      status: "Success",
-      statusCode: 201,
-      data: { section },
-    };
+    await redis.del(this.SECTIONS_CACHE_KEY(courseId));
+
+    return ResponseFormatter.created(
+      { section },
+      "Section created successfully",
+      {
+        cacheInvalidated: true,
+        videoCount: section.Video.length,
+      }
+    );
   }
 
   async getSections(Payload: IGetSectionsBody): Promise<IResponse> {
     const { courseId } = Payload;
 
     if (!(await CourseExists(courseId))) {
-      throw new APIError("Course not found", 404);
+      ResponseFormatter.notFound("Course not found");
+    }
+
+    const cachedSections = await redis.get(this.SECTIONS_CACHE_KEY(courseId));
+    if (cachedSections) {
+      const sections = JSON.parse(cachedSections);
+      return ResponseFormatter.ok(
+        { sections },
+        "Sections retrieved from cache",
+        {
+          fromCache: true,
+          sectionCount: sections.length,
+          totalVideos: sections.reduce(
+            (acc: number, section: any) => acc + section.Video.length,
+            0
+          ),
+        }
+      );
     }
 
     const sections = await prisma.courseSections.findMany({
@@ -91,18 +120,43 @@ class SectionService {
       },
     });
 
-    return {
-      status: "Success",
-      statusCode: 200,
-      data: { sections },
-    };
+    await redis.setEx(
+      this.SECTIONS_CACHE_KEY(courseId),
+      this.CACHE_TTL,
+      JSON.stringify(sections)
+    );
+
+    return ResponseFormatter.ok(
+      { sections },
+      "Sections retrieved successfully",
+      {
+        fromCache: false,
+        sectionCount: sections.length,
+        totalVideos: sections.reduce(
+          (acc, section) => acc + section.Video.length,
+          0
+        ),
+        cacheTTL: this.CACHE_TTL,
+      }
+    );
   }
 
   async getSectionById(Payload: IGetSectionByIdBody): Promise<IResponse> {
     const { courseId, sectionId } = Payload;
 
     if (!(await CourseExists(courseId))) {
-      throw new APIError("Course not found", 404);
+      ResponseFormatter.notFound("Course not found");
+    }
+
+    const cachedSection = await redis.get(
+      this.SECTION_CACHE_KEY(courseId, sectionId)
+    );
+    if (cachedSection) {
+      const section = JSON.parse(cachedSection);
+      return ResponseFormatter.ok({ section }, "Section retrieved from cache", {
+        fromCache: true,
+        videoCount: section.Video.length,
+      });
     }
 
     const section = await prisma.courseSections.findFirst({
@@ -129,14 +183,20 @@ class SectionService {
     });
 
     if (!section) {
-      throw new APIError("Section not found", 404);
+      ResponseFormatter.notFound("Section not found");
     }
 
-    return {
-      status: "Success",
-      statusCode: 200,
-      data: { section },
-    };
+    await redis.setEx(
+      this.SECTION_CACHE_KEY(courseId, sectionId),
+      this.CACHE_TTL,
+      JSON.stringify(section)
+    );
+
+    return ResponseFormatter.ok({ section }, "Section retrieved successfully", {
+      fromCache: false,
+      videoCount: section.Video.length,
+      cacheTTL: this.CACHE_TTL,
+    });
   }
 
   async deleteSection(Payload: IDeleteSectionBody): Promise<IResponse> {
@@ -154,10 +214,12 @@ class SectionService {
       });
 
       if (!section) {
-        throw new APIError("Section not found", 404);
+        ResponseFormatter.notFound("Section not found");
       }
 
-      if (section.Video.length > 0) {
+      const videoCount = section.Video.length;
+
+      if (videoCount > 0) {
         await tx.video.deleteMany({
           where: {
             sectionId: sectionId,
@@ -171,11 +233,18 @@ class SectionService {
         },
       });
 
-      return {
-        status: "Success",
-        statusCode: 200,
-        message: "Section and its videos deleted successfully",
-      };
+      await Promise.all([
+        redis.del(this.SECTION_CACHE_KEY(courseId, sectionId)),
+        redis.del(this.SECTIONS_CACHE_KEY(courseId)),
+      ]);
+
+      return ResponseFormatter.ok(
+        { deletedVideos: videoCount },
+        "Section and its videos deleted successfully",
+        {
+          cacheInvalidated: true,
+        }
+      );
     });
   }
 }

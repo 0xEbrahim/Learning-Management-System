@@ -15,7 +15,17 @@ import {
   getSections,
 } from "./Section.controller";
 import isCourseAuthor from "../../middlewares/isCourseAuthor";
+
 const router = express.Router({ mergeParams: true });
+
+router.get("/", isAuthenticated, validate(getSectionsValidation), getSections);
+
+router.get(
+  "/:id",
+  isAuthenticated,
+  validate(getSectionByIdValidation),
+  getSectionById
+);
 
 router.post(
   "/",
@@ -25,13 +35,7 @@ router.post(
   isCourseAuthor,
   createSection
 );
-router.get("/", isAuthenticated, validate(getSectionsValidation), getSections);
-router.get(
-  "/:id",
-  isAuthenticated,
-  validate(getSectionByIdValidation),
-  getSectionById
-);
+
 router.delete(
   "/:id",
   isAuthenticated,
@@ -40,4 +44,5 @@ router.delete(
   isCourseAuthor,
   deleteSection
 );
+
 export const sectionRouter = router;
