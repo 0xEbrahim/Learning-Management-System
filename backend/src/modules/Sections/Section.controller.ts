@@ -13,7 +13,7 @@ import sendResponse from "../../utils/sendResponse";
 export const createSection = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
     const data: ICreateSectionBody = {
-      courseId: req.body.courseId,
+      courseId: req.params.courseId,
       name: req.body.name,
       userId: req.User?.id ?? "",
     };
@@ -25,7 +25,7 @@ export const createSection = asyncHandler(
 export const getSections = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
     const data: IGetSectionsBody = {
-      courseId: req.body.courseId,
+      courseId: req.params.courseId,
     };
     const result: IResponse = await SectionService.getSections(data);
     sendResponse(result, res);
@@ -35,7 +35,7 @@ export const getSections = asyncHandler(
 export const getSectionById = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
     const data: IGetSectionByIdBody = {
-      courseId: req.body.courseId,
+      courseId: req.params.courseId,
       sectionId: req.params.id,
     };
     const result = await SectionService.getSectionById(data);
@@ -46,7 +46,7 @@ export const getSectionById = asyncHandler(
 export const deleteSection = asyncHandler(
   async (req: IRequest, res: Response, next: NextFunction) => {
     const data: IDeleteSectionBody = {
-      courseId: req.body.courseId,
+      courseId: req.params.courseId,
       sectionId: req.params.id,
       userId: req.User?.id ?? "",
     };

@@ -15,7 +15,7 @@ import {
   getSections,
 } from "./Section.controller";
 import isCourseAuthor from "../../middlewares/isCourseAuthor";
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router.post(
   "/",
