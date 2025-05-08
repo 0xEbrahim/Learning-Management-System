@@ -16,15 +16,12 @@ function CourseContent(){
     }
     return(
         <>
-            <div className="flex justify-between items-center p-3">
-                            <h2 className="font-[600]">Course Content</h2>
-                            <MdAddBox onClick={()=>{setShowForm(true)}} className=" add-section cursor-pointer text-2xl text-indigo-600"/>
-            </div>
+
             {showForm ? <div className="add-section-form mb-3 px-3">
                                         <input className="bg-gray-50 border-1 border-gray-300 rounded-sm outline-none mt-2 px-2 py-1 text-sm" placeholder="add section" value={sectionNameInput} onChange={(e)=>{setSectionNameInput(e.target.value)}}/>
                                         <button onClick={()=>{addSection()}} className="px-2 py-1 bg-indigo-600 text-white rounded-sm text-[12px] font-[500] cursor-pointer ms-2">add</button>
                                         <button onClick={()=>{setShowForm(false)}} className="px-2 py-1 bg-gray-200 text-indigo-600 rounded-sm text-[12px] font-[500] cursor-pointer ms-1">cancel</button>
-                                    </div> : null}
+                                    </div> :  <MdAddBox onClick={()=>{setShowForm(true)}} className=" add-section cursor-pointer text-2xl text-indigo-600 mb-3"/>}
             <div className="sections">
             <CourseSection/>
             </div>
