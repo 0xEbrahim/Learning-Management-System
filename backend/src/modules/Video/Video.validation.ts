@@ -15,12 +15,7 @@ export const uploadVideoValidation = z.object({
         /^[a-zA-Z0-9\s\-_.,!?()]+$/,
         "Video title can only contain letters, numbers, spaces, and basic punctuation"
       ),
-    videoLength: z
-      .string()
-      .regex(/^\d+$/, "Video length must be a positive number")
-      .refine((val) => parseInt(val) > 0, {
-        message: "Video length must be greater than 0",
-      }),
+    videoLength: z.string(),
     sectionId: sectionIdSchema,
   }),
   params: z.object({
