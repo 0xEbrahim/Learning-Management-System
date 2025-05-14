@@ -15,3 +15,7 @@ export const uploadDemo = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+export const getDemo = asyncHandler(async (req: IRequest, res: Response, next: NextFunction) => {
+    
+})
