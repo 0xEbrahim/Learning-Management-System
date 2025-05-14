@@ -1,6 +1,10 @@
 import fs from "fs";
-import cloudinary from "../../config/cloudinary";
-import { IGetDemoBody, IUploadDemoBody } from "./Demo.interface";
+import {
+  IDeleteDemoBody,
+  IGetDemoBody,
+  IUpdateDemoBody,
+  IUploadDemoBody,
+} from "./Demo.interface";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
 import {
@@ -50,9 +54,35 @@ class DemoService {
   }
   async getOne(Payload: IGetDemoBody): Promise<IResponse> {
     const { courseId } = Payload;
-    const isExist = CourseExists(courseId);
+    const isExist = await CourseExists(courseId);
     if (!isExist) throw new APIError("Invalid courseId", 404);
     const demo = await prisma.demo.findUnique({
+      where: {
+        courseId: courseId,
+      },
+    });
+    if (!demo) throw new APIError("Course does not have a demo video", 400);
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        demo,
+      },
+    };
+    return response;
+  }
+
+  async deleteDemo(Payload: IDeleteDemoBody) {
+    const { courseId } = Payload;
+    const isExist = await CourseExists(courseId);
+    if (!isExist) throw new APIError("Invalid Course Id", 404);
+    const demo = await prisma.demo.findUnique({
+      where: {
+        courseId: courseId,
+      },
+    });
+    if (!demo) throw new APIError("Course does not have a demo video", 400);
+    await prisma.demo.delete({
       where: {
         courseId: courseId,
       },
@@ -60,6 +90,40 @@ class DemoService {
     const response: IResponse = {
       status: "Success",
       statusCode: 200,
+      message: "Demo video deleted successfully",
+    };
+    return response;
+  }
+
+  async updateOne(Payload: IUpdateDemoBody): Promise<IResponse> {
+    const { courseId, video } = Payload;
+    const isExist = await CourseExists(courseId);
+    if (!isExist) throw new APIError("Invalid Course Id", 404);
+    let videoUpload = await uploadLargeVideo(video);
+    videoUpload = videoUpload.secure_url;
+    await fs.promises.unlink(video);
+    let demo = await prisma.demo.findUnique({
+      where: {
+        courseId: courseId,
+      },
+    });
+    if (!demo)
+      throw new APIError(
+        "Course does not have a demo video, Try to upload one",
+        400
+      );
+    demo = await prisma.demo.update({
+      where: {
+        courseId: courseId,
+      },
+      data: {
+        url: videoUpload,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "Demo video updated successfully",
       data: {
         demo,
       },
