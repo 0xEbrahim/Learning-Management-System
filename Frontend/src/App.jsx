@@ -18,6 +18,7 @@ import Author from "./subPages/author.jsx";
 import Reviews from "./subPages/reviews.jsx";
 import FAQ from "./subPages/FAQ.jsx";
 import CourseContent from "./subPages/courseContentPage.jsx";
+import UploadVideoPage from "./pages/uploadVideoPage.jsx";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             <Route path="reviews" element={< Reviews/>}/>
             <Route path="FAQ" element={< FAQ/>}/>
             <Route path="content" element={< CourseContent/>}/>
+            <Route path="uploadVideo/:sectionId" element={< UploadVideoPage/>}/>
           </Route>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="settings" element={<SettingsPage />} />
