@@ -25,3 +25,13 @@ export const getDemo = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+export const deleteDemo = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IGetDemoBody = {
+      courseId: req.params.courseId,
+    };
+    const result: IResponse = await DemoService.deleteDemo(data);
+    sendResponse(result, res);
+  }
+);

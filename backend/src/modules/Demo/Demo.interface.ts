@@ -6,3 +6,7 @@ export interface IUploadDemoBody {
 export interface IGetDemoBody {
   courseId: string;
 }
+
+export interface IDeleteDemoBody {
+  courseId: string;
+}

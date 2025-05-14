@@ -11,3 +11,9 @@ export const GetDemoValidation = z.object({
     courseId: z.string(),
   }),
 });
+
+export const DeleteDemoValidation = z.object({
+  params: z.object({
+    courseId: z.string(),
+  }),
+});
