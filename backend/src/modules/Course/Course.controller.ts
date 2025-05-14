@@ -40,7 +40,7 @@ export const getCourseById = asyncHandler(
 );
 
 export const getCourses = asyncHandler(
-  async (req: IRequest, res: Response, next: NextFunction) => {
+  async (req: IRequest, res: Response, next: NextFunction) => {   
     const data: IGetCoursesBody = {
       query: req.query,
       categoryId: req.params.categoryId,

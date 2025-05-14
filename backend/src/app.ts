@@ -7,10 +7,7 @@ import cookieParser from "cookie-parser";
 import session from "express-session";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import YAML from "yamljs";
-import path from "path";
 import ExpressMongoSanitize from "express-mongo-sanitize";
-import SwaggerUI from "swagger-ui-express";
 import dotenv from "dotenv";
 
 // Config & Utilities

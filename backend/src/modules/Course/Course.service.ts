@@ -197,7 +197,7 @@ class CourseService {
     const cacheKey = `courses:${stringify(
       categoryId ? `${categoryId}:${stringify(query)}` : query
     )}`;
-
+    let size;
     const filterWith = {
       price: query.price ? Number(query.price) : undefined,
       purchased: query.purchased ? Number(query.purchased) : undefined,
@@ -223,6 +223,9 @@ class CourseService {
       if (!category) {
         ResponseFormatter.notFound("Invalid category id: " + categoryId);
       }
+      size = await prisma.categoryOnCourses.count({
+        where: { categoryName: category.name },
+      });
       Options = searchFilterOptions(filterWith, query);
       Options[0].categories = {
         some: {
@@ -237,6 +240,7 @@ class CourseService {
         },
       };
     } else {
+      size = await prisma.course.count();
       Options = searchFilterOptions(filterWith, query);
     }
     courses = await prisma.course.findMany({
@@ -252,7 +256,6 @@ class CourseService {
       });
       course.categories = categories;
     }
-    const size = await prisma.course.count();
     const response = ResponseFormatter.ok(
       { courses, size: size },
       "Courses retrieved successfully",
