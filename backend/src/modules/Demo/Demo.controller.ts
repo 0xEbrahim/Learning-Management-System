@@ -35,3 +35,7 @@ export const deleteDemo = asyncHandler(
     sendResponse(result, res);
   }
 );
+
+export const updateDemo = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {}
+);
