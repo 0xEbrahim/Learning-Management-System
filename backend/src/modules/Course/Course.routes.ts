@@ -24,12 +24,14 @@ import { videoRouter } from "../Video/Video.routes";
 import { userRouter } from "../User/User.routes";
 import { reviewRouter } from "../Review/Review.routes";
 import { sectionRouter } from "../Sections/Section.routes";
+import { demoRouter } from "../Demo/Demo.routes";
 const router = express.Router({ mergeParams: true });
 
 router.use("/:courseId/sections", sectionRouter);
 router.use("/:courseId/videos", videoRouter);
 router.use("/:courseId/users", userRouter);
 router.use("/:courseId/reviews", reviewRouter);
+router.use("/:courseId/demo", demoRouter);
 router.post(
   "/",
   isAuthenticated,

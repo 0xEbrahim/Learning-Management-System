@@ -9,6 +9,7 @@ import { IUser } from "../../modules/User/User.interface";
 import { generatePasswordResetTemplate } from "../../views/passwordResetTemplate";
 import { generateAccountReactiveTemplate } from "../../views/accountReactive";
 import APIError from "../APIError";
+import cloudinary from "../../config/cloudinary";
 
 export const hashPassword = async (password: string) => {
   const hashed = await bcrypt.hash(password, 10);
@@ -49,6 +50,23 @@ export const isCourseBuyer = async (
   );
   return isBuyer;
 };
+export const uploadLargeVideo = (path: string): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    cloudinary.uploader.upload_large(
+      path,
+      {
+        resource_type: "video",
+        folder: "Videos",
+        chunk_size: 6000000,
+      },
+      (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      }
+    );
+  });
+  
+}
 
 export const isCourseBuyerOrAuthor = async (
   courseId: string,
