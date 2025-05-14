@@ -1,7 +1,7 @@
 import { NextFunction, Response } from "express";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import asyncHandler from "../../utils/asyncHandler";
-import { IUploadDemoBody } from "./Demo.interface";
+import { IGetDemoBody, IUploadDemoBody } from "./Demo.interface";
 import DemoService from "./Demo.service";
 import sendResponse from "../../utils/sendResponse";
 
@@ -16,6 +16,12 @@ export const uploadDemo = asyncHandler(
   }
 );
 
-export const getDemo = asyncHandler(async (req: IRequest, res: Response, next: NextFunction) => {
-    
-})
+export const getDemo = asyncHandler(
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IGetDemoBody = {
+      courseId: req.params.courseId,
+    };
+    const result: IResponse = await DemoService.getOne(data);
+    sendResponse(result, res);
+  }
+);

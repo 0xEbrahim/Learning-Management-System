@@ -1,9 +1,13 @@
 import fs from "fs";
 import cloudinary from "../../config/cloudinary";
-import { IUploadDemoBody } from "./Demo.interface";
+import { IGetDemoBody, IUploadDemoBody } from "./Demo.interface";
 import prisma from "../../config/prisma";
 import { IResponse } from "../../Interfaces/types";
-import { uploadLargeVideo } from "../../utils/Functions/functions";
+import {
+  CourseExists,
+  uploadLargeVideo,
+} from "../../utils/Functions/functions";
+import APIError from "../../utils/APIError";
 
 class DemoService {
   async uploadDemo(Payload: IUploadDemoBody): Promise<IResponse> {
@@ -38,6 +42,24 @@ class DemoService {
     const response: IResponse = {
       status: "Success",
       statusCode: 201,
+      data: {
+        demo,
+      },
+    };
+    return response;
+  }
+  async getOne(Payload: IGetDemoBody): Promise<IResponse> {
+    const { courseId } = Payload;
+    const isExist = CourseExists(courseId);
+    if (!isExist) throw new APIError("Invalid courseId", 404);
+    const demo = await prisma.demo.findUnique({
+      where: {
+        courseId: courseId,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
       data: {
         demo,
       },

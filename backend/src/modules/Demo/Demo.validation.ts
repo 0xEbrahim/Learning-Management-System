@@ -5,3 +5,9 @@ export const uploadDemoValidation = z.object({
     courseId: z.string(),
   }),
 });
+
+export const GetDemoValidation = z.object({
+  params: z.object({
+    courseId: z.string(),
+  }),
+});
