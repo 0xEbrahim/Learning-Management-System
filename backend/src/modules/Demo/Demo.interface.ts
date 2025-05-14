@@ -7,4 +7,4 @@ export interface IUploadDemoBody extends IGetDemoBody {
 
 export interface IDeleteDemoBody extends IGetDemoBody {}
 
-export interface IUpdateDemoBody extends IGetDemoBody {}
+export interface IUpdateDemoBody extends IUploadDemoBody {}

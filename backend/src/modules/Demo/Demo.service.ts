@@ -1,8 +1,8 @@
 import fs from "fs";
-import cloudinary from "../../config/cloudinary";
 import {
   IDeleteDemoBody,
   IGetDemoBody,
+  IUpdateDemoBody,
   IUploadDemoBody,
 } from "./Demo.interface";
 import prisma from "../../config/prisma";
@@ -93,6 +93,15 @@ class DemoService {
       message: "Demo video deleted successfully",
     };
     return response;
+  }
+
+  async updateOne(Payload: IUpdateDemoBody) {
+    const { courseId, video } = Payload;
+    const isExist = await CourseExists(courseId);
+    if (!isExist) throw new APIError("Invalid Course Id", 404);
+    let videoUpload = await uploadLargeVideo(video);
+    videoUpload = videoUpload.secure_url;
+    await fs.promises.unlink(video);
   }
 }
 

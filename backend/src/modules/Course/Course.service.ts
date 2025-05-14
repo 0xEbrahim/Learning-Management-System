@@ -252,8 +252,9 @@ class CourseService {
       });
       course.categories = categories;
     }
+    const size = await prisma.course.count();
     const response = ResponseFormatter.ok(
-      { courses, size: courses.length },
+      { courses, size: size },
       "Courses retrieved successfully",
       {
         fromCache: false,

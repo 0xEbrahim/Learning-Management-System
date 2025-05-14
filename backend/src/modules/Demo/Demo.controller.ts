@@ -1,7 +1,11 @@
 import { NextFunction, Response } from "express";
 import { IRequest, IResponse } from "../../Interfaces/types";
 import asyncHandler from "../../utils/asyncHandler";
-import { IGetDemoBody, IUploadDemoBody } from "./Demo.interface";
+import {
+  IGetDemoBody,
+  IUpdateDemoBody,
+  IUploadDemoBody,
+} from "./Demo.interface";
 import DemoService from "./Demo.service";
 import sendResponse from "../../utils/sendResponse";
 
@@ -37,5 +41,10 @@ export const deleteDemo = asyncHandler(
 );
 
 export const updateDemo = asyncHandler(
-  async (req: IRequest, res: Response, next: NextFunction) => {}
+  async (req: IRequest, res: Response, next: NextFunction) => {
+    const data: IUpdateDemoBody = {
+      courseId: req.params.courseId,
+      video: req.file?.path ?? "",
+    };
+  }
 );
