@@ -95,13 +95,40 @@ class DemoService {
     return response;
   }
 
-  async updateOne(Payload: IUpdateDemoBody) {
+  async updateOne(Payload: IUpdateDemoBody): Promise<IResponse> {
     const { courseId, video } = Payload;
     const isExist = await CourseExists(courseId);
     if (!isExist) throw new APIError("Invalid Course Id", 404);
     let videoUpload = await uploadLargeVideo(video);
     videoUpload = videoUpload.secure_url;
     await fs.promises.unlink(video);
+    let demo = await prisma.demo.findUnique({
+      where: {
+        courseId: courseId,
+      },
+    });
+    if (!demo)
+      throw new APIError(
+        "Course does not have a demo video, Try to upload one",
+        400
+      );
+    demo = await prisma.demo.update({
+      where: {
+        courseId: courseId,
+      },
+      data: {
+        url: videoUpload,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      message: "Demo video updated successfully",
+      data: {
+        demo,
+      },
+    };
+    return response;
   }
 }
 

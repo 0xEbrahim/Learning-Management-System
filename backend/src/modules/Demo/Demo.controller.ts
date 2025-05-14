@@ -46,5 +46,7 @@ export const updateDemo = asyncHandler(
       courseId: req.params.courseId,
       video: req.file?.path ?? "",
     };
+    const result: IResponse = await DemoService.updateOne(data);
+    sendResponse(result, res);
   }
 );

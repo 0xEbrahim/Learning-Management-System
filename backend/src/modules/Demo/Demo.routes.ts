@@ -7,6 +7,7 @@ import uplaoder from "../../config/multer";
 import {
   DeleteDemoValidation,
   GetDemoValidation,
+  UpdateDemoValidation,
   uploadDemoValidation,
 } from "./Demo.validation";
 import { validate } from "../../utils/validation";
@@ -30,5 +31,14 @@ router.delete(
   validate(DeleteDemoValidation),
   isCourseAuthor,
   deleteDemo
+);
+router.patch(
+  "/",
+  isAuthenticated,
+  isAuthorized("TEACHER", "ADMIN"),
+  uplaoder.single("video"),
+  validate(UpdateDemoValidation),
+  isCourseAuthor,
+  uploadDemo
 );
 export const demoRouter = router;
