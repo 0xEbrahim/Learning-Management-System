@@ -222,7 +222,7 @@ DEFAULT_PROF_PIC=DEFAULT PFP LINK
 │   │   │   └── functions.ts
 │   │   ├── JWT/
 │   │   │   └── token.ts
-│   │   ├── APIErrir.ts
+│   │   ├── APIError.ts
 │   │   ├── APIFeatures.ts
 │   │   ├── asyncHandler.ts
 │   │   ├── options.ts
