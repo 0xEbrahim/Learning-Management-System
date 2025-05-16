@@ -88,6 +88,9 @@ register.registerMetric(activeRequests);
 
 // Middleware to track requests
 app.use((req, res, next) => {
+  if (req.path === "/metrics") {
+    return next();
+  }
   activeRequests.inc();
   const end = httpRequestDuration.startTimer();
 
