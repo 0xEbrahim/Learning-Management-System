@@ -42,6 +42,7 @@
     "blessed-contrib": "^4.11.0",
     "boxen": "^8.0.1",
     "bull-arena": "^4.5.1",
+    "bullmq": "^5.52.2",
     "cloudinary": "^2.5.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -54,6 +55,7 @@
     "figlet": "^1.8.0",
     "fs-extra": "^11.3.0",
     "helmet": "^8.0.0",
+    "ioredis": "^1.0.11",
     "jsonwebtoken": "^9.0.2",
     "kleur": "^4.1.5",
     "morgan": "^1.10.0",
@@ -85,7 +87,8 @@
   "scripts": {
     "dev": "nodemon",
     "start": "node ./dist/server.js",
-    "build": "tsc && node ./dist/copy.js"
+    "build": "tsc && node ./dist/copy.js",
+    "run:worker":"npx ts-node ./src/Queue/worker.ts"
   },
   "keywords": [],
   "author": "",

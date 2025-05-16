@@ -15,7 +15,6 @@ import passport from "./config/passport";
 import config from "./config/env";
 import redis from "./config/redis";
 import connectSocket from "./Sockets/connect.socket";
-
 // Middlewares
 import { globalErrorHandler, notFound } from "./middlewares/globalError";
 
@@ -47,6 +46,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 import { swaggerOptions } from "./config/swagger";
 import { demoRouter } from "./modules/Demo/Demo.routes";
+import { arenaConfig } from "./Queue/Arena-queue";
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
 app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -101,6 +101,7 @@ app.get("/", async (req, res) => {
 });
 
 // API Routes
+app.use("/", arenaConfig);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/courses", courseRouter);
