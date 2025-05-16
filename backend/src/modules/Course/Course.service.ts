@@ -48,15 +48,7 @@ class CourseService {
     courseId: string,
     categories: string[]
   ): Promise<void> {
-    const categoryNames = await Promise.all(
-      categories.map(async (id) => {
-        const category = await prisma.category.findUnique({
-          where: { id },
-        });
-        return category?.name;
-      })
-    );
-
+    const categoryNames = categories;
     await Promise.all(
       categoryNames.map(async (name) => {
         if (name) {
