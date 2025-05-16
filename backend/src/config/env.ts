@@ -1,3 +1,5 @@
+import dotenv from 'dotenv'
+dotenv.config()
 export default {
   NODE_ENV: process.env.NODE_ENV,
   PORT: parseInt(process.env.PORT as string) as Number,
@@ -37,4 +39,5 @@ export default {
   STRIPE_PUBLIC_KEY: process.env.STRIPE_PUBLIC_KEY as string,
   STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY as string,
   STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET as string,
+  REDIS_QUEUE_URL: process.env.REDIS_QUEUE_URL as string,
 };

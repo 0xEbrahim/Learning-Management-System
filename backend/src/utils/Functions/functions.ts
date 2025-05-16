@@ -10,6 +10,7 @@ import { generatePasswordResetTemplate } from "../../views/passwordResetTemplate
 import { generateAccountReactiveTemplate } from "../../views/accountReactive";
 import APIError from "../APIError";
 import cloudinary from "../../config/cloudinary";
+import { queue } from "../../Queue/queue";
 
 export const hashPassword = async (password: string) => {
   const hashed = await bcrypt.hash(password, 10);
@@ -65,8 +66,7 @@ export const uploadLargeVideo = (path: string): Promise<any> => {
       }
     );
   });
-  
-}
+};
 
 export const isCourseBuyerOrAuthor = async (
   courseId: string,
@@ -84,7 +84,6 @@ export const comparePassword = async (password: string, hashed: string) => {
 export const createEmailVerifyToken = async (user: IUser) => {
   const code = crypto.randomBytes(32).toString("hex");
   const hashed = crypto.createHash("sha256").update(code).digest("hex");
-
   user = await prisma.user.update({
     where: {
       id: user.id,
@@ -100,7 +99,14 @@ export const createEmailVerifyToken = async (user: IUser) => {
     subject: "Email Verify",
     template: generateEmailVerifyTemplate(link),
   };
-  await sendEmail(data);
+  // await sendEmail(data);
+  await queue.add("email", data, {
+    attempts: 50,
+    backoff: {
+      type: "exponential",
+      delay: 1000,
+    },
+  });
 };
 
 export const createReactiveEmail = async (user: IUser) => {

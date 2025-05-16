@@ -10,9 +10,7 @@ import {
   updateVideoBody,
   uploadVideoBody,
 } from "./Video.interface";
-import {
-  cleanVideoData,
-} from "../../utils/Functions/functions";
+import { cleanVideoData } from "../../utils/Functions/functions";
 import ResponseFormatter from "../../utils/responseFormatter";
 import redis from "../../config/redis";
 
@@ -28,14 +26,8 @@ class VideoService {
   }
 
   async uploadVideo(Payload: uploadVideoBody): Promise<IResponse> {
-    const {
-      video,
-      videoLength,
-      videoThumbnail,
-      title,
-      courseId,
-      sectionId,
-    } = Payload;
+    const { video, videoLength, videoThumbnail, title, courseId, sectionId } =
+      Payload;
     let videoThumbnailUpload: any = await cloudinary.uploader.upload(
       videoThumbnail,
       {
