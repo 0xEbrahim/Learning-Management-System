@@ -7,7 +7,7 @@ function CourseSection(){
           {
                 sections?.map((section , index)=>{
                     return(
-                        <SectionSlice section={section} index={index}/>
+                        <SectionSlice section={section} index={index} key={section.id}/>
                     )
                 })
           }

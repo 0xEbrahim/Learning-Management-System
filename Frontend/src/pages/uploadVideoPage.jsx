@@ -10,18 +10,26 @@ function UploadVideoPage(){
     //get sectionName from the state ot the Route
     const {sectionName}=location.state || {};
     const [videoTitle,setVideoTitle]=useState("");
-    const [videoImage,setVideoImage]=useState("");
-    const [video,setVideo]=useState("");
+    const [videoImage,setVideoImage]=useState(null);
+    const [video,setVideo]=useState(null);
     const [videoLength,setVideoLength]=useState(0);
     
     const handleImageChange=(value)=>{
-        setVideoImage(value)
+        if(value.type.includes('image')){
+            setVideoImage(value)
+        }else{
+            Swal.fire({
+                icon: "error",
+                title: "you should upload image",
+                draggable: true
+              });
+        }
     }
 
     const handleVideoChange=(value)=>{
         setVideo(value);
         //get video duration
-        if (value) {
+        if (video && video.type.includes('video')) {
             const url = URL.createObjectURL(video);
             const tempVideo = document.createElement('video');
       
@@ -32,6 +40,13 @@ function UploadVideoPage(){
               setVideoLength((tempVideo.duration / 60 ).toFixed(2).toString());
               URL.revokeObjectURL(url); // clean up
             }
+
+        }else{
+            Swal.fire({
+                icon: "error",
+                title: "you should upload video",
+                draggable: true
+              });
         }
     }
     const handleTitleChange=(value)=>{
@@ -39,6 +54,29 @@ function UploadVideoPage(){
     }
 
     const uploadVideo=async()=>{
+        if(!video || videoLength == 0){
+            Swal.fire({
+                icon: "error",
+                title: "you should upload video",
+                draggable: true
+              });
+
+            return;
+        }else if(!videoImage){
+            Swal.fire({
+                icon: "error",
+                title: "you should upload image",
+                draggable: true
+              });
+              return;
+        }else if(!videoTitle){
+            Swal.fire({
+                icon: "error",
+                title: "add title",
+                draggable: true
+              });
+              return;
+        }else{
         const formData=new FormData();
         formData.append("image",videoImage);
         formData.append("video",video);
@@ -59,6 +97,7 @@ function UploadVideoPage(){
                 setVideoTitle("");
               });
         }
+    }
     }
 
     return(
