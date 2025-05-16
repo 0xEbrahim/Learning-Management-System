@@ -18,6 +18,8 @@ import { MdAddBox } from "react-icons/md";
 import useGetSections from "../customHooks/useGetSections";
 import CourseSection from "../components/courseSections";
 import { setSections } from "../rtk/slices/courseSections";
+import Swal from "sweetalert2";
+
 function CoursePage(){
     const dispatch=useDispatch();
     const {courseId}=useParams();
@@ -58,10 +60,29 @@ function CoursePage(){
     },[])
 
     const addSection=async()=>{
-        const res=await api.post(`/sections` ,{
-            courseId:courseId,
-            name:sectionNameInput
-        })
+        try{
+            const res=await api.post(`/courses/${courseId}/sections` ,{
+                name:sectionNameInput
+            })
+            if(res.status === 200 || res.status === 201){
+                Swal.fire({
+                    title: "section has been added successfully",
+                    icon: "success",
+                    draggable: true
+                  }).then(()=>{
+                    setSectionNameInput("");
+                    setShowForm(false);
+                  });
+            }
+        }catch(error){
+            if(error.status === 400){
+                Swal.fire({
+                    icon: "error",
+                    title: "Section name must be at least 3 characters",
+                    draggable: true
+                  });
+            }
+        }
     }
 
     return(
