@@ -6,19 +6,17 @@ export interface ICreateSectionBody {
   userId: string;
 }
 
-export interface IGetSectionsBody {
-  courseId: string;
-}
+export interface IGetSectionsBody
+  extends Pick<ICreateSectionBody, "courseId"> {}
 
-export interface IGetSectionByIdBody {
-  courseId: string;
+export interface IGetSectionByIdBody
+  extends Pick<ICreateSectionBody, "courseId"> {
   sectionId: string;
 }
 
-export interface IDeleteSectionBody {
-  courseId: string;
+export interface IDeleteSectionBody
+  extends Pick<ICreateSectionBody, "courseId" | "userId"> {
   sectionId: string;
-  userId: string;
 }
 
 export interface ISectionWithVideos extends CourseSections {
