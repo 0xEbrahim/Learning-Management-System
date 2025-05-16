@@ -5,7 +5,7 @@ import coursesPageReducer from "./slices/coursesPageNo";
 import courseAuthorIdReducer from "./slices/courseAuthorID";
 import notificationsReducer from "./slices/socketNotifcationsSlice"
 import courseSectionsReducer from "./slices/courseSections"
-
+import playedVideoSlice from "./slices/playedVideoSlice"
 const store = configureStore({
   reducer:{
     auth:authReducer,
@@ -13,7 +13,8 @@ const store = configureStore({
     pageNo:coursesPageReducer,
     authorId:courseAuthorIdReducer,
     notifications:notificationsReducer,
-    sections:courseSectionsReducer
+    sections:courseSectionsReducer,
+    videoData:playedVideoSlice
   },
 });
 

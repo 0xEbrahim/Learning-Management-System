@@ -32,6 +32,9 @@ function CoursePage(){
     const [showContentRoute,setShowContentRoute]=useState(false);
     //re-render when refresh
     const userData=useSelector((state)=>state.user.userData);
+    const videoUrl=useSelector((state)=>state.videoData.videoUrl);
+    const videoThumbnail=useSelector((state)=>state.videoData.videoThumbnail);
+    const videoCourseId=useSelector((state)=>state.videoData.courseId);
     const breakPoint=1279;
     useEffect(()=>{
         const getCourseData=async()=>{
@@ -110,7 +113,7 @@ function CoursePage(){
                     <div className="xl:col-span-3 col-span-1">
                         <div className="video overflow-hidden mb-3">
                             {/* add chosen video */}
-                            <img className="w-full h-auto object-cover" src={course.thumbnail} alt="chosen video"/>
+                            {videoUrl && courseId===videoCourseId ? <video className="w-full" poster={videoThumbnail} src={videoUrl} controls autoPlay></video> : <img className="w-full h-auto object-cover" src={course.thumbnail} alt="chosen video"/>}
                         </div>
                         <ul className="flex items-center gap-3 mb-3">
                         <li><NavLink to="" end className={({ isActive }) =>
