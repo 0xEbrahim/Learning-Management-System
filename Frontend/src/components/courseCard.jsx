@@ -35,7 +35,7 @@ function CourseCard(props){
             <Link to={`course/${course.id}`}>
                 <h5 className="mb-1 text-xl font-[600] tracking-tight text-gray-900">{course.name}</h5>
             </Link>
-            <p className="text-sm mb-3 text-gray-700">{course.description}</p>
+            <p className="text-sm mb-3 text-gray-700 overflow-hidden">{course.description}</p>
             {/* <ul className="flex items-center gap-1">
                 {courseCategories}
             </ul> */}
