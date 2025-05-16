@@ -4,6 +4,8 @@ import { FaPlusSquare } from "react-icons/fa";
 import { RiVideoAddFill } from "react-icons/ri";
 import api from "../axiosInstance";
 import Swal from "sweetalert2";
+import UploadProgress from "../components/uploadProgress";
+
 function UploadVideoPage(){
     const { courseId , sectionId }=useParams();
     const location=useLocation();
@@ -13,7 +15,8 @@ function UploadVideoPage(){
     const [videoImage,setVideoImage]=useState(null);
     const [video,setVideo]=useState(null);
     const [videoLength,setVideoLength]=useState(0);
-    
+    const [uploadProgress,setUploadProgress]=useState(0);
+
     const handleImageChange=(value)=>{
         if(value.type.includes('image')){
             setVideoImage(value)
@@ -89,8 +92,13 @@ function UploadVideoPage(){
         const res=await api.post(`/courses/${courseId}/videos` , formData , {
             headers:{
                 "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress:(progressEvent)=>{
+                const percent=Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                setUploadProgress(percent);
             }
-        })
+        });
+
         if(res.status === 200 || res.status === 201){
             Swal.fire({
                 title: "video has been posted successfully",
@@ -98,6 +106,7 @@ function UploadVideoPage(){
                 draggable: true
               }).then(()=>{
                 setVideoTitle("");
+                setUploadProgress(0);
               });
         }
     }
@@ -105,6 +114,7 @@ function UploadVideoPage(){
 
     return(
         <>
+            {uploadProgress > 0 && <UploadProgress progress={uploadProgress}/>}
             <h1 className="text-xl font-[600] w-full">Upload video to <span className="text-indigo-600">{sectionName}</span> section</h1>
             <div className="flex items-center justify-end gap-1">
                 <button  className=" font-bold btn bg-indigo-100 hover:bg-indigo-200 text-indigo-600 px-3 py-2 rounded-lg text-md cursor-pointer mt-8">Cancel</button>
