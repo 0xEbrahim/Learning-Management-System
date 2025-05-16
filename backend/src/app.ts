@@ -1,4 +1,5 @@
 import express from "express";
+import client from "prom-client";
 import morgan from "morgan";
 import helmet from "helmet";
 import { Server } from "socket.io";
@@ -34,7 +35,8 @@ dotenv.config();
 
 const app = express();
 const server = createServer(app);
-
+const register = new client.Registry();
+client.collectDefaultMetrics({ register });
 // Socket.io setup
 const io = new Server(server, {
   cors: { origin: "*", methods: ["GET", "POST"] },
@@ -58,6 +60,52 @@ const limiter = rateLimit({
   legacyHeaders: false,
   message: "Too many requests, please try again later.",
   validate: { xForwardedForHeader: false },
+});
+
+// metrics
+const httpRequestsTotal = new client.Counter({
+  name: "http_requests_total",
+  help: "Total HTTP requests",
+  labelNames: ["method", "route", "status"],
+});
+register.registerMetric(httpRequestsTotal);
+
+// Histogram: HTTP request duration
+const httpRequestDuration = new client.Histogram({
+  name: "http_request_duration_seconds",
+  help: "Duration of HTTP requests in seconds",
+  labelNames: ["method", "route", "status"],
+  buckets: [0.1, 0.5, 1, 1.5, 2, 5],
+});
+register.registerMetric(httpRequestDuration);
+
+// Gauge: active requests count
+const activeRequests = new client.Gauge({
+  name: "active_requests",
+  help: "Number of active HTTP requests",
+});
+register.registerMetric(activeRequests);
+
+// Middleware to track requests
+app.use((req, res, next) => {
+  if (req.path === "/metrics") {
+    return next();
+  }
+  activeRequests.inc();
+  const end = httpRequestDuration.startTimer();
+
+  res.on("finish", () => {
+    activeRequests.dec();
+    httpRequestsTotal
+      .labels(req.method, req.path, res.statusCode.toString())
+      .inc();
+    end({
+      method: req.method,
+      route: req.path,
+      status: res.statusCode.toString(),
+    });
+  });
+  next();
 });
 
 // Middleware
@@ -102,6 +150,12 @@ app.get("/", async (req, res) => {
 
 // API Routes
 app.use("/", arenaConfig);
+// Metrics endpoint
+app.get("/metrics", async (req, res) => {
+  res.set("Content-Type", register.contentType);
+  res.end(await register.metrics());
+});
+
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/courses", courseRouter);
