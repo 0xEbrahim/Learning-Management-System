@@ -26,19 +26,22 @@ function UploadVideoPage(){
         }
     }
 
-    const handleVideoChange=(value)=>{
-        setVideo(value);
+    const handleVideoChange=(e)=>{
+        const file=e.target.files[0];
         //get video duration
-        if (video && video.type.includes('video')) {
-            const url = URL.createObjectURL(video);
+        if (file && file.type.includes('video')) {
+            const url = URL.createObjectURL(file);
             const tempVideo = document.createElement('video');
       
             tempVideo.preload = 'metadata';
             tempVideo.src = url;
       
             tempVideo.onloadedmetadata = () => {
-              setVideoLength((tempVideo.duration / 60 ).toFixed(2).toString());
-              URL.revokeObjectURL(url); // clean up
+                URL.revokeObjectURL(url); 
+                if (!isNaN(tempVideo.duration) && tempVideo.duration > 0) {
+                    setVideoLength((tempVideo.duration / 60 ).toFixed(2).toString());
+                    setVideo(file);
+                }
             }
 
         }else{
@@ -134,7 +137,7 @@ function UploadVideoPage(){
                             <input
                             type="file"
                             className="hidden"
-                            onChange={(e)=>{handleVideoChange(e.target.files[0])}}
+                            onChange={(e)=>{handleVideoChange(e)}}
                             />
                         </label>
                         <p className="mt-3 text-amber-400">upload Video</p>
