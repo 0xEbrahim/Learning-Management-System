@@ -3,16 +3,36 @@ import CourseSection from "../components/courseSections";
 import { MdAddBox } from "react-icons/md";
 import api from "../axiosInstance";
 import { useParams } from "react-router-dom";
+import Swal from "sweetalert2";
 function CourseContent(){
     const [showForm,setShowForm]=useState(false);
     const [sectionNameInput,setSectionNameInput]=useState("");
     const {courseId}=useParams();
     //show sweet-alert once section added successfully
     const addSection=async()=>{
-        const res=await api.post(`/sections` ,{
-            courseId:courseId,
-            name:sectionNameInput
-        })
+        try{
+            const res=await api.post(`/courses/${courseId}/sections` ,{
+                name:sectionNameInput
+            })
+            if(res.status === 200 || res.status === 201){
+                Swal.fire({
+                    title: "section has been added successfully",
+                    icon: "success",
+                    draggable: true
+                  }).then(()=>{
+                    setSectionNameInput("");
+                    setShowForm(false);
+                  });
+            }
+        }catch(error){
+            if(error.status === 400){
+                Swal.fire({
+                    icon: "error",
+                    title: "Section name must be at least 3 characters",
+                    draggable: true
+                  });
+            }
+        }
     }
     return(
         <>
