@@ -52,5 +52,4 @@ function CourseContent(){
     )
 }
 
-
 export default CourseContent;

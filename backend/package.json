@@ -44,6 +44,7 @@
     "bull-arena": "^4.5.1",
     "bullmq": "^5.52.2",
     "cloudinary": "^2.5.1",
+    "concurrently": "^9.1.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -87,7 +88,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "start": "node ./dist/server.js",
+    "start": "concurrently \"node ./dist/server.js\" \"node ./dist/Queue/worker.js\"",
     "build": "tsc && node ./dist/copy.js",
     "run:worker": "npx ts-node ./src/Queue/worker.ts"
   },
