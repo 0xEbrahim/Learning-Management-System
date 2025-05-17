@@ -32,6 +32,7 @@ function CoursePage(){
     const [showContentRoute,setShowContentRoute]=useState(false);
     //re-render when refresh
     const userData=useSelector((state)=>state.user.userData);
+    const authorId=useSelector((state)=>state.authorId.id);
     const videoUrl=useSelector((state)=>state.videoData.videoUrl);
     const videoThumbnail=useSelector((state)=>state.videoData.videoThumbnail);
     const videoCourseId=useSelector((state)=>state.videoData.courseId);
@@ -159,7 +160,7 @@ function CoursePage(){
                     <div className=" course-content col-span-1 bg-white  h-fit xl:block hidden border-1 border-gray-200 shadow-sm">
                        <div className="flex justify-between items-center p-3">
                             <h2 className="font-[600]">Course Content</h2>
-                            <MdAddBox onClick={()=>{setShowForm(true)}} className=" add-section cursor-pointer text-2xl text-indigo-600"/>
+                           { userData?.id === authorId &&  <MdAddBox onClick={()=>{setShowForm(true)}} className=" add-section cursor-pointer text-2xl text-indigo-600"/> }
                        </div>
                         {showForm ? <div className="add-section-form mb-3 px-3">
                                         <input className="bg-gray-50 border-1 border-gray-300 rounded-sm outline-none mt-2 px-2 py-1 text-sm" placeholder="add section" value={sectionNameInput} onChange={(e)=>{setSectionNameInput(e.target.value)}}/>
