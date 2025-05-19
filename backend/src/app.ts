@@ -49,8 +49,21 @@ import swaggerJsDoc from "swagger-jsdoc";
 import { swaggerOptions } from "./config/swagger";
 import { demoRouter } from "./modules/Demo/Demo.routes";
 import { arenaConfig } from "./Queue/Arena-queue";
+import logger from "./config/logger";
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
 app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// Process handling
+process
+  .on("unhandledRejection", (reason, p) => {
+    console.error(reason, "Unhandled Rejection at Promise", p);
+    logger.error(reason + " Unhandled Rejection at Promise " + p);
+  })
+  .on("uncaughtException", (err) => {
+    console.error(err, "Uncaught Exception thrown");
+    logger.error(err + " Uncaught Exception thrown");
+    process.exit(1);
+  });
 
 // Rate Limiting
 const limiter = rateLimit({
