@@ -24,7 +24,8 @@ class VideoService {
   private VIDEOS_COURSE_CACHE_KEY(courseId: string): string {
     return `videos:course:${courseId}`;
   }
-
+  private readonly SECTION_CACHE_KEY = (courseId: string, sectionId: string) =>
+    `section:${courseId}:${sectionId}`;
   async uploadVideo(Payload: uploadVideoBody): Promise<IResponse> {
     const { video, videoLength, videoThumbnail, title, courseId, sectionId } =
       Payload;
@@ -115,6 +116,7 @@ class VideoService {
       },
     });
     if (!video) ResponseFormatter.notFound("Invalid video ID");
+    const sectionId = video.sectionId;
     await prisma.video.delete({
       where: {
         id: videoId,
@@ -123,7 +125,7 @@ class VideoService {
 
     await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
-
+    await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
     return ResponseFormatter.ok(
       { message: "Video deleted successfully" },
       "Video deleted successfully"
@@ -139,6 +141,8 @@ class VideoService {
       },
     });
     if (!video) ResponseFormatter.notFound("Invalid video ID");
+    const sectionId = video.sectionId;
+
     video = await prisma.video.update({
       where: {
         id: videoId,
@@ -151,6 +155,7 @@ class VideoService {
 
     await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
+    await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
 
     return ResponseFormatter.ok({ video }, "Video updated successfully");
   }
@@ -163,7 +168,9 @@ class VideoService {
         courseId: courseId,
       },
     });
+
     if (!Video) ResponseFormatter.notFound("Invalid video ID");
+    const sectionId = Video.sectionId;
     let videoUpload: any = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_large(
         video,
@@ -196,6 +203,7 @@ class VideoService {
 
     await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
+    await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
 
     return ResponseFormatter.ok({ Video });
   }
@@ -209,6 +217,7 @@ class VideoService {
       },
     });
     if (!video) ResponseFormatter.notFound("Invalid video ID");
+    const sectionId = video.sectionId;
     let videoThumbnailUpload: any = await cloudinary.uploader.upload(
       thumbnail,
       {
@@ -231,6 +240,7 @@ class VideoService {
     // Invalidate caches
     await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
+    await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
 
     return ResponseFormatter.ok({ video });
   }
