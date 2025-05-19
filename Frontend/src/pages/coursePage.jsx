@@ -15,6 +15,7 @@ import styles from "./coursePage.module.css";
 import { setAuthorId } from "../rtk/slices/courseAuthorID";
 import { useSelector } from "react-redux";
 import { MdAddBox } from "react-icons/md";
+import { RiVideoAddLine } from "react-icons/ri";
 import useGetSections from "../customHooks/useGetSections";
 import CourseSection from "../components/courseSections";
 import { setSections } from "../rtk/slices/courseSections";
@@ -36,6 +37,7 @@ function CoursePage(){
     const videoUrl=useSelector((state)=>state.videoData.videoUrl);
     const videoThumbnail=useSelector((state)=>state.videoData.videoThumbnail);
     const videoCourseId=useSelector((state)=>state.videoData.courseId);
+    const [demoVideo , setDemoVideo]=useState(null);
     const breakPoint=1279;
     useEffect(()=>{
         const getCourseData=async()=>{
@@ -63,6 +65,27 @@ function CoursePage(){
         return () => window.removeEventListener('resize', checkWidth);
     },[])
 
+    // upload choosen demo video
+    useEffect(()=>{
+        const uploadDemoVideo=async()=>{
+            const formData=new FormData();
+            formData.append("video", demoVideo);
+            const res =  await api.post(`/courses/${courseId}/demo` , formData)
+            if(res.status === 200 || res.status === 201){
+                Swal.fire({
+                    title: "video has been posted successfully",
+                    icon: "success",
+                    draggable: true
+                  })
+            }
+        }
+
+        if(demoVideo){
+            uploadDemoVideo();
+        }
+
+    } , [demoVideo])
+
     const addSection=async()=>{
         try{
             const res=await api.post(`/courses/${courseId}/sections` ,{
@@ -89,6 +112,21 @@ function CoursePage(){
         }
     }
 
+    const handleVideoChange=(e)=>{
+        const file=e.target.files[0];
+
+            if (file && file.type.includes('video')) {
+                setDemoVideo(file)
+        }else{
+            Swal.fire({
+                icon: "error",
+                title: "you should upload video",
+                draggable: true
+                });
+        }
+
+    }
+    
     return(
         <div>
             {/* add loading effect using conditional rendering */}
@@ -114,7 +152,7 @@ function CoursePage(){
                     <div className="xl:col-span-3 col-span-1">
                         <div className="video overflow-hidden mb-3">
                             {/* add chosen video */}
-                            {videoUrl && courseId===videoCourseId ? <video className="w-full" poster={videoThumbnail} src={videoUrl} controls autoPlay></video> : <img className="w-full h-auto object-cover" src={course.thumbnail} alt="chosen video"/>}
+                            {videoUrl && courseId===videoCourseId ? <video className="w-full" poster={videoThumbnail} src={videoUrl} controls autoPlay></video> : <div className="relative"><img className="w-full h-auto object-cover" src={course.thumbnail} alt="chosen video"/>{ (userData?.id === authorId && course.thumbnail) && <label className="text-sm text-indigo-600 absolute bg-white bottom-1 right-1 z-50 flex items-center gap-2 font-[500] py-1 px-1.5 rounded-sm hover:text-white hover:bg-indigo-600 cursor-pointer"><RiVideoAddLine/>add Demo <input className="hidden" type="file" onChange={(e)=>{handleVideoChange(e)}}/></label>}</div>}
                         </div>
                         <ul className="flex items-center gap-3 mb-3">
                         <li><NavLink to="" end className={({ isActive }) =>
