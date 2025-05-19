@@ -1,10 +1,4 @@
-import app from "./app";
-import config from "./config/env";
-import logger from "./config/logger";
-
-const HOST = config.BASE_URL;
-const PORT: number = Number(process.env.PORT) || 3000;
-
+// Process handling
 process
   .on("unhandledRejection", (reason, p) => {
     console.error(reason, "Unhandled Rejection at Promise", p);
@@ -13,8 +7,16 @@ process
   .on("uncaughtException", (err) => {
     console.error(err, "Uncaught Exception thrown");
     logger.error(err + " Uncaught Exception thrown");
+    console.log("LOL");
     process.exit(1);
   });
+
+import app from "./app";
+import config from "./config/env";
+import logger from "./config/logger";
+
+const HOST = config.BASE_URL;
+const PORT: number = Number(process.env.PORT) || 3000;
 
 app.listen(PORT, async () => {
   if (config.NODE_ENV === "production") {
