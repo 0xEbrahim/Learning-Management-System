@@ -9,6 +9,7 @@ import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import api from "../axiosInstance";
 
+
 function SectionSlice({index , section}){
     const dispatch=useDispatch();
     const [expand,setExpand]=useState(false);
@@ -46,6 +47,8 @@ function SectionSlice({index , section}){
             }
           });
     }
+
+
     return(
         <div className="sections" key={section.id}>
             <div className=" section-info w-full border-b-1 border-gray-200 bg-gray-200/30" key={section.id}>

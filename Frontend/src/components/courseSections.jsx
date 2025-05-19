@@ -1,7 +1,14 @@
-import { useSelector } from "react-redux";
 import SectionSlice from "./sectionSlice";
+import { useQuery } from "@tanstack/react-query";
+import { getSections } from "../services/sectionServices";
+import { useParams } from "react-router-dom";
 function CourseSection(){
-    const sections=useSelector((state)=>state.sections.sections);
+    const {courseId}=useParams();
+    const {isLoading , data:sections }=useQuery({
+        queryKey:["courseSections" , courseId],
+        queryFn:()=>getSections(courseId),
+    })
+
     return(
         <>
           {

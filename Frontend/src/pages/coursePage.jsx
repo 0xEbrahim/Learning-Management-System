@@ -16,9 +16,8 @@ import { setAuthorId } from "../rtk/slices/courseAuthorID";
 import { useSelector } from "react-redux";
 import { MdAddBox } from "react-icons/md";
 import { RiVideoAddLine } from "react-icons/ri";
-import useGetSections from "../customHooks/useGetSections";
+import { addSection } from "../services/sectionServices";
 import CourseSection from "../components/courseSections";
-import { setSections } from "../rtk/slices/courseSections";
 import Swal from "sweetalert2";
 
 function CoursePage(){
@@ -27,8 +26,6 @@ function CoursePage(){
     const [ course , setCourse ]=useState({});
     const [showForm,setShowForm]=useState(false);
     const [ loading , setLoading]=useState(true);
-    const sections=useGetSections(courseId);
-    dispatch(setSections(sections));
     const [sectionNameInput,setSectionNameInput]=useState("");
     const [showContentRoute,setShowContentRoute]=useState(false);
     //re-render when refresh
@@ -75,6 +72,7 @@ function CoursePage(){
                             "Content-Type": "multipart/form-data",
                         }})
             if(res.status === 200 || res.status === 201){
+                setDemoVideo(null);
                 Swal.fire({
                     title: "video has been posted successfully",
                     icon: "success",
@@ -89,31 +87,6 @@ function CoursePage(){
 
     } , [demoVideo])
 
-    const addSection=async()=>{
-        try{
-            const res=await api.post(`/courses/${courseId}/sections` ,{
-                name:sectionNameInput
-            })
-            if(res.status === 200 || res.status === 201){
-                Swal.fire({
-                    title: "section has been added successfully",
-                    icon: "success",
-                    draggable: true
-                  }).then(()=>{
-                    setSectionNameInput("");
-                    setShowForm(false);
-                  });
-            }
-        }catch(error){
-            if(error.status === 400){
-                Swal.fire({
-                    icon: "error",
-                    title: "Section name must be at least 3 characters",
-                    draggable: true
-                  });
-            }
-        }
-    }
 
     const handleVideoChange=(e)=>{
         const file=e.target.files[0];
@@ -205,7 +178,7 @@ function CoursePage(){
                        </div>
                         {showForm ? <div className="add-section-form mb-3 px-3">
                                         <input className="bg-gray-50 border-1 border-gray-300 rounded-sm outline-none mt-2 px-2 py-1 text-sm" placeholder="add section" value={sectionNameInput} onChange={(e)=>{setSectionNameInput(e.target.value)}}/>
-                                        <button onClick={()=>{addSection()}} className="w-full px-2 py-1 bg-indigo-600 text-white mt-2 rounded-sm text-[12px] font-[500] cursor-pointer">add</button>
+                                        <button onClick={()=>{addSection( courseId , sectionNameInput )}} className="w-full px-2 py-1 bg-indigo-600 text-white mt-2 rounded-sm text-[12px] font-[500] cursor-pointer">add</button>
                                         <button onClick={()=>{setShowForm(false)}} className="w-full px-2 py-1 bg-gray-200 text-indigo-600 mt-1 rounded-sm text-[12px] font-[500] cursor-pointer">cancel</button>
                                     </div> : null}
                         <div className="sections w-full">

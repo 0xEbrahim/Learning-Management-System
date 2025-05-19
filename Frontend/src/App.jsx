@@ -19,10 +19,20 @@ import Reviews from "./subPages/reviews.jsx";
 import FAQ from "./subPages/FAQ.jsx";
 import CourseContent from "./subPages/courseContentPage.jsx";
 import UploadVideoPage from "./pages/uploadVideoPage.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+const queryClient=new QueryClient({
+  defaultOptions:{
+    queries:{
+      staleTime:60*1000
+    }
+  }
+});
 function App() {
   return (
-    <>
+      <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false}/>
       <Routes>
         <Route path="/homePage" element={<HomePage />}>
           <Route index element={<Home/>}/>
@@ -47,7 +57,8 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
       </Routes>
-    </>
+      </QueryClientProvider>
+
   );
 }
 
