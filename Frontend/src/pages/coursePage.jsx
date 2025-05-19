@@ -70,7 +70,10 @@ function CoursePage(){
         const uploadDemoVideo=async()=>{
             const formData=new FormData();
             formData.append("video", demoVideo);
-            const res =  await api.post(`/courses/${courseId}/demo` , formData)
+            const res =  await api.post(`/courses/${courseId}/demo` , formData,{
+                headers:{
+                            "Content-Type": "multipart/form-data",
+                        }})
             if(res.status === 200 || res.status === 201){
                 Swal.fire({
                     title: "video has been posted successfully",
