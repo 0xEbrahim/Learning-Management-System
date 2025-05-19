@@ -18,6 +18,7 @@ import { MdAddBox } from "react-icons/md";
 import { RiVideoAddLine } from "react-icons/ri";
 import { addSection } from "../services/sectionServices";
 import CourseSection from "../components/courseSections";
+import { useQueryClient , useMutation } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 
 function CoursePage(){
@@ -102,7 +103,23 @@ function CoursePage(){
         }
 
     }
-    
+    //use react query with sections
+    const queryClient=useQueryClient();
+    const { isLoading:isAdding , mutate}=useMutation({
+        mutationFn:()=> addSection(courseId , sectionNameInput),
+        onSuccess:()=>{
+            setShowForm(false);
+            setSectionNameInput("");
+            Swal.fire({
+                title: "section has been added successfully",
+                icon: "success",
+                draggable: true
+              })
+            queryClient.invalidateQueries({
+                queryKey:["courseSections", courseId]
+            })
+        }
+    })
     return(
         <div>
             {/* add loading effect using conditional rendering */}
@@ -178,7 +195,7 @@ function CoursePage(){
                        </div>
                         {showForm ? <div className="add-section-form mb-3 px-3">
                                         <input className="bg-gray-50 border-1 border-gray-300 rounded-sm outline-none mt-2 px-2 py-1 text-sm" placeholder="add section" value={sectionNameInput} onChange={(e)=>{setSectionNameInput(e.target.value)}}/>
-                                        <button onClick={()=>{addSection( courseId , sectionNameInput )}} className="w-full px-2 py-1 bg-indigo-600 text-white mt-2 rounded-sm text-[12px] font-[500] cursor-pointer">add</button>
+                                        <button onClick={()=>{mutate( )}} className="w-full px-2 py-1 bg-indigo-600 text-white mt-2 rounded-sm text-[12px] font-[500] cursor-pointer">add</button>
                                         <button onClick={()=>{setShowForm(false)}} className="w-full px-2 py-1 bg-gray-200 text-indigo-600 mt-1 rounded-sm text-[12px] font-[500] cursor-pointer">cancel</button>
                                     </div> : null}
                         <div className="sections w-full">
