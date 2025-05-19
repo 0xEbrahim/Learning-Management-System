@@ -36,6 +36,8 @@ model User {
   replies                         ReviewReply[]        @relation("UserReplies")
   userCourseProgress              UserCourseProgress[] @relation("UserProgress")
   userVideoProgress               UserVideoProgress[]  @relation("UserVideoProgress")
+  sentMessages                    Message[]            @relation("send")
+  recievedMessages                Message[]            @relation("recieve")
 
   @@index([email])
   @@index([googleId])
@@ -230,6 +232,23 @@ model Notification {
   course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   review     Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
   reciever   User     @relation("recieved", fields: [recieverId], references: [id], onDelete: Cascade)
+}
+
+model ChatRoom {
+  id       String    @id @default(uuid())
+  roomName String
+  messages Message[]
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  message    String
+  senderId   String
+  recieverId String
+  roomId     String
+  room       ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  sender     User     @relation("send", fields: [senderId], references: [id], onDelete: Cascade)
+  reciever   User     @relation("recieve", fields: [recieverId], references: [id], onDelete: Cascade)
 }
 
 enum crdb_internal_region {

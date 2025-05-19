@@ -233,10 +233,8 @@ class SectionService {
         },
       });
 
-      await Promise.all([
-        redis.del(this.SECTION_CACHE_KEY(courseId, sectionId)),
-        redis.del(this.SECTIONS_CACHE_KEY(courseId)),
-      ]);
+      await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
+      await redis.del(this.SECTIONS_CACHE_KEY(courseId));
 
       return ResponseFormatter.ok(
         { deletedVideos: videoCount },

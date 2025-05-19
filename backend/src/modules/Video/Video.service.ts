@@ -121,10 +121,8 @@ class VideoService {
       },
     });
 
-    await Promise.all([
-      redis.del(this.VIDEO_CACHE_KEY(videoId, courseId)),
-      redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId)),
-    ]);
+    await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
+    await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
 
     return ResponseFormatter.ok(
       { message: "Video deleted successfully" },
@@ -151,10 +149,8 @@ class VideoService {
       },
     });
 
-    await Promise.all([
-      redis.del(this.VIDEO_CACHE_KEY(videoId, courseId)),
-      redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId)),
-    ]);
+    await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
+    await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
 
     return ResponseFormatter.ok({ video }, "Video updated successfully");
   }
@@ -198,10 +194,8 @@ class VideoService {
       },
     });
 
-    await Promise.all([
-      redis.del(this.VIDEO_CACHE_KEY(videoId, courseId)),
-      redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId)),
-    ]);
+    await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
+    await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
 
     return ResponseFormatter.ok({ Video });
   }
@@ -235,10 +229,8 @@ class VideoService {
     });
 
     // Invalidate caches
-    await Promise.all([
-      redis.del(this.VIDEO_CACHE_KEY(videoId, courseId)),
-      redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId)),
-    ]);
+    await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
+    await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
 
     return ResponseFormatter.ok({ video });
   }
