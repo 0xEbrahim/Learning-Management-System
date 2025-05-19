@@ -60,7 +60,7 @@ function SectionSlice({index , section}){
                                     return(
                                         <div key={video.id} className="px-2 py-3 border-b">
                                             <li onClick={()=>{dispatch(setVideoData({courseId :section.courseId ,videoUrl:video.videoUrl , videoThumbnail:video.videoThumbnail}))}} className="cursor-pointer hover:text-indigo-600 overflow-hidden"><p>{video.title}</p></li>
-                                            <div className="flex items-center justify-between"><p className="flex items-center gap-2 mt-2"><MdOndemandVideo className="text-sm text-gray-400"/><span className="text-[12px] text-gray-400 font-[500]">{video.videoLength} sec</span></p>{ userId === authorId && <MdDelete onClick={()=>{deleteVideo(video.id)}} className="text-gray-500 cursor-pointer"/>}</div>
+                                            <div className="flex items-end justify-between"><p className="flex items-center gap-2 mt-2"><MdOndemandVideo className="text-sm text-gray-400"/><span className="text-[12px] text-gray-400 font-[500]">{video.videoLength} sec</span></p>{ userId === authorId && <MdDelete onClick={()=>{deleteVideo(video.id)}} className="text-gray-500 cursor-pointer"/>}</div>
                                         </div>
                                     )
                                 })}
