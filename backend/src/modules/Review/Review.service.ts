@@ -159,10 +159,8 @@ class ReviewService {
     });
     try {
       await updateCourseRating(courseId);
-      await Promise.all([
-        redis.del(this.REVIEW_CACHE_KEY(reviewId, courseId)),
-        redis.del(this.REVIEWS_COURSE_CACHE_KEY(courseId)),
-      ]);
+      await redis.del(this.REVIEW_CACHE_KEY(reviewId, courseId));
+      await redis.del(this.REVIEWS_COURSE_CACHE_KEY(courseId));
     } catch (error: any) {
       throw new APIError(error.message, 400);
     }
@@ -188,10 +186,8 @@ class ReviewService {
     });
     try {
       await updateCourseRating(courseId);
-      await Promise.all([
-        redis.del(this.REVIEW_CACHE_KEY(reviewId, courseId)),
-        redis.del(this.REVIEWS_COURSE_CACHE_KEY(courseId)),
-      ]);
+      await redis.del(this.REVIEW_CACHE_KEY(reviewId, courseId));
+      await redis.del(this.REVIEWS_COURSE_CACHE_KEY(courseId));
     } catch (error: any) {
       throw new APIError(error.message, 400);
     }
