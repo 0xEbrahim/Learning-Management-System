@@ -33,5 +33,11 @@ export interface IAddReviewNotificationData {
   reviewId: string;
   courseName: string;
   courseId: string;
-  
+}
+
+export interface IMessageData {
+  message: string;
+  senderId: string;
+  recieverId: string;
+  roomId: string;
 }
