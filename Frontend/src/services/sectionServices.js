@@ -1,5 +1,5 @@
 import api from "../axiosInstance";
-import Swal from "sweetalert2";
+
 
 
 export const getSections=async(courseId)=>{
