@@ -20,7 +20,8 @@ class VideoService {
   private VIDEO_CACHE_KEY(videoId: string, courseId: string): string {
     return `video:${courseId}:${videoId}`;
   }
-
+  private readonly SECTIONS_CACHE_KEY = (courseId: string) =>
+    `sections:${courseId}`;
   private VIDEOS_COURSE_CACHE_KEY(courseId: string): string {
     return `videos:course:${courseId}`;
   }
@@ -69,7 +70,7 @@ class VideoService {
     });
 
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
-
+    await redis.del(this.SECTIONS_CACHE_KEY(courseId));
     return ResponseFormatter.created({ Video });
   }
 
@@ -126,6 +127,7 @@ class VideoService {
     await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
     await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
+    await redis.del(this.SECTIONS_CACHE_KEY(courseId));
     return ResponseFormatter.ok(
       { message: "Video deleted successfully" },
       "Video deleted successfully"
@@ -156,7 +158,7 @@ class VideoService {
     await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
     await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
-
+    await redis.del(this.SECTIONS_CACHE_KEY(courseId));
     return ResponseFormatter.ok({ video }, "Video updated successfully");
   }
 
@@ -204,7 +206,7 @@ class VideoService {
     await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
     await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
-
+    await redis.del(this.SECTIONS_CACHE_KEY(courseId));
     return ResponseFormatter.ok({ Video });
   }
 
@@ -241,7 +243,7 @@ class VideoService {
     await redis.del(this.VIDEO_CACHE_KEY(videoId, courseId));
     await redis.del(this.VIDEOS_COURSE_CACHE_KEY(courseId));
     await redis.del(this.SECTION_CACHE_KEY(courseId, sectionId));
-
+    await redis.del(this.SECTIONS_CACHE_KEY(courseId));
     return ResponseFormatter.ok({ video });
   }
 
