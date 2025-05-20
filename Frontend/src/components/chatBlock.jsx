@@ -59,59 +59,34 @@ function ChatBlock({ receiverId }) {
     });
   }, [socket]);
 
-  return (
-    <div className=" chat-block w-full">
-      <div className="chat-head bg-white p-4">
-        {recieverData?.id ? (
-          <div className="receiver-info flex items-start gap-2">
-            <img
-              className=" w-10 h-10 rounded-full object-cover"
-              src={recieverData?.avatar}
-            />
-            <div>
-              <p className="font-bold">{recieverData?.name}</p>
-              <span className="block text-indigo-600 text-sm font-[500]">
-                Typing...
-              </span>
+    return(
+        <div className=" chat-block w-full">
+            <div className="chat-head bg-white p-4">
+              {
+                recieverData?.id ?   <div className="receiver-info flex items-start gap-2">
+                <img className=" w-10 h-10 rounded-full object-cover" src={recieverData?.avatar}/>
+                <div>
+                <p className="font-bold">{recieverData?.name}</p>
+                <span className="block text-indigo-600 text-sm font-[500]">Typing...</span>
+                </div>
+                </div> : <h2>chat</h2>
+              }
             </div>
-          </div>
-        ) : (
-          <h2>chat</h2>
-        )}
-      </div>
-      <div className="chat-body bg-[#f5f5f5ba] h-[100vh] border-1 border-gray-200">
-        <ScrollToBottom className="messages-container overflow-y-scroll w-full h-full">
-          {messages.map((message) => {
-            return (
-              <p
-                className="p-2 bg-white w-[300px] mt-3 rounded-xl ml-2"
-                key={message.senderId}
-              >
-                {message.message}
-              </p>
-            );
-          })}
-        </ScrollToBottom>
-      </div>
-      <div className="chat-footer w-full flex sticky bottom-[10px] justify-center ">
-        <input
-          className="w-[80%] rounded-md rounded-r-none  bg-white outline-none accent-indigo-600 p-2"
-          value={message}
-          onChange={(e) => {
-            handleInputChange(e.target.value);
-          }}
-        />
-        <button
-          onClick={() => {
-            sendMessage();
-          }}
-          className="text-white bg-indigo-600 px-3 py-2 rounded-md rounded-l-none cursor-pointer"
-        >
-          <BsSendFill />
-        </button>
-      </div>
-    </div>
-  );
+            <div className="chat-body bg-[#f5f5f5ba] h-[100vh] border-1 border-gray-200">
+                <ScrollToBottom className="messages-container overflow-y-scroll w-full h-full">
+                    {messages.map((message , index)=>{
+                        return(
+                            <p className="p-2 bg-white w-[300px] mt-3 rounded-xl ml-2" key={index}>{message.message}</p>
+                        )
+                    })}
+                </ScrollToBottom>
+            </div>
+            <div className="chat-footer w-full flex sticky bottom-[10px] justify-center ">
+                <input className="w-[80%] rounded-md rounded-r-none  bg-white outline-none accent-indigo-600 p-2" value={message}  onChange={(e)=>{handleInputChange(e.target.value)}}/>
+                <button onClick={()=>{sendMessage()}} className="text-white bg-indigo-600 px-3 py-2 rounded-md rounded-l-none cursor-pointer"><BsSendFill/></button>
+            </div>
+        </div>
+    );
 }
 
 export default ChatBlock;
