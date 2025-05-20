@@ -6,8 +6,10 @@ export default (
   socket: Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, any>
 ) => {
   socket.on("sendMessage", async (data: IMessageData) => {
-    const { roomId } = data;
-    const msg = await MessageService.create(data);
-    socket.to(roomId).emit("messageSent", msg);
+    const msg: any = await MessageService.create(data);
+    console.log(msg);
+    const id = msg.privateId;
+    socket.join(id);
+    socket.to(id).emit("receiveMessage", { data: msg });
   });
 };
