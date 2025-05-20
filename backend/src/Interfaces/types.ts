@@ -39,5 +39,6 @@ export interface IMessageData {
   message: string;
   senderId: string;
   recieverId: string;
-  roomId: string;
+  roomId?: string;
+  private: boolean;
 }

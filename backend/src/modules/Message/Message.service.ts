@@ -2,17 +2,44 @@ import prisma from "../../config/prisma";
 import { IMessageData } from "../../Interfaces/types";
 
 class MessageService {
+  private combine_IDS(id1: string, id2: string) {
+    return [id1, id2].sort().join("_");
+  }
   async create(Payload: IMessageData) {
-    const { message, recieverId, roomId, senderId } = Payload;
-    const msg = await prisma.message.create({
-      data: {
-        message,
-        recieverId,
-        roomId,
-        senderId,
-      },
-    });
-    return msg;
+    let msg;
+    const { message, private: pr, recieverId, senderId, roomId } = Payload;
+    if (pr) {
+      const id = this.combine_IDS(senderId, recieverId);
+      let prvRoom = await prisma.privateRoom.findFirst({
+        where: {
+          roomName: id,
+        },
+      });
+      if (!prvRoom)
+        prvRoom = await prisma.privateRoom.create({
+          data: {
+            roomName: id,
+          },
+        });
+      msg = await prisma.privateMessage.create({
+        data: {
+          message: message,
+          privateId: id,
+          recieverId,
+          senderId,
+        },
+      });
+      return msg;
+    } else {
+      msg = await prisma.groupMessage.create({
+        data: {
+          roomId: roomId ?? "",
+          senderId,
+          message,
+        },
+      });
+      return msg;
+    }
   }
 }
 

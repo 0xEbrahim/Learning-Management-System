@@ -36,8 +36,9 @@ model User {
   replies                         ReviewReply[]        @relation("UserReplies")
   userCourseProgress              UserCourseProgress[] @relation("UserProgress")
   userVideoProgress               UserVideoProgress[]  @relation("UserVideoProgress")
-  sentMessages                    Message[]            @relation("send")
-  recievedMessages                Message[]            @relation("recieve")
+  sentMessages                    PrivateMessage[]     @relation("send")
+  recievedMessages                PrivateMessage[]     @relation("recieve")
+  GroupMessage                    GroupMessage[]
 
   @@index([email])
   @@index([googleId])
@@ -235,20 +236,40 @@ model Notification {
 }
 
 model ChatRoom {
-  id       String    @id @default(uuid())
-  roomName String
-  messages Message[]
+  id        String         @id @default(uuid())
+  roomName  String
+  createdAt DateTime       @default(now())
+  messages  GroupMessage[]
 }
 
-model Message {
-  id         String   @id @default(uuid())
+model PrivateRoom {
+  id        String           @id @default(uuid())
+  roomName  String            @unique
+  createdAt DateTime         @default(now())
+  messages  PrivateMessage[]
+
+  @@index([roomName])
+}
+
+model GroupMessage {
+  id        String   @id @default(uuid())
+  message   String
+  senderId  String
+  roomId    String
+  createdAt DateTime @default(now())
+  room      ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [id])
+}
+
+model PrivateMessage {
+  id         String      @id @default(uuid())
   message    String
+  privateId  String
   senderId   String
   recieverId String
-  roomId     String
-  room       ChatRoom @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  sender     User     @relation("send", fields: [senderId], references: [id], onDelete: Cascade)
-  reciever   User     @relation("recieve", fields: [recieverId], references: [id], onDelete: Cascade)
+  private    PrivateRoom @relation(fields: [privateId], references: [roomName], onDelete: Cascade)
+  sender     User        @relation("send", fields: [senderId], references: [id], onDelete: Cascade)
+  reciever   User        @relation("recieve", fields: [recieverId], references: [id], onDelete: Cascade)
 }
 
 enum crdb_internal_region {
