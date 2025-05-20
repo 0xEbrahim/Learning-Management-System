@@ -5,6 +5,7 @@ import { FiShoppingBag } from "react-icons/fi";
 import { IoHome } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { IoMdLogIn } from "react-icons/io";
+import { TbMessageChatbot } from "react-icons/tb";
 import { NavLink , Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../rtk/slices/authSlice";
@@ -48,6 +49,16 @@ function SideBar(){
             </NavLink>
          </li>
          <li>
+            <NavLink to="/homePage/chats" className={({ isActive }) =>
+          isActive
+            ? "active"
+            : "unactive"
+        } >
+            <TbMessageChatbot className="shrink-0 w-5 h-5 text-indigo-600 transition duration-75 group-hover:text-gray-900" />
+               <span className="flex-1 ms-3 whitespace-nowrap">Chats</span>
+            </NavLink>
+         </li>
+         <li>
             <NavLink to="/homePage/settings" className={({ isActive }) =>
           isActive
             ? "active"
@@ -57,6 +68,7 @@ function SideBar(){
                <span className="flex-1 ms-3 whitespace-nowrap">Settings</span>
             </NavLink>
          </li>
+
          {/* condetional rendering  */}
    {accessToken===null ?
 <div className="absolute w-full bottom-[10px]">

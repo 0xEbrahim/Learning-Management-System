@@ -2,9 +2,10 @@ import { useState } from "react";
 import { useParams , useLocation } from "react-router-dom";
 import { FaPlusSquare } from "react-icons/fa";
 import { RiVideoAddFill } from "react-icons/ri";
-import api from "../axiosInstance";
 import Swal from "sweetalert2";
 import UploadProgress from "../components/uploadProgress";
+import { useQueryClient , useMutation } from "@tanstack/react-query";
+import { uploadVideo } from "../services/courseVideosServices";
 
 function UploadVideoPage(){
     const { courseId , sectionId }=useParams();
@@ -59,58 +60,35 @@ function UploadVideoPage(){
         setVideoTitle(value)
     }
 
-    const uploadVideo=async()=>{
-        if(!video || videoLength == 0){
+    const queryClient=useQueryClient();
+    const {mutate:UploadVideoMutation}=useMutation({
+        mutationFn:()=> uploadVideo(video , videoLength , videoImage , videoTitle , sectionId , courseId , setUploadProgress),
+        onSuccess:()=>{
             Swal.fire({
-                icon: "error",
-                title: "you should upload video",
-                draggable: true
-              });
-
-            return;
-        }else if(!videoImage){
-            Swal.fire({
-                icon: "error",
-                title: "you should upload image",
-                draggable: true
-              });
-              return;
-        }else if(!videoTitle){
-            Swal.fire({
-                icon: "error",
-                title: "add title",
-                draggable: true
-              });
-              return;
-        }else{
-        const formData=new FormData();
-        formData.append("image",videoImage);
-        formData.append("video",video);
-        formData.append("title",videoTitle);
-        formData.append("videoLength",videoLength);
-        formData.append("sectionId",sectionId);
-        const res=await api.post(`/courses/${courseId}/videos` , formData , {
-            headers:{
-                "Content-Type": "multipart/form-data",
-            },
-            onUploadProgress:(progressEvent)=>{
-                const percent=Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                setUploadProgress(percent);
-            }
-        });
-
-        if(res.status === 200 || res.status === 201){
-            Swal.fire({
-                title: "video has been posted successfully",
+                title: "video has been added successfully",
                 icon: "success",
                 draggable: true
               }).then(()=>{
-                setVideoTitle("");
                 setUploadProgress(0);
-              });
+                setVideoTitle("");
+              })
+
+            queryClient.invalidateQueries({
+                queryKey:["courseSections", courseId]
+            })
+        },
+        onError:()=>{
+            Swal.fire({
+                title: "couldnt upload video",
+                icon: "error",
+                draggable: true
+              }).then(()=>{
+                setUploadProgress(0);
+                setVideoTitle("");
+              })
         }
-    }
-    }
+    })
+
 
     return(
         <>
@@ -118,7 +96,7 @@ function UploadVideoPage(){
             <h1 className="text-xl font-[600] w-full">Upload video to <span className="text-indigo-600">{sectionName}</span> section</h1>
             <div className="flex items-center justify-end gap-1">
                 <button  className=" font-bold btn bg-indigo-100 hover:bg-indigo-200 text-indigo-600 px-3 py-2 rounded-lg text-md cursor-pointer mt-8">Cancel</button>
-                <button onClick={()=>{uploadVideo()}} className="btn bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-md cursor-pointer mt-8">upload</button>
+                <button onClick={()=>{UploadVideoMutation()}} className="btn bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-md cursor-pointer mt-8">upload</button>
             </div>
             <form className="grid grid-cols-1 mt-4" onSubmit={(e)=>{e.preventDefault()}}>
                 <div className="col-span-2 bg-white p-4 rounded-lg">

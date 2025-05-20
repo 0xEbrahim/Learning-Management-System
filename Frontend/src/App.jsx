@@ -9,6 +9,7 @@ import Home from "./pages/home.jsx";
 import CoursesPage from "./pages/coursesPage.jsx";
 import SettingsPage from "./pages/settingsPage.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
+import ChatsPage from "./pages/chatsPage.jsx";
 import NewCourse from "./pages/newCoursePage.jsx";
 import ProfilePage from "./pages/profilePage.jsx";
 import CoursePage from "./pages/coursePage.jsx";
@@ -19,14 +20,25 @@ import Reviews from "./subPages/reviews.jsx";
 import FAQ from "./subPages/FAQ.jsx";
 import CourseContent from "./subPages/courseContentPage.jsx";
 import UploadVideoPage from "./pages/uploadVideoPage.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+const queryClient=new QueryClient({
+  defaultOptions:{
+    queries:{
+      staleTime:5*60*1000
+    }
+  }
+});
 function App() {
   return (
-    <>
+      <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false}/>
       <Routes>
         <Route path="/homePage" element={<HomePage />}>
           <Route index element={<Home/>}/>
           <Route path="courses" element={<CoursesPage />} />
+          <Route path="chats" element={<ChatsPage />} />
           <Route path="newCourse" element={<NewCourse />} />
           <Route path="/homePage/courses/course/:courseId" element={<CoursePage/>}>
             <Route index element={<OverView/>}/>
@@ -47,7 +59,8 @@ function App() {
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/resetPassword/:token" element={<ResetPassword />} />
       </Routes>
-    </>
+      </QueryClientProvider>
+
   );
 }
 
