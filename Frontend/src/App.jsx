@@ -9,6 +9,7 @@ import Home from "./pages/home.jsx";
 import CoursesPage from "./pages/coursesPage.jsx";
 import SettingsPage from "./pages/settingsPage.jsx";
 import DashboardPage from "./pages/dashboard.jsx";
+import ChatsPage from "./pages/chatsPage.jsx";
 import NewCourse from "./pages/newCoursePage.jsx";
 import ProfilePage from "./pages/profilePage.jsx";
 import CoursePage from "./pages/coursePage.jsx";
@@ -37,6 +38,7 @@ function App() {
         <Route path="/homePage" element={<HomePage />}>
           <Route index element={<Home/>}/>
           <Route path="courses" element={<CoursesPage />} />
+          <Route path="chats" element={<ChatsPage />} />
           <Route path="newCourse" element={<NewCourse />} />
           <Route path="/homePage/courses/course/:courseId" element={<CoursePage/>}>
             <Route index element={<OverView/>}/>
