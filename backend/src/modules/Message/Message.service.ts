@@ -1,10 +1,40 @@
 import prisma from "../../config/prisma";
-import { IMessageData } from "../../Interfaces/types";
+import {
+  IMessageData,
+  IMessageNotificationData,
+  IResponse,
+} from "../../Interfaces/types";
 
 class MessageService {
   private combine_IDS(id1: string, id2: string) {
     return [id1, id2].sort().join("_");
   }
+
+  async privateMessageNotification(Payload: IMessageNotificationData) {
+    const { chatId, receiverId, senderId, text } = Payload;
+    const notification = await prisma.messageNotifications.create({
+      data: {
+        text: text,
+        recieverId: receiverId,
+        chatId: chatId,
+        senderId: senderId,
+      },
+    });
+    return notification;
+  }
+
+  async updateMessageNotification(id: string) {
+    const notification = await prisma.messageNotifications.update({
+      where: {
+        id: id,
+      },
+      data: {
+        opened: true,
+      },
+    });
+    return notification;
+  }
+
   async create(Payload: IMessageData) {
     let msg;
     const { message, private: pr, receiverId, senderId, roomId } = Payload;
@@ -40,6 +70,25 @@ class MessageService {
       });
       return msg;
     }
+  }
+
+  async getAllMessagesAtPrvChat(id: string) {
+    const messages = await prisma.privateRoom.findUnique({
+      where: {
+        roomName: id,
+      },
+      select: {
+        messages: true,
+      },
+    });
+    const response: IResponse = {
+      status: "Success",
+      statusCode: 200,
+      data: {
+        messages,
+      },
+    };
+    return response;
   }
 }
 

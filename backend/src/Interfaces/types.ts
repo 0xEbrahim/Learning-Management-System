@@ -42,3 +42,10 @@ export interface IMessageData {
   roomId?: string;
   private: boolean;
 }
+
+export interface IMessageNotificationData {
+  receiverId: string;
+  senderId: string;
+  text: string;
+  chatId: string;
+}

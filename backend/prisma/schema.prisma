@@ -8,37 +8,39 @@ datasource db {
 }
 
 model User {
-  id                              String               @id @default(uuid())
-  googleId                        String?              @unique
+  id                              String                 @id @default(uuid())
+  googleId                        String?                @unique
   name                            String
   avatar                          String?
-  email                           String               @unique
+  email                           String                 @unique
   emailVerificationToken          String?
   emailVerificationTokenExpiresAt DateTime?
-  emailVerified                   Boolean              @default(false)
+  emailVerified                   Boolean                @default(false)
   password                        String
-  passwordChangedAt               DateTime             @default(now())
+  passwordChangedAt               DateTime               @default(now())
   passwordResetToken              String?
   passwordResetTokenExpiresAt     DateTime?
-  role                            Roles                @default(STUDENT)
-  isActive                        Boolean              @default(true)
-  twoFactorAuth                   Boolean              @default(false)
+  role                            Roles                  @default(STUDENT)
+  isActive                        Boolean                @default(true)
+  twoFactorAuth                   Boolean                @default(false)
   OTP                             String?
   OTPExpiresAt                    DateTime?
-  createdAt                       DateTime             @default(now())
-  updatedAt                       DateTime             @updatedAt
+  createdAt                       DateTime               @default(now())
+  updatedAt                       DateTime               @updatedAt
   deleteAt                        DateTime?
-  comments                        Comment[]            @relation("UserComments")
-  publishedCourses                Course[]             @relation("Publish")
-  notifications                   Notification[]       @relation("recieved")
-  courses                         Order[]              @relation("UserOrders")
-  reviews                         Review[]             @relation("UserReviews")
-  replies                         ReviewReply[]        @relation("UserReplies")
-  userCourseProgress              UserCourseProgress[] @relation("UserProgress")
-  userVideoProgress               UserVideoProgress[]  @relation("UserVideoProgress")
-  sentMessages                    PrivateMessage[]     @relation("send")
-  recievedMessages                PrivateMessage[]     @relation("recieve")
+  comments                        Comment[]              @relation("UserComments")
+  publishedCourses                Course[]               @relation("Publish")
+  notifications                   Notification[]         @relation("recieved")
+  courses                         Order[]                @relation("UserOrders")
+  reviews                         Review[]               @relation("UserReviews")
+  replies                         ReviewReply[]          @relation("UserReplies")
+  userCourseProgress              UserCourseProgress[]   @relation("UserProgress")
+  userVideoProgress               UserVideoProgress[]    @relation("UserVideoProgress")
+  sentMessages                    PrivateMessage[]       @relation("send")
+  recievedMessages                PrivateMessage[]       @relation("recieve")
   GroupMessage                    GroupMessage[]
+  SentNotifications               MessageNotifications[] @relation("send")
+  ReceivedNotifications           MessageNotifications[] @relation("recieve")
 
   @@index([email])
   @@index([googleId])
@@ -243,10 +245,11 @@ model ChatRoom {
 }
 
 model PrivateRoom {
-  id        String           @id @default(uuid())
-  roomName  String            @unique
-  createdAt DateTime         @default(now())
-  messages  PrivateMessage[]
+  id                   String                 @id @default(uuid())
+  roomName             String                 @unique
+  createdAt            DateTime               @default(now())
+  messages             PrivateMessage[]
+  MessageNotifications MessageNotifications[]
 
   @@index([roomName])
 }
@@ -268,6 +271,19 @@ model PrivateMessage {
   senderId   String
   recieverId String
   private    PrivateRoom @relation(fields: [privateId], references: [roomName], onDelete: Cascade)
+  sender     User        @relation("send", fields: [senderId], references: [id], onDelete: Cascade)
+  reciever   User        @relation("recieve", fields: [recieverId], references: [id], onDelete: Cascade)
+}
+
+model MessageNotifications {
+  id         String      @id @default(uuid())
+  recieverId String
+  senderId   String
+  text       String
+  chatId     String
+  createdAt  DateTime    @default(now())
+  opened     Boolean     @default(false)
+  Chat       PrivateRoom @relation(fields: [chatId], references: [roomName])
   sender     User        @relation("send", fields: [senderId], references: [id], onDelete: Cascade)
   reciever   User        @relation("recieve", fields: [recieverId], references: [id], onDelete: Cascade)
 }

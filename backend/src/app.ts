@@ -49,6 +49,7 @@ import swaggerJsDoc from "swagger-jsdoc";
 import { swaggerOptions } from "./config/swagger";
 import { demoRouter } from "./modules/Demo/Demo.routes";
 import { arenaConfig } from "./Queue/Arena-queue";
+import { MessageRouter } from "./modules/Message/Message.routes";
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
 app.use("/api/v1/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -167,7 +168,7 @@ app.use("/api/v1/replies", replyRouter);
 app.use("/api/v1/sections", sectionRouter);
 app.use("/api/v1/demo", demoRouter);
 app.use("/api/v1/notifications", notificationRouter);
-
+app.use("/api/v1/messages", MessageRouter);
 // Error Handling
 app.all("*", notFound);
 app.use(globalErrorHandler);
