@@ -7,9 +7,9 @@ class MessageService {
   }
   async create(Payload: IMessageData) {
     let msg;
-    const { message, private: pr, recieverId, senderId, roomId } = Payload;
+    const { message, private: pr, receiverId, senderId, roomId } = Payload;
     if (pr) {
-      const id = this.combine_IDS(senderId, recieverId);
+      const id = this.combine_IDS(senderId, receiverId);
       let prvRoom = await prisma.privateRoom.findFirst({
         where: {
           roomName: id,
@@ -25,7 +25,7 @@ class MessageService {
         data: {
           message: message,
           privateId: id,
-          recieverId,
+          recieverId: receiverId,
           senderId,
         },
       });

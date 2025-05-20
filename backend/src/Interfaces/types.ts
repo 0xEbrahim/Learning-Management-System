@@ -38,7 +38,7 @@ export interface IAddReviewNotificationData {
 export interface IMessageData {
   message: string;
   senderId: string;
-  recieverId: string;
+  receiverId: string;
   roomId?: string;
   private: boolean;
 }

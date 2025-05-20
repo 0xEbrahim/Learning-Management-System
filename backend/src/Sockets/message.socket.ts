@@ -7,7 +7,9 @@ export default (
 ) => {
   socket.on("sendMessage", async (data: IMessageData) => {
     const msg: any = await MessageService.create(data);
+    console.log(msg);
     const id = msg.privateId;
-    socket.to(id).emit("messageSent", { data: msg });
+    socket.join(id);
+    socket.to(id).emit("receiveMessage", { data: msg });
   });
 };
