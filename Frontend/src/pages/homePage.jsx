@@ -10,7 +10,7 @@ import { storeUserData } from "../rtk/slices/userSlice";
 import { io } from "socket.io-client";
 import { addNotification , getNotifications } from "../rtk/slices/socketNotifcationsSlice";
 import { Toaster , toast}  from "react-hot-toast";
-import { AiFillNotification } from "react-icons/ai";
+import Toast from "../components/toast";
 
 export const socket = io.connect("http://localhost:3000");
 
@@ -31,39 +31,9 @@ function HomePage() {
   useEffect(()=>{
     socket.on("notificationSent",(data)=>{
         // const { notification , reviewId } = data;
-
+        //show notification toast
         toast.custom((t) => (
-          <div
-            className={`${
-              t.visible ? 'animate-enter' : 'animate-leave'
-            } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex z-50 absolute top-[60px]`}
-          >
-            <div className="flex-1 w-0 p-4">
-              <div className="flex items-start">
-                <div className="flex-shrink-0 pt-0.5">
-                <div className="inline-flex items-center justify-center shrink-0 w-8 h-8 cursor-pointer text-indigo-600 bg-indigo-100 rounded-lg hover:bg-indigo-200">
-                <AiFillNotification />
-                </div>
-                </div>
-                <div className="ml-3 flex-1">
-                  {/* <p className="text-sm font-medium text-gray-900">
-                    revieweName
-                  </p> */}
-                  <p className="mt-1 text-sm text-gray-500">
-                    {data.notification.text}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex border-l border-gray-200">
-              <button
-                onClick={() => toast.dismiss(t.id)}
-                className=" cursor-pointer w-full border border-transparent rounded-none rounded-r-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 "
-              >
-                close
-              </button>
-            </div>
-          </div>
+          <Toast t={t} data={data}/>
         ),{
           position: 'top-right',
           duration: 5000,
@@ -72,6 +42,21 @@ function HomePage() {
         dispatch(addNotification(data.notification));
     })
   },[socket]);
+
+  //get msgs notifications from socket
+
+  useEffect(()=>{
+    socket.on("msgNotification", (data)=>{
+      //show notification toast
+      toast.custom((t) => (
+        <Toast t={t} data={data}/>
+      ),{
+        position: 'top-right',
+        duration: 5000,
+      })
+      
+    })
+  },[socket])
 
   useLayoutEffect(()=>{
     const getUserDataById=async()=>{
