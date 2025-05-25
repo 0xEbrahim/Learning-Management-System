@@ -1,5 +1,3 @@
-API deployed on AWS EC2: ``` http://13.48.136.54:3000/```
-
 
 ## 1 - You don't have docker installed
 
