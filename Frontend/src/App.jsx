@@ -53,7 +53,6 @@ function App() {
           <Route path="settings" element={<SettingsPage />} />
           <Route path="Profile" element={<ProfilePage />} />
           <Route path="notifications" element={<NotificationsPage/>}/>
-          <Route path="messages" element={<MessagesPage/>}/>
         </Route>
         <Route path="/" element={<Register />} />
         <Route path="/login" element={<Login />} />

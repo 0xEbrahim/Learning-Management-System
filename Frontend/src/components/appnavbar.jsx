@@ -31,13 +31,6 @@ function AppNavBar(){
           <div className="flex items-center">
               <div className="flex items-center ms-3">
                 <div className="flex items-center gap-6">
-                  <div className="flex items-center">
-                  <Link to="messages" className="cursor-pointer relative inline-flex items-center p-2 rounded-full text-sm text-center text-black hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100">
-                  <FaRegEnvelope className="text-xl "/>
-                  <span className="sr-only">Messages</span>
-                  {/* add number of notifications */}
-                  {/* {messagess.unreadMessages ? <div className="absolute flex items-center justify-center w-5 h-5 text-white bg-indigo-600 border-2 border-white rounded-full -top-[0px] -end-[2px]"><div className="text-[11px] font-[600]">{messages.unreadMessages}</div></div> : null} */}
-                  </Link>
                 <Link to="notifications" className="cursor-pointer relative inline-flex items-center p-2 rounded-full text-sm text-center text-black hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-100">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +48,6 @@ function AppNavBar(){
                   {/* add number of notifications */}
                   {notifications.unreadNotifications ? <div className="absolute flex items-center justify-center w-5 h-5 text-white bg-indigo-600 border-2 border-white rounded-full -top-[0px] -end-[2px]"><div className="text-[11px] font-[600]">{notifications.unreadNotifications}</div></div> : null}
                   </Link>
-                  </div>
                   <button type="button" className="cursor-pointer flex text-sm rounded-full" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span className="sr-only">Open user menu</span>
                     <img className="w-12 h-12 rounded-full object-cover" src={userAvatar} alt="user photo"/>
